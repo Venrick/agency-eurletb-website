@@ -1,1 +1,565 @@
 # About page
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us — EURL ETB Achouri Toufik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:       '#1e243c',
+            'navy-dark':'rgb(15,19,35)',
+            'navy-card':'#1a2036',
+            gold:       '#c19f5d',
+            'light-bg': '#f4f4f2',
+            muted:      '#5a5f72',
+          },
+          fontFamily: {
+            sans:      ['Lato', 'sans-serif'],
+            barlow:    ['Barlow', 'sans-serif'],
+            condensed: ['Barlow Condensed', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+    .blueprint       { background-image:linear-gradient(rgba(193,159,93,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(193,159,93,.07) 1px,transparent 1px); background-size:48px 48px; }
+    .blueprint-subtle{ background-image:linear-gradient(rgba(193,159,93,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(193,159,93,.04) 1px,transparent 1px); background-size:48px 48px; }
+
+    /* Navbar */
+    .nav-link { position:relative; padding-bottom:4px; }
+    .nav-link.active::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:2px; background:#c19f5d; }
+    .nav-link.active { color:#fff !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { width:24px; height:2px; background:#fff; display:block; transition:all .3s; transform-origin:center; }
+    .hamburger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2){ opacity:0; }
+    .hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+    .nav-drawer { max-height:0; overflow:hidden; transition:max-height .35s ease; background:#1e243c; }
+    .nav-drawer.open { max-height:400px; }
+    .nav-drawer a { display:block; padding:12px 24px; color:rgba(255,255,255,.75); text-decoration:none; font-size:14px; font-weight:500; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid rgba(193,159,93,.1); transition:color .2s; }
+    .nav-drawer a:hover,.nav-drawer a.active { color:#c19f5d; }
+
+    /* Page hero */
+    .page-hero-grid::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 30%,#1e243c 100%); }
+
+    /* Value cards */
+    .value-card { position:relative; transition:transform .25s, box-shadow .25s; }
+    .value-card::before { content:''; position:absolute; top:0; left:0; height:3px; width:0; background:#c19f5d; transition:width 0.4s ease; border-radius:3px 3px 0 0; }
+    .value-card:hover::before { width:100%; }
+    .value-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(30,36,60,.12); }
+
+    /* Timeline */
+    .timeline-item { position:relative; padding-left:32px; }
+    .timeline-item::before { content:''; position:absolute; left:0; top:8px; width:10px; height:10px; border-radius:50%; background:#c19f5d; border:2px solid #fff; box-shadow:0 0 0 3px rgba(193,159,93,.25); }
+    .timeline-item::after { content:''; position:absolute; left:4px; top:22px; bottom:-16px; width:2px; background:linear-gradient(to bottom,rgba(193,159,93,.4),transparent); }
+    .timeline-item:last-child::after { display:none; }
+
+    /* Cert card */
+    .cert-card { transition:transform .25s, box-shadow .25s; }
+    .cert-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(30,36,60,.12); }
+
+    /* Footer */
+    .fnav-link { transition:color .2s,padding-left .2s; display:flex; align-items:center; }
+    .fnav-link::before { content:''; width:0; height:1px; background:#c19f5d; display:inline-block; transition:width .2s,margin-right .2s; }
+    .fnav-link:hover { color:#fff !important; padding-left:4px; }
+    .fnav-link:hover::before { width:14px; margin-right:6px; }
+    .footer-topline { height:3px; background:linear-gradient(to right,transparent,#c19f5d 20%,#c19f5d 80%,transparent); }
+
+    input:focus,textarea:focus { outline:none; border-color:#c19f5d !important; }
+
+    @media(max-width:768px){
+      .hamburger { display:flex; }
+      .nav-desktop { display:none !important; }
+    }
+    @media(min-width:769px){ .nav-drawer { display:none !important; } }
+
+  </style>
+</head>
+<body class="font-sans text-navy bg-white">
+
+<!-- ═══════════ NAVBAR ═══════════ -->
+<nav class="fixed top-0 left-0 right-0 z-[100] flex flex-col">
+  <div id="topbar" class="bg-[rgba(15,19,35,0.95)] border-b border-[rgba(193,159,93,0.15)] flex items-center justify-between px-12 h-9">
+    <div class="flex items-center gap-7">
+      <a href="tel:+213000000000" class="flex items-center gap-[7px] text-[11px] text-white/55 no-underline hover:text-white/80 transition-colors tracking-[0.5px]">
+        <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        +213 (0) 00 00 00 00
+      </a>
+      <a href="/cdn-cgi/l/email-protection#0665696872676572466372642b67656e6973746f28627c" class="flex items-center gap-[7px] text-[11px] text-white/55 no-underline hover:text-white/80 transition-colors tracking-[0.5px]">
+        <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="__cf_email__" data-cfemail="8ae9e5e4feebe9fecaeffee8a7ebe9e2e5fff8e3a4eef0">[email&#160;protected]</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="#" class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all"><svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a href="#" class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all"><svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+    </div>
+  </div>
+  <div id="mainbar" class="bg-navy flex items-center justify-between px-12 h-[68px] border-b-[3px] border-gold">
+    <a href="index.html" class="flex items-center no-underline">
+      <img src="C:\Users\Sarah\Desktop\WORK\AI WEB DEV AGENCY\EURL ETB Website\assets\images\Site Logo Dark.png" alt="ETB Achouri Toufik" alt="ETB Achouri Toufik" class="logo-light" style="height:42px;">
+    </a>
+    <ul class="nav-desktop flex items-center gap-9 list-none">
+      <li><a href="index.html"    class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a></li>
+      <li><a href="about.html"    class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a></li>
+      <li><a href="services.html" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a></li>
+      <li><a href="projects.html" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a></li>
+      <li><a href="contact.html"  class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a></li>
+      <li><a href="contact.html"  class="font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Get a Quote</a></li>
+    </ul>
+  </div>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="index.html">Home</a>
+    <a href="about.html" class="text-gold">About</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+
+<!-- ═══════════ PAGE HERO ═══════════ -->
+<section class="relative bg-navy pt-[104px] pb-24 overflow-hidden flex items-center min-h-[360px]">
+  <div class="blueprint page-hero-grid absolute inset-0 z-0"></div>
+  <div class="absolute top-[104px] left-12 w-20 h-20 border-t-2 border-l-2 border-gold/40 z-10"></div>
+  <div class="absolute bottom-6 right-12 w-20 h-20 border-b-2 border-r-2 border-gold/40 z-10"></div>
+  <!-- Faint circle -->
+  <div class="absolute right-[12%] top-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full border border-[rgba(193,159,93,0.08)] z-[1] pointer-events-none"></div>
+
+  <div id="hero-content" class="relative z-10 max-w-[1200px] mx-auto px-12 w-full">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="w-10 h-[1px] bg-gold inline-block"></span>
+      <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Who We Are</span>
+    </div>
+    <h1 class="font-condensed text-[clamp(40px,6vw,76px)] font-extrabold text-white leading-[1.0] tracking-[-1px] mb-5">
+      Built on Trust.<br><span class="text-gold">Driven by Excellence.</span>
+    </h1>
+    <p class="text-[15px] text-white/55 leading-[1.8] max-w-[560px] mb-8">
+      For over 15 years, EURL ETB Achouri Toufik has delivered construction projects that stand the test of time — from residential homes to large-scale industrial facilities across Algeria.
+    </p>
+    <div class="flex items-center gap-2 text-[11px] font-condensed font-bold tracking-[2px] uppercase">
+      <a href="index.html" class="text-white/40 hover:text-gold transition-colors no-underline">Home</a>
+      <span class="text-gold/40">—</span>
+      <span class="text-gold">About Us</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ COMPANY STORY ═══════════ -->
+<section id="story" class="bg-white py-24 px-12">
+  <div class="max-w-[1200px] mx-auto grid grid-cols-2 gap-20 items-center max-lg:grid-cols-1 max-lg:gap-12">
+
+    <!-- Left: Image stack -->
+    <div id="story-images" class="relative">
+      <img class="w-full h-[460px] object-cover rounded-lg shadow-[0_16px_64px_rgba(30,36,60,0.14)]"
+        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" alt="Construction site"/>
+      <!-- Floating accent image -->
+      <div class="absolute -bottom-8 -right-8 w-[220px] h-[160px] rounded-lg overflow-hidden shadow-[0_8px_32px_rgba(30,36,60,0.18)] border-4 border-white">
+        <img class="w-full h-full object-cover"
+          src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&q=80" alt="Blueprint planning"/>
+      </div>
+      <!-- Gold accent block -->
+      <div class="absolute -top-4 -left-4 w-24 h-24 bg-gold/10 border-2 border-gold/30 rounded-lg z-[-1]"></div>
+    </div>
+
+    <!-- Right: Story + Timeline -->
+    <div id="story-text">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="w-10 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Our Story</span>
+      </div>
+      <h2 class="font-condensed text-[clamp(28px,4vw,48px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-5">
+        15 Years of Building<br>Algeria's <span class="text-gold">Infrastructure</span>
+      </h2>
+      <p class="text-[14px] text-muted leading-[1.85] mb-8">
+        Founded in 2009 by Toufik Achouri, our company began as a small contracting firm with a clear mission — to deliver construction projects that prioritize quality, safety, and client satisfaction above all else. Over the years, we have grown into a fully integrated construction group trusted by both private clients and public institutions across Algeria.
+      </p>
+
+      <!-- Timeline -->
+      <div class="flex flex-col gap-6">
+        <div class="timeline-item">
+          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">2009 — Founded</div>
+          <p class="text-[13px] text-muted leading-[1.7]">EURL ETB Achouri Toufik established in Blida, Algeria, with a focus on residential construction.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">2013 — Expansion</div>
+          <p class="text-[13px] text-muted leading-[1.7]">Expanded into commercial and industrial projects, growing the team to over 30 engineers and technicians.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">2018 — Certification</div>
+          <p class="text-[13px] text-muted leading-[1.7]">Achieved ISO 9001 quality management certification and launched our heavy machinery division.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">2024 — Today</div>
+          <p class="text-[13px] text-muted leading-[1.7]">240+ projects completed, 50+ expert engineers, and a reputation for delivering on time, every time.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════ MISSION & VISION ═══════════ -->
+<section id="mission" class="bg-navy py-24 px-12 relative overflow-hidden">
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+  <div class="max-w-[1200px] mx-auto relative z-10">
+
+    <div class="text-center mb-14" id="mission-header">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <span class="w-10 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">What Drives Us</span>
+        <span class="w-10 h-[1px] bg-gold inline-block"></span>
+      </div>
+      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px]">Mission &amp; Vision</h2>
+    </div>
+
+    <div class="grid grid-cols-2 gap-8 max-md:grid-cols-1" id="mission-cards">
+
+      <!-- Mission -->
+      <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.2)] border-t-[3px] border-t-gold rounded-[3px] p-10">
+        <div class="w-14 h-14 bg-gold/15 rounded-[4px] flex items-center justify-center mb-6">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+          </svg>
+        </div>
+        <h3 class="font-condensed text-[26px] font-bold text-white mb-4 tracking-[-0.3px]">Our Mission</h3>
+        <p class="text-[14px] text-white/60 leading-[1.85]">
+          To deliver construction projects of the highest quality — on time and within budget — while maintaining the safety of our workforce and the trust of our clients. We are committed to building structures that last generations and relationships that endure.
+        </p>
+      </div>
+
+      <!-- Vision -->
+      <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.2)] border-t-[3px] border-t-gold rounded-[3px] p-10">
+        <div class="w-14 h-14 bg-white/5 rounded-[4px] flex items-center justify-center mb-6">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <h3 class="font-condensed text-[26px] font-bold text-white mb-4 tracking-[-0.3px]">Our Vision</h3>
+        <p class="text-[14px] text-white/60 leading-[1.85]">
+          To become Algeria's most trusted construction group — recognized not only for the scale of our projects but for the integrity with which we execute them. We envision a future where every community we build in is stronger because of our presence.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ CORE VALUES ═══════════ -->
+<section id="values" class="bg-light-bg py-24 px-12">
+  <div class="max-w-[1200px] mx-auto">
+
+    <div class="text-center mb-14" id="values-header">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <span class="w-10 h-[1px] bg-gold/60 inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">What We Stand For</span>
+        <span class="w-10 h-[1px] bg-gold/60 inline-block"></span>
+      </div>
+      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px]">Our Core Values</h2>
+    </div>
+
+    <div class="grid grid-cols-3 gap-6 max-md:grid-cols-2 max-sm:grid-cols-1" id="values-grid">
+
+      <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Integrity</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">We operate with full transparency in every project. Our clients always know exactly what to expect — no surprises, no shortcuts.</p>
+      </div>
+
+      <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M6 20V10M10 20V4M14 20V10M18 20V4"/></svg>
+        </div>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Excellence</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">We hold ourselves to the highest standards — from the materials we source to the precision of our execution on every project.</p>
+      </div>
+
+      <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Teamwork</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">Our strength lies in our people. Every engineer, technician, and site worker is a valued member of a team that moves as one.</p>
+      </div>
+
+      <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Client Focus</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">Our clients are at the center of every decision we make. Their vision drives our work, and their satisfaction defines our success.</p>
+      </div>
+
+      <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Reliability</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">Deadlines are commitments. We plan meticulously and execute with discipline so that every project is delivered on schedule.</p>
+      </div>
+
+      <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Safety First</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">The wellbeing of our workforce is non-negotiable. We maintain rigorous safety protocols on every site, every day, without exception.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ STATS BAR ═══════════ -->
+<div id="stats" class="grid grid-cols-4 bg-navy border-b-[3px] border-gold max-sm:grid-cols-2">
+  <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
+    <div class="font-condensed text-[48px] font-extrabold text-gold leading-none mb-2 stat-num" data-target="15" data-suffix="+">15+</div>
+    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Years Experience</div>
+  </div>
+  <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
+    <div class="font-condensed text-[48px] font-extrabold text-gold leading-none mb-2 stat-num" data-target="240" data-suffix="+">240+</div>
+    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Projects Completed</div>
+  </div>
+  <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
+    <div class="font-condensed text-[48px] font-extrabold text-gold leading-none mb-2 stat-num" data-target="50" data-suffix="+">50+</div>
+    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Expert Engineers</div>
+  </div>
+  <div class="stat-item flex flex-col items-center justify-center py-10 px-4">
+    <div class="font-condensed text-[48px] font-extrabold text-gold leading-none mb-2 stat-num" data-target="12" data-suffix="">12</div>
+    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Awards Won</div>
+  </div>
+</div>
+
+
+<!-- ═══════════ CERTIFICATIONS & AWARDS ═══════════ -->
+<section id="certs" class="bg-white py-24 px-12">
+  <div class="max-w-[1200px] mx-auto">
+
+    <div class="text-center mb-14" id="certs-header">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <span class="w-10 h-[1px] bg-gold/60 inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Recognition</span>
+        <span class="w-10 h-[1px] bg-gold/60 inline-block"></span>
+      </div>
+      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px]">Certifications &amp; Awards</h2>
+      <p class="text-[14px] text-muted leading-[1.7] max-w-[520px] mx-auto mt-4">Our work has been recognized by leading industry bodies — a testament to our unwavering commitment to quality and safety.</p>
+    </div>
+
+    <div class="grid grid-cols-4 gap-6 max-md:grid-cols-2" id="certs-grid">
+
+      <div class="cert-card bg-light-bg border border-[rgba(30,36,60,0.07)] rounded-[3px] p-7 flex flex-col items-center text-center shadow-[0_2px_16px_rgba(30,36,60,0.05)]">
+        <div class="w-16 h-16 bg-navy rounded-full flex items-center justify-center mb-5">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">ISO 9001</h4>
+        <p class="text-[12px] text-muted leading-[1.6]">Quality Management Systems Certified</p>
+      </div>
+
+      <div class="cert-card bg-light-bg border border-[rgba(30,36,60,0.07)] rounded-[3px] p-7 flex flex-col items-center text-center shadow-[0_2px_16px_rgba(30,36,60,0.05)]">
+        <div class="w-16 h-16 bg-navy rounded-full flex items-center justify-center mb-5">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">OHSAS 18001</h4>
+        <p class="text-[12px] text-muted leading-[1.6]">Occupational Health &amp; Safety Standard</p>
+      </div>
+
+      <div class="cert-card bg-light-bg border border-[rgba(30,36,60,0.07)] rounded-[3px] p-7 flex flex-col items-center text-center shadow-[0_2px_16px_rgba(30,36,60,0.05)]">
+        <div class="w-16 h-16 bg-navy rounded-full flex items-center justify-center mb-5">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11.562 3.266a.5.5 0 01.876 0L15.39 8.87l6.187.893a.5.5 0 01.277.853l-4.477 4.363 1.057 6.158a.5.5 0 01-.726.528L12 18.845l-5.708 3.02a.5.5 0 01-.726-.527l1.057-6.16L2.146 10.61a.5.5 0 01.277-.853l6.187-.893 2.952-5.597z"/></svg>
+        </div>
+        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Best Contractor</h4>
+        <p class="text-[12px] text-muted leading-[1.6]">Algeria Construction Awards 2022</p>
+      </div>
+
+      <div class="cert-card bg-light-bg border border-[rgba(30,36,60,0.07)] rounded-[3px] p-7 flex flex-col items-center text-center shadow-[0_2px_16px_rgba(30,36,60,0.05)]">
+        <div class="w-16 h-16 bg-navy rounded-full flex items-center justify-center mb-5">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        </div>
+        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Licensed &amp; Bonded</h4>
+        <p class="text-[12px] text-muted leading-[1.6]">Ministry of Construction Algeria</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ CTA BANNER ═══════════ -->
+<section id="cta" class="bg-navy py-20 px-12 relative overflow-hidden">
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+  <div class="absolute bottom-0 right-0 w-48 h-48 border-b-2 border-r-2 border-[rgba(193,159,93,0.1)] z-[1]"></div>
+  <div class="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-[rgba(193,159,93,0.08)] z-[1]"></div>
+  <div class="max-w-[1200px] mx-auto relative z-10 flex items-center justify-between gap-10 flex-wrap">
+    <div>
+      <h2 class="font-condensed text-[clamp(28px,4vw,48px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-3">
+        Ready to Start Your <span class="text-gold">Next Project?</span>
+      </h2>
+      <p class="text-[14px] text-white/55 leading-[1.7] max-w-[480px]">Let's talk about what you're building. Our team is ready to bring your vision to life with precision and expertise.</p>
+    </div>
+    <div class="flex gap-4 flex-wrap">
+      <a href="contact.html" class="bg-gold text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:opacity-90 transition-opacity no-underline">Get a Free Quote &rarr;</a>
+      <a href="projects.html" class="border border-white/30 text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:border-gold hover:text-gold transition-all no-underline">View Our Work</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="bg-[rgb(15,19,35)] relative overflow-hidden">
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+  <div class="footer-topline relative z-10"></div>
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12 pt-16 pb-12 grid grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
+    <div>
+      <a href="index.html" class="flex items-center no-underline mb-5">
+        <img src="C:\Users\Sarah\Desktop\WORK\AI WEB DEV AGENCY\EURL ETB Website\assets\images\Site Logo Dark.png" alt="ETB Achouri Toufik" alt="ETB Achouri Toufik" style="height:44px;">
+      </a>
+      <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7">Building tomorrow's landmarks with precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Navigation</div>
+      <ul class="list-none flex flex-col gap-[10px]">
+        <li><a href="index.html"    class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
+        <li><a href="about.html"    class="fnav-link text-[13px] text-gold no-underline">About Us</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
+        <li><a href="projects.html" class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
+        <li><a href="contact.html"  class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Services</div>
+      <ul class="list-none flex flex-col gap-[10px]">
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Residential Construction</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Commercial Buildings</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Industrial Works</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Renovation &amp; Retrofit</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Project Management</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Stay Informed</div>
+      <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.18)] rounded-[4px] p-7">
+        <p class="text-[12.5px] text-white/55 leading-[1.6] mb-5">Subscribe for project updates and company news.</p>
+        <div class="flex flex-col gap-[10px]">
+          <input type="email" placeholder="Your email address" class="bg-white/5 border border-[rgba(193,159,93,0.25)] rounded-[3px] px-[14px] py-[10px] font-sans text-[12.5px] text-white placeholder-white/30 transition-all"/>
+          <button type="button" class="bg-gold font-condensed text-[12px] font-bold tracking-[1.8px] uppercase text-navy py-[10px] rounded-[3px] hover:opacity-88 transition-opacity cursor-pointer border-none">Subscribe &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12"><hr class="border-none border-t border-[rgba(193,159,93,0.15)]"/></div>
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12 py-5 flex items-center justify-between gap-5 flex-wrap">
+    <p class="text-[11.5px] text-white/35">&copy; 2025 <a href="#" class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri Toufik</a>. All rights reserved.</p>
+    <div class="flex items-center gap-[10px]">
+      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all"><svg class="w-[13px] h-[13px] fill-white/50" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all"><svg class="w-[13px] h-[13px] fill-white/50" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all"><svg class="w-[13px] h-[13px] fill-none stroke-white/50 stroke-[1.5]" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════ SCRIPTS ═══════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+window.addEventListener('load', () => {
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero
+gsap.from('#hero-content > *', { y:40, opacity:0, stagger:0.12, duration:0.75, delay:0.2, ease:'power2.out' });
+
+// Story
+gsap.from('#story-images', {
+  scrollTrigger:{ trigger:'#story', start:'top 78%', once:true },
+  x:-60, opacity:0, duration:0.85, ease:'power2.out'
+});
+gsap.from('#story-text > *', {
+  scrollTrigger:{ trigger:'#story', start:'top 78%', once:true },
+  x:50, opacity:0, stagger:0.1, duration:0.7, ease:'power2.out'
+});
+
+// Mission
+gsap.from('#mission-header > *', {
+  scrollTrigger:{ trigger:'#mission', start:'top 80%', once:true },
+  y:30, opacity:0, stagger:0.1, duration:0.6, ease:'power2.out'
+});
+gsap.from('#mission-cards > *', {
+  scrollTrigger:{ trigger:'#mission-cards', start:'top 82%', once:true },
+  y:50, opacity:0, stagger:0.15, duration:0.7, ease:'power2.out'
+});
+
+// Values
+gsap.from('#values-header > *', {
+  scrollTrigger:{ trigger:'#values', start:'top 80%', once:true },
+  y:30, opacity:0, stagger:0.1, duration:0.6, ease:'power2.out'
+});
+gsap.from('.value-card', {
+  scrollTrigger:{ trigger:'#values-grid', start:'top 82%', once:true },
+  y:55, opacity:0, stagger:0.1, duration:0.65, ease:'power2.out'
+});
+
+// Stats counters
+document.querySelectorAll('.stat-num').forEach(el => {
+  const target = parseInt(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const obj = { val:0 };
+  gsap.to(obj, {
+    scrollTrigger:{ trigger:'#stats', start:'top 85%', once:true },
+    val:target, duration:2.2, ease:'power1.out',
+    onUpdate(){ el.textContent = Math.round(obj.val) + suffix; }
+  });
+});
+gsap.from('.stat-item', {
+  scrollTrigger:{ trigger:'#stats', start:'top 85%', once:true },
+  y:30, opacity:0, stagger:0.12, duration:0.6, ease:'power2.out'
+});
+
+// Certifications
+gsap.from('#certs-header > *', {
+  scrollTrigger:{ trigger:'#certs', start:'top 80%', once:true },
+  y:30, opacity:0, stagger:0.1, duration:0.6, ease:'power2.out'
+});
+gsap.from('.cert-card', {
+  scrollTrigger:{ trigger:'#certs-grid', start:'top 82%', once:true },
+  scale:0.9, opacity:0, stagger:0.1, duration:0.6, ease:'power2.out'
+});
+
+// CTA
+gsap.from('#cta > div > *', {
+  scrollTrigger:{ trigger:'#cta', start:'top 82%', once:true },
+  y:30, opacity:0, stagger:0.15, duration:0.65, ease:'power2.out'
+});
+
+// Hamburger
+const hamburger = document.getElementById('hamburger');
+const drawer    = document.getElementById('nav-drawer');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  drawer.classList.toggle('open');
+});
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('open');
+  drawer.classList.remove('open');
+}));
+
+ScrollTrigger.refresh();
+}); // end window load
+</script>
+</body>
+</html>
