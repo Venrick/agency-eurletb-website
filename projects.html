@@ -399,7 +399,6 @@
       <p id="hero-subtext" class="text-[15px] text-white/55 max-w-[560px] mx-auto mb-8 leading-[1.75]">
         240+ completed projects across Algeria — residential, commercial, and industrial.
       </p>
-
       <div id="hero-breadcrumb"
         class="font-condensed text-[12px] font-bold tracking-[1.5px] uppercase text-white/35 flex justify-center items-center gap-2">
         <a href="index.html" class="hover:text-gold transition-colors">Home</a>
@@ -411,10 +410,10 @@
 
   <!-- ═══════════════════════════════ PROJECT MAP ═══════════════════════════════ -->
   <section id="map" class="py-20 bg-navy-dark">
-    <div class="max-w-6xl mx-auto px-6">
+    <div class="max-w-[1360px] mx-auto px-6">
 
       <!-- Section header -->
-      <div class="text-center mb-12">
+      <div class="max-w-6xl mx-auto text-center mb-12">
         <span class="text-gold font-condensed text-sm tracking-[0.2em] uppercase">Nationwide Presence</span>
         <h2 class="font-condensed text-4xl font-bold text-white mt-2">Project Locations</h2>
         <p class="text-muted mt-3 max-w-xl mx-auto text-sm">
@@ -422,165 +421,184 @@
         </p>
       </div>
 
-      <!-- Map Frame -->
-      <div id="map-frame" class="flex flex-col md:flex-row">
-        
-        <!-- Left: Map -->
-        <div id="map-left-col">
-          <div class="relative w-full overflow-hidden" id="map-container">
-            <!-- Algeria SVG map -->
-            <img src="dz-05.svg" alt="Algeria map" class="w-full h-auto block" id="algeria-map-img" draggable="false" />
+    <!--
+      FRAME
+      ─────────────────────────────────────────────────────────────────
+      NO fixed height — the left column's image determines height.
+      Flexbox default align-items:stretch makes the right column
+      automatically match whatever height the left column ends up being.
+      overflow:hidden clips the bottom empty strip of the SVG viewBox.
+    -->
+    <div id="map-frame" class="flex flex-col md:flex-row"
+         style="gap:1.25rem; align-items:stretch;">
 
-            <!-- PINS -->
-            <button class="map-pin absolute group" style="left:49.2%; top:18.0%; transform:translate(-50%,-100%);"
-              data-project="algiers-tower" aria-label="Algiers Business Tower">
-              <svg class="map-pin-icon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-                <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Algiers</span>
-            </button>
+      <!-- ── LEFT: Map ── -->
+      <div id="map-left-wrapper"
+           style="flex:1; border:1px solid rgba(193,159,93,0.3); border-radius:4px; overflow:hidden; position:relative; aspect-ratio:1440/610; background:rgba(30,36,60,0.4);">
+        <div id="map-left-col"
+             style="position:relative; width:100%; height:100%; overflow:hidden;">
 
-            <button class="map-pin absolute group" style="left:46.3%; top:22.1%; transform:translate(-50%,-100%);"
-              data-project="blida-complex" aria-label="Blida Residential Complex">
-              <svg class="map-pin-icon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-                <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Blida</span>
-            </button>
+          <!-- Map Image - absolute so it fits the aspect-ratio container -->
+          <img
+            src="dz-05.svg"
+            alt="Algeria map"
+            id="algeria-map-img"
+            draggable="false"
+            style="position:absolute; top:0; left:0; width:100%; height:auto; display:block;"
+          />
 
-            <button class="map-pin absolute group" style="left:15.3%; top:39.6%; transform:translate(-50%,-100%);"
-              data-project="oran-warehouse" aria-label="Oran Industrial Warehouse">
-              <svg class="map-pin-icon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-                <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Oran</span>
-            </button>
+          <!-- ── PINS ──
+               Coordinates from full 1440x810 viewBox.
+               The container clips the Saharan bottom.
+          -->
 
-            <button class="map-pin absolute group" style="left:80.9%; top:24.8%; transform:translate(-50%,-100%);"
-              data-project="constantine-mall" aria-label="Constantine Retail Centre">
-              <svg class="map-pin-icon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-                <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Constantine</span>
-            </button>
+          <!-- Algiers -->
+          <button class="map-pin" style="position:absolute; left:49.2%; top:18.0%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;" data-project="algiers-tower" aria-label="Algiers Business Tower">
+            <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/><circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9"/></svg>
+            <span class="map-pin-label">Algiers</span>
+          </button>
 
-            <button class="map-pin absolute group" style="left:75.9%; top:25.8%; transform:translate(-50%,-100%);"
-              data-project="setif-factory" aria-label="Sétif Production Facility">
-              <svg class="map-pin-icon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-                <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Sétif</span>
-            </button>
+          <!-- Blida -->
+          <button class="map-pin" style="position:absolute; left:46.3%; top:22.1%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;" data-project="blida-complex" aria-label="Blida Residential Complex">
+            <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/><circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9"/></svg>
+            <span class="map-pin-label">Blida</span>
+          </button>
 
-            <button class="map-pin absolute group" style="left:52.8%; top:17.3%; transform:translate(-50%,-100%);"
-              data-project="tizi-school" aria-label="Tizi Ouzou School Campus">
-              <svg class="map-pin-icon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-                <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Tizi Ouzou</span>
-            </button>
+          <!-- Oran -->
+          <button class="map-pin" style="position:absolute; left:15.3%; top:39.6%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;" data-project="oran-warehouse" aria-label="Oran Industrial Warehouse">
+            <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/><circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9"/></svg>
+            <span class="map-pin-label">Oran</span>
+          </button>
 
-            <button class="map-pin absolute group" style="left:47.2%; top:25.9%; transform:translate(-50%,-100%);"
-              data-project="medea-villas" aria-label="Médéa Villa Compound">
-              <svg class="map-pin-icon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-                <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Médéa</span>
-            </button>
+          <!-- Constantine -->
+          <button class="map-pin" style="position:absolute; left:80.9%; top:24.8%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;" data-project="constantine-mall" aria-label="Constantine Retail Centre">
+            <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/><circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9"/></svg>
+            <span class="map-pin-label">Constantine</span>
+          </button>
 
-            <button class="map-pin absolute group" style="left:87.2%; top:14.8%; transform:translate(-50%,-100%);"
-              data-project="annaba-residences" aria-label="Annaba Coastal Residences">
-              <svg class="map-pin-icon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-                <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Annaba</span>
-            </button>
-          </div>
-        </div>
+          <!-- Sétif -->
+          <button class="map-pin" style="position:absolute; left:75.9%; top:25.8%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;" data-project="setif-factory" aria-label="Sétif Production Facility">
+            <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/><circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9"/></svg>
+            <span class="map-pin-label">Sétif</span>
+          </button>
 
-        <!-- Right: Panel Area -->
-        <div id="map-right-col">
-          <div id="map-placeholder">
-            <span>Select a location</span>
-          </div>
-          <div id="map-info-panel" class="hidden">
-            <button id="map-panel-close" class="absolute top-4 right-5 text-muted hover:text-gold text-2xl leading-none transition-colors">✕</button>
-            <div class="h-full flex flex-col">
-              <span id="panel-category" class="text-gold font-condensed text-xs tracking-[0.2em] uppercase"></span>
-              <h3 id="panel-name" class="text-white font-condensed font-bold text-3xl mt-2 leading-[1.1]"></h3>
-              <p id="panel-city" class="text-muted text-base mt-2"></p>
-              <div class="mt-8 space-y-4 text-sm">
-                <div class="flex justify-between border-b border-white/5 pb-3">
-                  <span class="text-white/40 uppercase tracking-wider font-condensed text-[11px] font-bold">Year</span>
-                  <span id="panel-year" class="text-white font-medium"></span>
-                </div>
-                <div class="flex justify-between border-b border-white/5 pb-3">
-                  <span class="text-white/40 uppercase tracking-wider font-condensed text-[11px] font-bold">Surface</span>
-                  <span id="panel-area" class="text-white font-medium"></span>
-                </div>
-                <div class="flex justify-between border-b border-white/5 pb-3">
-                  <span class="text-white/40 uppercase tracking-wider font-condensed text-[11px] font-bold">Status</span>
-                  <span id="panel-status" class="text-white font-medium"></span>
-                </div>
-              </div>
-              <div class="mt-8">
-                <div class="flex justify-between text-[11px] font-bold uppercase tracking-wider text-white/40 mb-2">
-                  <span>Project Completion</span>
-                  <span id="panel-pct" class="text-gold"></span>
-                </div>
-                <div class="w-full h-[3px] bg-white/10 rounded-full overflow-hidden">
-                  <div id="panel-bar" class="h-full bg-gold rounded-full" style="width:0%"></div>
-                </div>
-              </div>
-              <div class="mt-auto pt-10">
-                <a href="#all-projects" class="inline-block w-full text-center bg-gold text-navy font-condensed font-bold text-xs uppercase tracking-[0.2em] py-4 px-6 hover:bg-white transition-all">
-                  View Case Study
-                </a>
-              </div>
-            </div>
-          </div>
+          <!-- Tizi Ouzou -->
+          <button class="map-pin" style="position:absolute; left:52.8%; top:17.3%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;" data-project="tizi-school" aria-label="Tizi Ouzou School Campus">
+            <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/><circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9"/></svg>
+            <span class="map-pin-label">Tizi Ouzou</span>
+          </button>
+
+          <!-- Médéa -->
+          <button class="map-pin" style="position:absolute; left:47.2%; top:25.9%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;" data-project="medea-villas" aria-label="Médéa Villa Compound">
+            <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/><circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9"/></svg>
+            <span class="map-pin-label">Médéa</span>
+          </button>
+
+          <!-- Annaba -->
+          <button class="map-pin" style="position:absolute; left:87.2%; top:14.8%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;" data-project="annaba-residences" aria-label="Annaba Coastal Residences">
+            <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/><circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9"/></svg>
+            <span class="map-pin-label">Annaba</span>
+          </button>
         </div>
       </div>
+
+      <!-- ── RIGHT: Panel col ── -->
+      <!-- Moved outside the frame-border, now independent with its own border -->
+      <div id="map-right-col" class="w-full md:w-[35%]"
+           style="flex-shrink:0; position:relative; overflow:hidden; background:#1a2036; border:1px solid rgba(193,159,93,0.3); border-radius:4px; min-height:440px;">
+
+        <!-- Placeholder -->
+        <div id="map-placeholder"
+             style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; pointer-events:none;">
+          <svg width="32" height="40" viewBox="0 0 28 36" fill="none" style="opacity:0.25;">
+            <path d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z" fill="#c19f5d"/>
+            <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.5"/>
+          </svg>
+          <span style="color:#c19f5d; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; opacity:0.4;">Select a location</span>
+        </div>
+
+        <!-- Info Panel — GSAP sets x:'100%' in JS -->
+        <div id="map-info-panel"
+             style="position:absolute; inset:0; background:#1a2036; display:flex; flex-direction:column;">
+
+          <button id="map-panel-close"
+                  style="position:absolute; top:16px; right:20px; z-index:30; font-size:1.25rem; line-height:1; background:none; border:none; cursor:pointer; color:#5a5f72; transition:color 0.15s ease;"
+                  onmouseover="this.style.color='#c19f5d'"
+                  onmouseout="this.style.color='#5a5f72'">✕</button>
+
+          <div class="panel-scroll-content" style="display:flex; flex-direction:column; height:100%; overflow-y:auto; padding:1.5rem; padding-top:2.5rem; box-sizing:border-box;">
+
+            <span id="panel-category"
+                  style="color:#c19f5d; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;"></span>
+
+            <h3 id="panel-name"
+                style="color:white; font-family:'Barlow Condensed',sans-serif; font-size:1.4rem; font-weight:700; margin:4px 0 4px; line-height:1.2;"></h3>
+
+            <p id="panel-city" style="color:#5a5f72; font-size:0.875rem; margin:0;"></p>
+
+            <div style="margin-top:1.25rem; display:flex; flex-direction:column; gap:10px; font-size:0.875rem;">
+              <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
+                <span style="color:#5a5f72;">Year</span>
+                <span id="panel-year" style="color:white; font-weight:500;"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
+                <span style="color:#5a5f72;">Surface</span>
+                <span id="panel-area" style="color:white; font-weight:500;"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
+                <span style="color:#5a5f72;">Status</span>
+                <span id="panel-status" style="color:white; font-weight:500;"></span>
+              </div>
+            </div>
+
+            <p id="panel-desc" style="color:white; opacity:0.6; font-size:0.875rem; margin-top:1.25rem; line-height:1.5;"></p>
+
+            <div style="margin-top:1.25rem;">
+              <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#5a5f72; margin-bottom:6px;">
+                <span>Completion</span>
+                <span id="panel-pct" style="color:#c19f5d; font-weight:500;"></span>
+              </div>
+              <div style="width:100%; height:5px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,0.08);">
+                <div id="panel-bar" style="width:0%; height:100%; border-radius:999px; background:#c19f5d;"></div>
+              </div>
+            </div>
+
+            <div style="flex:1;"></div>
+
+            <a href="#projects"
+               style="display:block; width:100%; text-align:center; background:#c19f5d; color:#1e243c; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; padding:12px; border-radius:2px; text-decoration:none; margin-top:1.25rem; box-sizing:border-box;">
+              View Project
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /map-frame -->
 
     </div>
   </section>
 
-  <!-- ── Styles (add once to your <style> block) ─────────────────── -->
+  <!-- ── Styles ── -->
   <style>
-    #map-container {
-      user-select: none;
-    }
-
-    .map-pin {
-      cursor: pointer;
-      z-index: 10;
-    }
+    #map-container { user-select: none; }
 
     .map-pin-icon {
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
+      display: block;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.55));
       transition: transform 0.18s ease, filter 0.18s ease;
     }
-
     .map-pin:hover .map-pin-icon,
     .map-pin.active .map-pin-icon {
       transform: scale(1.25);
-      filter: drop-shadow(0 4px 8px rgba(193, 159, 93, 0.6));
+      filter: drop-shadow(0 4px 8px rgba(193,159,93,0.6));
     }
-
     .map-pin-label {
       position: absolute;
       bottom: 100%;
       left: 50%;
       transform: translateX(-50%) translateY(-4px);
-      background: rgba(15, 19, 35, 0.92);
+      background: rgba(15,19,35,0.92);
       color: #c19f5d;
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 11px;
@@ -594,110 +612,16 @@
       opacity: 0;
       transition: opacity 0.15s ease;
     }
-
     .map-pin:hover .map-pin-label,
-    .map-pin.active .map-pin-label {
-      opacity: 1;
+    .map-pin.active .map-pin-label { opacity: 1; }
+
+    /* Hide scrollbar for the info panel content */
+    .panel-scroll-content::-webkit-scrollbar { display: none; }
+    .panel-scroll-content { 
+      scrollbar-width: none; 
+      -ms-overflow-style: none; 
     }
   </style>
-
-  <!-- ── Script (add inside your window.addEventListener('load') block) -->
-  <script>
-    window.addEventListener('load', () => {
-        const projectData = {
-          "algiers-tower": { name: "Algiers Business Tower", city: "Algiers", category: "Commercial", year: "2023", area: "12,400 m²", status: "Completed", completion: 100 },
-          "blida-complex": { name: "Blida Residential Complex", city: "Blida", category: "Residential", year: "2024", area: "8,200 m²", status: "In Progress", completion: 74 },
-          "oran-warehouse": { name: "Oran Industrial Warehouse", city: "Oran", category: "Industrial", year: "2022", area: "18,500 m²", status: "Completed", completion: 100 },
-          "constantine-mall": { name: "Constantine Retail Centre", city: "Constantine", category: "Commercial", year: "2023", area: "9,700 m²", status: "Completed", completion: 100 },
-          "annaba-residences": { name: "Annaba Coastal Residences", city: "Annaba", category: "Residential", year: "2025", area: "5,400 m²", status: "In Progress", completion: 38 },
-          "tizi-school": { name: "Tizi Ouzou School Campus", city: "Tizi Ouzou", category: "Public", year: "2022", area: "6,100 m²", status: "Completed", completion: 100 },
-          "setif-factory": { name: "Sétif Production Facility", city: "Sétif", category: "Industrial", year: "2024", area: "22,000 m²", status: "In Progress", completion: 61 },
-          "medea-villas": { name: "Médéa Villa Compound", city: "Médéa", category: "Residential", year: "2023", area: "3,800 m²", status: "Completed", completion: 100 },
-        };
-
-        const panel = document.getElementById('map-info-panel');
-        const closeBtn = document.getElementById('map-panel-close');
-        const frame = document.getElementById('map-frame');
-        let activePin = null;
-
-        function openPanel(project) {
-          const d = projectData[project];
-          if (!d) return;
-          
-          document.getElementById('panel-category').textContent = d.category;
-          document.getElementById('panel-name').textContent = d.name;
-          document.getElementById('panel-city').textContent = d.city;
-          document.getElementById('panel-year').textContent = d.year;
-          document.getElementById('panel-area').textContent = d.area;
-          document.getElementById('panel-status').textContent = d.status;
-          document.getElementById('panel-pct').textContent = d.completion + '%';
-          
-          panel.classList.remove('hidden');
-          
-          // GSAP Slide In
-          gsap.fromTo(panel, 
-            { x: '100%' }, 
-            { x: '0%', duration: 0.4, ease: 'power3.out', clearProps: 'transform' }
-          );
-
-          // Animate bar
-          gsap.to('#panel-bar', {
-            width: d.completion + '%',
-            duration: 0.8,
-            ease: 'power2.out',
-            delay: 0.2
-          });
-        }
-
-        function closePanel() {
-          if (!panel.classList.contains('hidden')) {
-            gsap.to(panel, { 
-              x: '100%', 
-              duration: 0.3, 
-              ease: 'power2.in',
-              onComplete: () => {
-                panel.classList.add('hidden');
-                document.getElementById('panel-bar').style.width = '0%';
-              }
-            });
-          }
-          if (activePin) { 
-            activePin.classList.remove('active'); 
-            activePin = null; 
-          }
-        }
-
-        document.querySelectorAll('.map-pin').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent document click listener from firing
-            const project = btn.dataset.project;
-            if (activePin === btn) { 
-              closePanel(); 
-              return; 
-            }
-            if (activePin) activePin.classList.remove('active');
-            activePin = btn;
-            btn.classList.add('active');
-            openPanel(project);
-          });
-        });
-
-        closeBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          closePanel();
-        });
-
-        // Close on outside click
-        document.addEventListener('click', (e) => {
-          if (activePin && !frame.contains(e.target)) {
-            closePanel();
-          }
-        });
-    });
-  </script>
-
-
-
   <!-- ═══════════════════════════════ PROJECT CARDS ═══════════════════════════════ -->
   <section id="all-projects" class="bg-navy py-24 px-12">
     <div class="max-w-[1200px] mx-auto">
@@ -925,51 +849,86 @@
       // ═══════════ MAP LOGIC ═══════════
       const pins = document.querySelectorAll('.map-pin');
       const infoPanel = document.getElementById('map-info-panel');
-      const panelContent = document.getElementById('panel-content');
-      const closePanel = document.getElementById('close-panel');
+      const closeBtn = document.getElementById('map-panel-close');
+      const bar = document.getElementById('panel-bar');
+      const frame = document.getElementById('map-frame');
+      let activePin = null;
+      let isOpen = false;
+
+      // Ensure panel starts off-screen
+      gsap.set(infoPanel, { x: '100%' });
+
+      function closePanel() {
+        if (!isOpen) return;
+        isOpen = false;
+
+        gsap.killTweensOf(infoPanel);
+        gsap.killTweensOf(bar);
+
+        gsap.to(infoPanel, {
+          x: '100%',
+          duration: 0.3,
+          ease: 'power2.in',
+          onComplete: () => {
+            gsap.set(bar, { width: '0%' });
+          }
+        });
+
+        if (activePin) {
+          activePin.classList.remove('active');
+          activePin = null;
+        }
+      }
+
+      function openPanel(project) {
+        const d = projectData[project];
+        if (!d) return;
+
+        document.getElementById('panel-category').textContent = d.category;
+        document.getElementById('panel-name').textContent = d.name;
+        document.getElementById('panel-city').textContent = d.city;
+        document.getElementById('panel-year').textContent = d.year;
+        document.getElementById('panel-area').textContent = d.area;
+        document.getElementById('panel-status').textContent = d.status;
+        document.getElementById('panel-pct').textContent = d.completion + '%';
+        
+        const descEl = document.getElementById('panel-desc');
+        if (descEl) descEl.textContent = d.description;
+
+        gsap.killTweensOf(infoPanel);
+        gsap.killTweensOf(bar);
+        gsap.set(bar, { width: '0%' });
+
+        gsap.fromTo(infoPanel, { x: '100%' }, { x: '0%', duration: 0.4, ease: 'power3.out' });
+        gsap.to(bar, { width: d.completion + '%', duration: 0.8, ease: 'power2.out', delay: 0.35 });
+
+        isOpen = true;
+      }
 
       pins.forEach(pin => {
-        pin.addEventListener('click', () => {
+        pin.addEventListener('click', (e) => {
+          e.stopPropagation();
           const slug = pin.getAttribute('data-project');
-          const p = projectData[slug];
-
-          pins.forEach(p => p.classList.remove('active'));
+          if (activePin === pin) {
+            closePanel();
+            return;
+          }
+          if (activePin) activePin.classList.remove('active');
+          activePin = pin;
           pin.classList.add('active');
-
-          panelContent.innerHTML = `
-        <span class="font-condensed text-[9px] tracking-[2px] uppercase bg-gold/20 text-gold px-2 py-[3px] rounded-[2px]">${p.category}</span>
-        <h3 class="font-condensed text-[20px] font-bold text-white mt-3 mb-1">${p.name}</h3>
-        <p class="text-[12px] text-white/50">${p.city} • ${p.year}</p>
-        <div class="border-t border-white/10 my-4"></div>
-        <div class="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <div class="text-[9px] uppercase tracking-[1px] text-white/40">Area</div>
-            <div class="text-[13px] text-white">${p.area}</div>
-          </div>
-          <div>
-            <div class="text-[9px] uppercase tracking-[1px] text-white/40">Status</div>
-            <div class="text-[13px] ${p.status === 'Completed' ? 'text-green-400' : 'text-gold'}">${p.status}</div>
-          </div>
-        </div>
-        <p class="text-[13px] text-white/60 leading-relaxed mb-4">${p.description}</p>
-        <div class="text-[10px] uppercase tracking-[1px] text-white/40 mb-1">Completion</div>
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="panel-progress-fill"></div>
-        </div>
-        <div class="text-[13px] font-bold text-gold text-right mt-1">${p.completion}%</div>
-      `;
-
-          infoPanel.classList.add('visible');
-          setTimeout(() => {
-            const fill = document.getElementById('panel-progress-fill');
-            if (fill) fill.style.width = p.completion + '%';
-          }, 50);
+          openPanel(slug);
         });
       });
 
-      closePanel.addEventListener('click', () => {
-        infoPanel.classList.remove('visible');
-        pins.forEach(p => p.classList.remove('active'));
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closePanel();
+      });
+
+      document.addEventListener('click', (e) => {
+        if (isOpen && !frame.contains(e.target)) {
+          closePanel();
+        }
       });
 
       // ═══════════ FILTER LOGIC ═══════════
