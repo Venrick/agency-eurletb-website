@@ -2,11 +2,14 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EURL ETB Achouri Toufik</title>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap"
+    rel="stylesheet" />
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,16 +18,16 @@
       theme: {
         extend: {
           colors: {
-            navy:  '#1e243c',
+            navy: '#1e243c',
             'navy-dark': 'rgb(15,19,35)',
             'navy-card': '#1a2036',
-            gold:  '#c19f5d',
+            gold: '#c19f5d',
             'light-bg': '#f4f4f2',
             muted: '#5a5f72',
           },
           fontFamily: {
-            sans:      ['Lato', 'sans-serif'],
-            barlow:    ['Barlow', 'sans-serif'],
+            sans: ['Lato', 'sans-serif'],
+            barlow: ['Barlow', 'sans-serif'],
             condensed: ['Barlow Condensed', 'sans-serif'],
           },
         }
@@ -34,741 +37,1321 @@
 
   <style>
     /* ── Blueprint grid ── */
-    .blueprint { background-image: linear-gradient(rgba(193,159,93,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(193,159,93,.07) 1px,transparent 1px); background-size:48px 48px; }
-    .blueprint-subtle { background-image: linear-gradient(rgba(193,159,93,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(193,159,93,.04) 1px,transparent 1px); background-size:48px 48px; }
+    .blueprint {
+      background-image: linear-gradient(rgba(193, 159, 93, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(193, 159, 93, .07) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .blueprint-subtle {
+      background-image: linear-gradient(rgba(193, 159, 93, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(193, 159, 93, .04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
     /* ── Hero radial fade ── */
-    .hero-radial::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 70% at 40% 50%,transparent 40%,#1e243c 100%); }
+    .hero-radial::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 40% 50%, transparent 40%, #1e243c 100%);
+    }
+
     /* ── Geometric corners ── */
-    .corner-tl { position:absolute; top:80px; left:48px; width:120px; height:120px; border-top:2px solid #c19f5d; border-left:2px solid #c19f5d; z-index:1; }
-    .corner-br { position:absolute; bottom:60px; right:48px; width:120px; height:120px; border-bottom:2px solid #c19f5d; border-right:2px solid #c19f5d; z-index:1; }
-    .hero-vline { position:absolute; right:38%; top:15%; bottom:15%; width:1px; background:linear-gradient(to bottom,transparent,rgba(193,159,93,.5) 30%,rgba(193,159,93,.5) 70%,transparent); z-index:1; }
-    .hero-circle { position:absolute; right:15%; top:50%; transform:translateY(-50%); width:420px; height:420px; border-radius:50%; border:1px solid rgba(193,159,93,.12); z-index:1; pointer-events:none; }
-    .hero-circle::after { content:''; position:absolute; inset:30px; border-radius:50%; border:1px solid rgba(193,159,93,.07); }
-    .hero-dots { position:absolute; right:10%; bottom:15%; display:grid; grid-template-columns:repeat(5,1fr); gap:12px; z-index:1; }
-    .hero-dots span { width:3px; height:3px; border-radius:50%; background:rgba(193,159,93,.35); display:block; }
+    .corner-tl {
+      position: absolute;
+      top: 80px;
+      left: 48px;
+      width: 120px;
+      height: 120px;
+      border-top: 2px solid #c19f5d;
+      border-left: 2px solid #c19f5d;
+      z-index: 1;
+    }
+
+    .corner-br {
+      position: absolute;
+      bottom: 60px;
+      right: 48px;
+      width: 120px;
+      height: 120px;
+      border-bottom: 2px solid #c19f5d;
+      border-right: 2px solid #c19f5d;
+      z-index: 1;
+    }
+
+    .hero-vline {
+      position: absolute;
+      right: 38%;
+      top: 15%;
+      bottom: 15%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(193, 159, 93, .5) 30%, rgba(193, 159, 93, .5) 70%, transparent);
+      z-index: 1;
+    }
+
+    .hero-circle {
+      position: absolute;
+      right: 15%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      border: 1px solid rgba(193, 159, 93, .12);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-circle::after {
+      content: '';
+      position: absolute;
+      inset: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(193, 159, 93, .07);
+    }
+
+    .hero-dots {
+      position: absolute;
+      right: 10%;
+      bottom: 15%;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      z-index: 1;
+    }
+
+    .hero-dots span {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(193, 159, 93, .35);
+      display: block;
+    }
+
     /* ── Nav active underline ── */
-    .nav-link { position:relative; padding-bottom:4px; }
-    .nav-link.active { color:#fff !important; }
-    .nav-link.active::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:2px; background:#c19f5d; }
+    .nav-link {
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-link.active {
+      color: #fff !important;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #c19f5d;
+    }
+
     /* ── Hamburger ── */
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
-    .hamburger span { width:24px; height:2px; background:#fff; display:block; transition:all .3s; transform-origin:center; }
-    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity:0; }
-    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      display: block;
+      transition: all .3s;
+      transform-origin: center;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
     /* ── Mobile drawer ── */
-    .nav-drawer { max-height:0; overflow:hidden; transition:max-height .35s ease; background:#1e243c; }
-    .nav-drawer.open { max-height:400px; }
-    .nav-drawer a { display:block; padding:12px 24px; color:rgba(255,255,255,.75); text-decoration:none; font-size:14px; font-weight:500; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid rgba(193,159,93,.1); transition:color .2s; }
-    .nav-drawer a:hover,.nav-drawer a.active { color:#c19f5d; }
+    .nav-drawer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .35s ease;
+      background: #1e243c;
+    }
+
+    .nav-drawer.open {
+      max-height: 400px;
+    }
+
+    .nav-drawer a {
+      display: block;
+      padding: 12px 24px;
+      color: rgba(255, 255, 255, .75);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(193, 159, 93, .1);
+      transition: color .2s;
+    }
+
+    .nav-drawer a:hover,
+    .nav-drawer a.active {
+      color: #c19f5d;
+    }
+
     /* ── Services eyebrow lines ── */
-    .svc-eyebrow { display:flex; align-items:center; justify-content:center; gap:14px; }
-    .svc-eyebrow::before,.svc-eyebrow::after { content:''; flex:1; max-width:80px; height:1px; background:#c19f5d; opacity:.6; }
+    .svc-eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .svc-eyebrow::before,
+    .svc-eyebrow::after {
+      content: '';
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: #c19f5d;
+      opacity: .6;
+    }
+
     /* ── Service card ── */
-    .service-card { transition:transform .25s,box-shadow .25s; position:relative; }
-    .service-card::before { content:''; position:absolute; top:0; left:0; height:3px; width:0; background:#c19f5d; transition:width 0.4s ease; }
-    .service-card:hover::before { width:100%; }
-    .service-card:hover { transform:translateY(-4px); box-shadow:0 8px 32px rgba(30,36,60,.12); }
+    .service-card {
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0;
+      background: #c19f5d;
+      transition: width 0.4s ease;
+    }
+
+    .service-card:hover::before {
+      width: 100%;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(30, 36, 60, .12);
+    }
+
     /* ── Project card ── */
-    .project-overlay { opacity:0; transition:opacity .35s; }
-    .project-card:hover .project-overlay { opacity:1; }
-    .project-card img { transition:transform .45s ease,filter .45s; filter:brightness(.88); }
-    .project-card:hover img { transform:scale(1.06); filter:brightness(.6); }
+    .project-overlay {
+      opacity: 0;
+      transition: opacity .35s;
+    }
+
+    .project-card:hover .project-overlay {
+      opacity: 1;
+    }
+
+    .project-card img {
+      transition: transform .45s ease, filter .45s;
+      filter: brightness(.88);
+    }
+
+    .project-card:hover img {
+      transform: scale(1.06);
+      filter: brightness(.6);
+    }
+
     /* ── Footer topline ── */
-    .footer-topline { height:3px; background:linear-gradient(to right,transparent,#c19f5d 20%,#c19f5d 80%,transparent); }
+    .footer-topline {
+      height: 3px;
+      background: linear-gradient(to right, transparent, #c19f5d 20%, #c19f5d 80%, transparent);
+    }
+
     /* ── Footer nav link ── */
-    .fnav-link { transition:color .2s,padding-left .2s; display:flex; align-items:center; gap:0; }
-    .fnav-link::before { content:''; width:0; height:1px; background:#c19f5d; display:inline-block; transition:width .2s,margin-right .2s; }
-    .fnav-link:hover { color:#fff !important; padding-left:4px; }
-    .fnav-link:hover::before { width:14px; margin-right:6px; }
+    .fnav-link {
+      transition: color .2s, padding-left .2s;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .fnav-link::before {
+      content: '';
+      width: 0;
+      height: 1px;
+      background: #c19f5d;
+      display: inline-block;
+      transition: width .2s, margin-right .2s;
+    }
+
+    .fnav-link:hover {
+      color: #fff !important;
+      padding-left: 4px;
+    }
+
+    .fnav-link:hover::before {
+      width: 14px;
+      margin-right: 6px;
+    }
+
     /* ── About badge ── */
-    .about-badge { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#c19f5d; padding:18px 24px; min-width:130px; text-align:center; z-index:2; border:4px solid #ffffff; }
+    .about-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #c19f5d;
+      padding: 18px 24px;
+      min-width: 130px;
+      text-align: center;
+      z-index: 2;
+      border: 4px solid #ffffff;
+    }
+
     /* ── Input focus ── */
-    input:focus,textarea:focus { outline:none; border-color:#c19f5d !important; background:rgba(193,159,93,.05) !important; }
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #c19f5d !important;
+      background: rgba(193, 159, 93, .05) !important;
+    }
+
     /* ── Responsive ── */
     @media(max-width:768px) {
-      .hamburger { display:flex; }
-      .nav-desktop { display:none !important; }
-      .corner-tl,.corner-br,.hero-vline,.hero-circle,.hero-dots { display:none; }
-    }
-    @media(min-width:769px) { .nav-drawer { display:none !important; } }
-    @media(max-width:900px) { .about-grid { grid-template-columns:1fr !important; } }
+      .hamburger {
+        display: flex;
+      }
 
+      .nav-desktop {
+        display: none !important;
+      }
+
+      .corner-tl,
+      .corner-br,
+      .hero-vline,
+      .hero-circle,
+      .hero-dots {
+        display: none;
+      }
+    }
+
+    @media(min-width:769px) {
+      .nav-drawer {
+        display: none !important;
+      }
+    }
+
+    @media(max-width:900px) {
+      .about-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
   </style>
 </head>
+
 <body class="font-sans text-navy bg-white">
 
-<!-- ═══════════════════════════════ NAVBAR ═══════════════════════════════ -->
-<nav class="fixed top-0 left-0 right-0 z-[100] flex flex-col">
+  <!-- ═══════════════════════════════ NAVBAR ═══════════════════════════════ -->
+  <nav class="fixed top-0 left-0 right-0 z-[100] flex flex-col">
 
-  <!-- Top bar -->
-  <div id="topbar" class="bg-[rgba(15,19,35,0.95)] border-b border-[rgba(193,159,93,0.15)] flex items-center justify-between px-12 h-9">
-    <div class="flex items-center gap-7">
-      <a href="tel:+213000000000" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
-        <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        +213 (0) 00 00 00 00
+    <!-- Top bar -->
+    <div id="topbar"
+      class="bg-[rgba(15,19,35,0.95)] border-b border-[rgba(193,159,93,0.15)] flex items-center justify-between px-12 h-9">
+      <div class="flex items-center gap-7">
+        <a href="tel:+213000000000"
+          class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
+          <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2">
+            <path
+              d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
+              stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          +213 (0) 00 00 00 00
+        </a>
+        <a href="mailto:contact@etbachouri.com"
+          class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
+          <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          contact@etbachouri.com
+        </a>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#"
+          class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all"
+          aria-label="Facebook">
+          <svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24">
+            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+          </svg>
+        </a>
+        <a href="#"
+          class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all"
+          aria-label="LinkedIn">
+          <svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24">
+            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+            <circle cx="4" cy="4" r="2" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main bar -->
+    <div id="mainbar" class="bg-navy flex items-center justify-between px-12 h-[68px] border-b-[3px] border-gold">
+      <a href="index.html" class="flex items-center no-underline">
+        <img src="C:\Users\Sarah\Desktop\WORK\AI WEB DEV AGENCY\EURL ETB Website\assets\images\Site Logo Dark.png"
+          alt="ETB Achouri Toufik" class="logo-light" style="height:42px;">
       </a>
-      <a href="mailto:contact@etbachouri.com" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
-        <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        contact@etbachouri.com
-      </a>
-    </div>
-    <div class="flex items-center gap-4">
-      <a href="#" class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all" aria-label="Facebook">
-        <svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-      </a>
-      <a href="#" class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all" aria-label="LinkedIn">
-        <svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-      </a>
-    </div>
-  </div>
 
-  <!-- Main bar -->
-  <div id="mainbar" class="bg-navy flex items-center justify-between px-12 h-[68px] border-b-[3px] border-gold">
-    <a href="index.html" class="flex items-center no-underline">
-      <img src="C:\Users\Sarah\Desktop\WORK\AI WEB DEV AGENCY\EURL ETB Website\assets\images\Site Logo Dark.png" alt="ETB Achouri Toufik" class="logo-light" style="height:42px;">
-    </a>
-
-    <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
-      <li><a href="index.html"    class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a></li>
-      <li><a href="about.html"    class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a></li>
-      <li><a href="services.html" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a></li>
-      <li><a href="projects.html" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a></li>
-      <li><a href="contact.html"  class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a></li>
-      <li><a href="contact.html"  class="font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Get a Quote</a></li>
-    </ul>
-  </div>
-
-  <!-- Mobile drawer -->
-  <div class="nav-drawer" id="nav-drawer">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="services.html">Services</a>
-    <a href="projects.html">Projects</a>
-    <a href="contact.html">Contact</a>
-    <a href="contact.html" class="text-gold font-bold">Get a Quote</a>
-  </div>
-</nav>
-
-
-<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
-<section id="hero" class="relative min-h-screen flex items-center overflow-hidden bg-navy">
-
-  <!-- Background video -->
-  <!-- Video 1 -->
-  <video id="hero-vid-1"
-    class="absolute inset-0 w-full h-full object-cover z-0"
-    muted playsinline
-    poster="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80"
-  >
-    <source src="C:\Users\Sarah\Downloads\14134260-uhd_3840_2160_25fps.mp4" type="video/mp4"/>
-  </video>
-  <!-- Video 2 (starts hidden) -->
-  <video id="hero-vid-2"
-    class="absolute inset-0 w-full h-full object-cover z-0"
-    muted playsinline
-    style="opacity:0;"
-  >
-    <source src="C:\Users\Sarah\Downloads\12201829-uhd_3840_2160_30fps.mp4" type="video/mp4"/>
-  </video>
-
-  <!-- Dark gradient overlay — keeps text legible -->
-  <div class="absolute inset-0 z-[1]" style="background:linear-gradient(105deg, rgba(15,19,35,0.88) 45%, rgba(15,19,35,0.55) 100%)"></div>
-
-  <!-- Blueprint grid overlay -->
-  <div class="blueprint hero-radial absolute inset-0 z-[2]"></div>
-
-  <!-- Geometric decorations -->
-  <div class="corner-tl" style="z-index:3"></div>
-  <div class="corner-br" style="z-index:3"></div>
-  <div class="hero-vline" style="z-index:3"></div>
-  <div class="hero-circle" style="z-index:3"></div>
-  <div class="hero-dots" style="z-index:3">
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
-
-  <!-- Content -->
-  <div class="relative z-10 px-12 pt-[104px] pb-16 max-w-[680px] ml-0 md:ml-12 lg:ml-24">
-    <div id="hero-eyebrow" class="inline-flex items-center gap-3 border border-[rgba(193,159,93,0.35)] px-4 py-[6px] mb-6">
-      <span class="w-5 h-[1px] bg-gold inline-block"></span>
-      <span class="font-condensed text-[10px] font-bold tracking-[3px] uppercase text-gold">Excellence in Construction</span>
-    </div>
-    <h1 id="hero-headline" class="font-condensed text-[clamp(44px,7vw,80px)] font-extrabold text-white leading-[1.0] tracking-[-1px] mb-6">
-      Building the <span class="text-gold">Future</span><br>
-      With Precision<br>&amp; Integrity
-    </h1>
-    <p id="hero-sub" class="text-[15px] text-white/60 leading-[1.8] mb-10 max-w-[480px]">
-      EURL ETB Achouri Toufik delivers world-class construction solutions,
-      merging architectural innovation with industrial strength.
-    </p>
-    <div id="hero-btns" class="flex flex-wrap gap-4">
-      <a href="#projects" class="bg-gold text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:opacity-90 transition-opacity no-underline">View Our Work &rarr;</a>
-      <a href="#contact"  class="border border-[rgba(255,255,255,0.4)] text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:border-gold hover:text-gold transition-all no-underline">Contact Us</a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════ ABOUT ═══════════════════════════════ -->
-<section id="about" class="grid about-grid" style="grid-template-columns:1fr 1fr;">
-
-  <!-- Images -->
-  <div id="about-images" class="relative bg-[#e8e8e6] flex" style="min-height:500px;">
-    <!-- Left image -->
-    <div class="w-[48%] p-8 pr-3 pt-10 pb-10">
-      <img class="w-full h-full object-cover rounded-xl shadow-lg" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80" alt="Blueprints"/>
-    </div>
-    <!-- Right image -->
-    <div class="w-[52%] p-8 pl-3 pt-16 pb-4">
-      <img class="w-full h-full object-cover rounded-xl shadow-lg" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" alt="Construction"/>
-    </div>
-    <!-- Badge centered in the whole panel -->
-    <div class="about-badge">
-      <div class="font-condensed text-[40px] font-extrabold text-navy leading-none">15+</div>
-      <div class="font-barlow text-[10px] font-semibold tracking-[2px] uppercase text-navy/70 mt-1">Years of Excellence</div>
-    </div>
-  </div>
-
-  <!-- Content -->
-  <div id="about-content" class="bg-white px-16 py-20 flex flex-col justify-center">
-    <div class="flex items-center gap-3 mb-4">
-      <span class="w-8 h-[1px] bg-gold inline-block"></span>
-      <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">About Our Company</span>
-    </div>
-    <h2 class="font-condensed text-[clamp(32px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-5">
-      We Build Visions<br>Into <span class="text-gold">Reality</span>
-    </h2>
-    <p class="text-[14px] text-muted leading-[1.8] mb-8 max-w-[460px]">
-      At EURL ETB Achouri Toufik, we take pride in delivering superior construction services.
-      From residential complexes to industrial warehouses, our commitment to quality, safety,
-      and innovation stands at the forefront of every project we undertake.
-    </p>
-    <div class="grid grid-cols-2 gap-4 mb-8">
-      <!-- Feature 1 -->
-      <div class="flex items-start gap-3">
-        <div class="w-10 h-10 rounded-[4px] bg-[rgba(193,159,93,0.12)] flex items-center justify-center flex-shrink-0 mt-[2px]">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round"><path d="M2 18h20v2H2v-2zm2-2h16a8 8 0 00-16 0z"/><path d="M12 2a8 8 0 018 7H4a8 8 0 018-7z"/></svg>
-        </div>
-        <div><h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Expert Team</h4><p class="text-[12px] text-muted leading-relaxed">Certified engineers and skilled workforce.</p></div>
-      </div>
-      <!-- Feature 2 -->
-      <div class="flex items-start gap-3">
-        <div class="w-10 h-10 rounded-[4px] bg-[rgba(193,159,93,0.12)] flex items-center justify-center flex-shrink-0 mt-[2px]">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round"><path d="M3 21L21 3M9 15l-2 2M12 12l-2 2M15 9l-2 2"/></svg>
-        </div>
-        <div><h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Precision Planning</h4><p class="text-[12px] text-muted leading-relaxed">Detailed architectural analysis and execution.</p></div>
-      </div>
-      <!-- Feature 3 -->
-      <div class="flex items-start gap-3">
-        <div class="w-10 h-10 rounded-[4px] bg-[rgba(193,159,93,0.12)] flex items-center justify-center flex-shrink-0 mt-[2px]">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
-        </div>
-        <div><h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Modern Design</h4><p class="text-[12px] text-muted leading-relaxed">Innovative structures for the future.</p></div>
-      </div>
-      <!-- Feature 4 -->
-      <div class="flex items-start gap-3">
-        <div class="w-10 h-10 rounded-[4px] bg-[rgba(193,159,93,0.12)] flex items-center justify-center flex-shrink-0 mt-[2px]">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round"><path d="M12 2l8 4v6c0 5-4 9-8 10-4-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
-        </div>
-        <div><h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Quality Assurance</h4><p class="text-[12px] text-muted leading-relaxed">Strict adherence to safety standards.</p></div>
-      </div>
-    </div>
-    <a href="about.html" class="inline-flex items-center gap-2 font-condensed text-[11px] font-bold tracking-[2px] uppercase text-navy border-b-2 border-gold pb-[2px] w-fit hover:text-gold transition-colors no-underline">
-      Learn More About Us
-      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </a>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════ STATS BAR ═══════════════════════════════ -->
-<div id="stats" class="grid grid-cols-4 bg-navy border-b-[3px] border-gold">
-  <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
-    <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="15" data-suffix="+">15+</div>
-    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Years Experience</div>
-  </div>
-  <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
-    <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="240" data-suffix="+">240+</div>
-    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Projects Completed</div>
-  </div>
-  <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
-    <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="50" data-suffix="+">50+</div>
-    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Expert Engineers</div>
-  </div>
-  <div class="stat-item flex flex-col items-center justify-center py-10 px-4">
-    <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="12" data-suffix="">12</div>
-    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Awards Won</div>
-  </div>
-</div>
-
-
-<!-- ═══════════════════════════════ SERVICES ═══════════════════════════════ -->
-<section id="services" class="bg-light-bg py-24 px-12">
-  <div class="max-w-[1200px] mx-auto">
-    <!-- Header -->
-    <div id="svc-header" class="text-center max-w-[680px] mx-auto mb-14">
-      <div class="svc-eyebrow mb-5">
-        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Our Expertise</span>
-      </div>
-      <h2 class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-4">Core Construction Services</h2>
-      <p class="text-[15px] text-muted leading-[1.7]">We provide comprehensive solutions tailored to meet the unique demands of each project, ensuring durability and excellence.</p>
+      <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
+        <li><a href="index.html"
+            class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a>
+        </li>
+        <li><a href="about.html"
+            class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a>
+        </li>
+        <li><a href="services.html"
+            class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a>
+        </li>
+        <li><a href="projects.html"
+            class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a>
+        </li>
+        <li><a href="contact.html"
+            class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a>
+        </li>
+        <li><a href="contact.html"
+            class="font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Get
+            a Quote</a></li>
+      </ul>
     </div>
 
-    <!-- Grid -->
-    <div class="grid grid-cols-3 gap-6 max-sm:grid-cols-1 max-md:grid-cols-2" id="svc-grid">
-      <!-- Card 1 -->
-      <div class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
-        <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
-          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Residential Construction</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Custom homes and multi-unit complexes built with premium materials and modern design.</p>
-        <a href="#" class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <!-- Mobile drawer -->
+    <div class="nav-drawer" id="nav-drawer">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="text-gold font-bold">Get a Quote</a>
+    </div>
+  </nav>
+
+
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden bg-navy">
+
+    <!-- Background video -->
+    <!-- Video 1 -->
+    <video id="hero-vid-1" class="absolute inset-0 w-full h-full object-cover z-0" muted playsinline
+      poster="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80">
+      <source src="C:\Users\Sarah\Downloads\14134260-uhd_3840_2160_25fps.mp4" type="video/mp4" />
+    </video>
+    <!-- Video 2 (starts hidden) -->
+    <video id="hero-vid-2" class="absolute inset-0 w-full h-full object-cover z-0" muted playsinline style="opacity:0;">
+      <source src="C:\Users\Sarah\Downloads\12201829-uhd_3840_2160_30fps.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Dark gradient overlay — keeps text legible -->
+    <div class="absolute inset-0 z-[1]"
+      style="background:linear-gradient(105deg, rgba(15,19,35,0.88) 45%, rgba(15,19,35,0.55) 100%)"></div>
+
+    <!-- Blueprint grid overlay -->
+    <div class="blueprint hero-radial absolute inset-0 z-[2]"></div>
+
+    <!-- Geometric decorations -->
+    <div class="corner-tl" style="z-index:3"></div>
+    <div class="corner-br" style="z-index:3"></div>
+    <div class="hero-vline" style="z-index:3"></div>
+    <div class="hero-circle" style="z-index:3"></div>
+    <div class="hero-dots" style="z-index:3">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 px-12 pt-[104px] pb-16 max-w-[680px] ml-0 md:ml-12 lg:ml-24">
+      <div id="hero-eyebrow"
+        class="inline-flex items-center gap-3 border border-[rgba(193,159,93,0.35)] px-4 py-[6px] mb-6">
+        <span class="w-5 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[10px] font-bold tracking-[3px] uppercase text-gold">Excellence in
+          Construction</span>
       </div>
-      <!-- Card 2 -->
-      <div class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
-        <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
-          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-        </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Commercial &amp; Industrial</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Large-scale warehouses, office buildings, and retail spaces designed for efficiency.</p>
-        <a href="#" class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-      </div>
-      <!-- Card 3 -->
-      <div class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
-        <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
-          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-        </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Renovation &amp; Remodeling</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Transforming existing structures with structural reinforcements and aesthetic upgrades.</p>
-        <a href="#" class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-      </div>
-      <!-- Card 4 -->
-      <div class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
-        <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
-          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round"><path d="M2 20h20M6 20V10M10 20V4M14 20V10M18 20V4"/></svg>
-        </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">General Contracting</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Complete project management from initial planning to final inspection.</p>
-        <a href="#" class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-      </div>
-      <!-- Card 5 -->
-      <div class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
-        <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
-          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Heavy Machinery</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Site preparation, excavation, and earthmoving services with our fleet of equipment.</p>
-        <a href="#" class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-      </div>
-      <!-- Card 6 -->
-      <div class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
-        <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
-          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-        </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Maintenance Services</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Ongoing structural maintenance and facility management solutions.</p>
-        <a href="#" class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <h1 id="hero-headline"
+        class="font-condensed text-[clamp(44px,7vw,80px)] font-extrabold text-white leading-[1.0] tracking-[-1px] mb-6">
+        Building the <span class="text-gold">Future</span><br>
+        With Precision<br>&amp; Integrity
+      </h1>
+      <p id="hero-sub" class="text-[15px] text-white/60 leading-[1.8] mb-10 max-w-[480px]">
+        EURL ETB Achouri Toufik delivers world-class construction solutions,
+        merging architectural innovation with industrial strength.
+      </p>
+      <div id="hero-btns" class="flex flex-wrap gap-4">
+        <a href="#projects"
+          class="bg-gold text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:opacity-90 transition-opacity no-underline">View
+          Our Work &rarr;</a>
+        <a href="#contact"
+          class="border border-[rgba(255,255,255,0.4)] text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:border-gold hover:text-gold transition-all no-underline">Contact
+          Us</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
-<!-- ═══════════════════════════════ PROJECTS ═══════════════════════════════ -->
-<section id="projects" class="bg-navy py-24 px-12 relative overflow-hidden">
-  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
-  <div class="max-w-[1200px] mx-auto relative z-10">
+  <!-- ═══════════════════════════════ ABOUT ═══════════════════════════════ -->
+  <section id="about" class="grid about-grid" style="grid-template-columns:1fr 1fr;">
 
-    <!-- Header row -->
-    <div class="flex items-end justify-between gap-8 mb-12 flex-wrap">
-      <div id="proj-header-left">
-        <div class="flex items-center gap-3 mb-3">
-          <span class="w-10 h-[1px] bg-gold inline-block"></span>
-          <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Portfolio</span>
-        </div>
-        <h2 class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-3">Featured Projects</h2>
-        <p class="text-[13.5px] text-white/50 leading-[1.65] max-w-[360px]">Discover how we bring architectural concepts to life through our diverse range of successful projects.</p>
+    <!-- Images -->
+    <div id="about-images" class="relative bg-[#e8e8e6] flex" style="min-height:500px;">
+      <!-- Left image -->
+      <div class="w-[48%] p-8 pr-3 pt-10 pb-10">
+        <img class="w-full h-full object-cover rounded-xl shadow-lg"
+          src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80" alt="Blueprints" />
       </div>
-      <div id="proj-filters" class="flex items-center gap-[10px] flex-wrap">
-        <button class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-5 py-2 rounded-full border-2 border-gold bg-gold text-navy transition-all" data-filter="all">All</button>
-        <button class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-5 py-2 rounded-full border border-white/20 text-white/60 hover:border-white/50 hover:text-white transition-all" data-filter="commercial">Commercial</button>
-        <button class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-5 py-2 rounded-full border border-white/20 text-white/60 hover:border-white/50 hover:text-white transition-all" data-filter="residential">Residential</button>
-        <button class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-5 py-2 rounded-full border border-white/20 text-white/60 hover:border-white/50 hover:text-white transition-all" data-filter="industrial">Industrial</button>
+      <!-- Right image -->
+      <div class="w-[52%] p-8 pl-3 pt-16 pb-4">
+        <img class="w-full h-full object-cover rounded-xl shadow-lg"
+          src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" alt="Construction" />
+      </div>
+      <!-- Badge centered in the whole panel -->
+      <div class="about-badge">
+        <div class="font-condensed text-[40px] font-extrabold text-navy leading-none">15+</div>
+        <div class="font-barlow text-[10px] font-semibold tracking-[2px] uppercase text-navy/70 mt-1">Years of
+          Excellence</div>
       </div>
     </div>
 
-    <!-- Grid -->
-    <div class="grid grid-cols-3 gap-4 mb-12 max-sm:grid-cols-1 max-md:grid-cols-2" id="proj-grid">
-      <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer" data-category="commercial">
-        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" alt="Downtown Tower"/>
-        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
-          <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
-          <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Downtown Tower Complex</div>
-          <a href="#" class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        </div>
-      </div>
-      <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer" data-category="residential">
-        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Luxury Villa"/>
-        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
-          <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Residential</span>
-          <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Luxury Villa Interior</div>
-          <a href="#" class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        </div>
-      </div>
-      <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer" data-category="industrial">
-        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" alt="Industrial Site"/>
-        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
-          <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Industrial</span>
-          <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Industrial Site Preparation</div>
-          <a href="#" class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        </div>
-      </div>
-      <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer" data-category="commercial">
-        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80" alt="Blueprint Design"/>
-        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
-          <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
-          <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Architectural Blueprint Design</div>
-          <a href="#" class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        </div>
-      </div>
-      <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer" data-category="industrial">
-        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80" alt="Site Team"/>
-        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
-          <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Industrial</span>
-          <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Site Engineering Team</div>
-          <a href="#" class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        </div>
-      </div>
-      <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer" data-category="commercial">
-        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1464082354059-27db6ce50048?w=800&q=80" alt="High-Rise"/>
-        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
-          <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
-          <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">High-Rise Development</div>
-          <a href="#" class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="text-center">
-      <a href="#" class="inline-block border border-white/35 font-condensed text-[12px] font-bold tracking-[2.5px] uppercase text-white px-12 py-4 hover:border-gold hover:bg-gold hover:text-navy transition-all no-underline">View All Projects</a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════ CONTACT ═══════════════════════════════ -->
-<section id="contact" class="bg-navy py-24 px-12 relative overflow-hidden">
-  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
-  <div class="max-w-[1200px] mx-auto relative z-10 grid grid-cols-2 gap-[72px] items-start max-md:grid-cols-1 max-md:gap-12">
-
-    <!-- Left -->
-    <div id="contact-left">
+    <!-- Content -->
+    <div id="about-content" class="bg-white px-16 py-20 flex flex-col justify-center">
       <div class="flex items-center gap-3 mb-4">
-        <span class="w-10 h-[1px] bg-gold inline-block"></span>
-        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Get In Touch</span>
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">About Our Company</span>
       </div>
-      <h2 class="font-condensed text-[clamp(32px,4.5vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-5">Let's Build Something Great Together</h2>
-      <p class="text-[13.5px] text-white/50 leading-[1.75] mb-10 max-w-[400px]">Ready to start your next project? Contact us today for a consultation and quote. We are here to answer any questions you may have.</p>
-      <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-4">
-          <div class="w-11 h-11 bg-[rgba(193,159,93,0.12)] rounded-[4px] flex items-center justify-center flex-shrink-0">
-            <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <h2
+        class="font-condensed text-[clamp(32px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-5">
+        We Build Visions<br>Into <span class="text-gold">Reality</span>
+      </h2>
+      <p class="text-[14px] text-muted leading-[1.8] mb-8 max-w-[460px]">
+        At EURL ETB Achouri Toufik, we take pride in delivering superior construction services.
+        From residential complexes to industrial warehouses, our commitment to quality, safety,
+        and innovation stands at the forefront of every project we undertake.
+      </p>
+      <div class="grid grid-cols-2 gap-4 mb-8">
+        <!-- Feature 1 -->
+        <div class="flex items-start gap-3">
+          <div
+            class="w-10 h-10 rounded-[4px] bg-[rgba(193,159,93,0.12)] flex items-center justify-center flex-shrink-0 mt-[2px]">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round">
+              <path d="M2 18h20v2H2v-2zm2-2h16a8 8 0 00-16 0z" />
+              <path d="M12 2a8 8 0 018 7H4a8 8 0 018-7z" />
+            </svg>
           </div>
-          <div><strong class="block text-[13px] font-bold text-white mb-[2px]">Our Location</strong><span class="text-[12.5px] text-white/50">123 Construction Ave, Algiers, Algeria</span></div>
-        </div>
-        <div class="flex items-center gap-4">
-          <div class="w-11 h-11 bg-[rgba(193,159,93,0.12)] rounded-[4px] flex items-center justify-center flex-shrink-0">
-            <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <div>
+            <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Expert Team</h4>
+            <p class="text-[12px] text-muted leading-relaxed">Certified engineers and skilled workforce.</p>
           </div>
-          <div><strong class="block text-[13px] font-bold text-white mb-[2px]">Phone Number</strong><span class="text-[12.5px] text-white/50">+213 555 123 456</span></div>
         </div>
-        <div class="flex items-center gap-4">
-          <div class="w-11 h-11 bg-[rgba(193,159,93,0.12)] rounded-[4px] flex items-center justify-center flex-shrink-0">
-            <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <!-- Feature 2 -->
+        <div class="flex items-start gap-3">
+          <div
+            class="w-10 h-10 rounded-[4px] bg-[rgba(193,159,93,0.12)] flex items-center justify-center flex-shrink-0 mt-[2px]">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round">
+              <path d="M3 21L21 3M9 15l-2 2M12 12l-2 2M15 9l-2 2" />
+            </svg>
           </div>
-          <div><strong class="block text-[13px] font-bold text-white mb-[2px]">Email Address</strong><span class="text-[12.5px] text-white/50"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7615191802171502361302145b17151e1903041f5815191b">[email&#160;protected]</a></span></div>
+          <div>
+            <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Precision Planning</h4>
+            <p class="text-[12px] text-muted leading-relaxed">Detailed architectural analysis and execution.</p>
+          </div>
+        </div>
+        <!-- Feature 3 -->
+        <div class="flex items-start gap-3">
+          <div
+            class="w-10 h-10 rounded-[4px] bg-[rgba(193,159,93,0.12)] flex items-center justify-center flex-shrink-0 mt-[2px]">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h6" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Modern Design</h4>
+            <p class="text-[12px] text-muted leading-relaxed">Innovative structures for the future.</p>
+          </div>
+        </div>
+        <!-- Feature 4 -->
+        <div class="flex items-start gap-3">
+          <div
+            class="w-10 h-10 rounded-[4px] bg-[rgba(193,159,93,0.12)] flex items-center justify-center flex-shrink-0 mt-[2px]">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round">
+              <path d="M12 2l8 4v6c0 5-4 9-8 10-4-1-8-5-8-10V6l8-4z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Quality Assurance</h4>
+            <p class="text-[12px] text-muted leading-relaxed">Strict adherence to safety standards.</p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Right: form card -->
-    <div id="contact-form" class="bg-navy-card border border-[rgba(193,159,93,0.2)] border-t-[3px] border-t-gold rounded-[3px] p-10">
-      <h3 class="font-barlow text-[20px] font-bold text-white mb-7">Request a Quote</h3>
-      <div class="grid grid-cols-2 gap-4 mb-4 max-sm:grid-cols-1">
-        <div class="flex flex-col gap-[6px]">
-          <label class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/45">Name</label>
-          <input type="text" placeholder="John Doe" class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white placeholder-white/25 transition-all"/>
-        </div>
-        <div class="flex flex-col gap-[6px]">
-          <label class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/45">Phone</label>
-          <input type="tel" placeholder="+213..." class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white placeholder-white/25 transition-all"/>
-        </div>
-      </div>
-      <div class="flex flex-col gap-[6px] mb-4">
-        <label class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/45">Email</label>
-        <input type="email" placeholder="john@example.com" class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white placeholder-white/25 transition-all"/>
-      </div>
-      <div class="flex flex-col gap-[6px] mb-5">
-        <label class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/45">Message</label>
-        <textarea placeholder="Tell us about your project..." rows="5" class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white placeholder-white/25 transition-all resize-vertical leading-relaxed"></textarea>
-      </div>
-      <button type="button" class="w-full bg-gold font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-navy py-4 rounded-[2px] hover:opacity-88 transition-opacity cursor-pointer border-none">Send Message</button>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
-<footer id="footer" class="bg-[rgb(15,19,35)] relative overflow-hidden">
-  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
-  <!-- Gold top rule -->
-  <div class="footer-topline relative z-10"></div>
-
-  <!-- Body grid -->
-  <div class="footer-body relative z-10 max-w-[1200px] mx-auto px-12 pt-16 pb-12 grid grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
-
-    <!-- Brand -->
-    <div>
-      <a href="#hero" class="flex items-center gap-3 no-underline mb-5">
-        <div class="w-11 h-11 bg-gold rounded-[6px] flex items-center justify-center flex-shrink-0" style="display:none">
-          <svg class="w-[26px] h-[26px] fill-navy" viewBox="0 0 24 24"><rect x="3" y="14" width="3" height="7"/><rect x="8" y="10" width="3" height="11"/><rect x="13" y="12" width="3" height="9"/><rect x="18" y="8" width="3" height="13"/><line x1="4" y1="6" x2="22" y2="2" stroke="#1e243c" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
-        </div>
-        <img src="C:\Users\Sarah\Desktop\WORK\AI WEB DEV AGENCY\EURL ETB Website\assets\images\Site Logo Dark.png" alt="ETB Achouri Toufik" style="height:44px; margin-bottom:4px;">
+      <a href="about.html"
+        class="inline-flex items-center gap-2 font-condensed text-[11px] font-bold tracking-[2px] uppercase text-navy border-b-2 border-gold pb-[2px] w-fit hover:text-gold transition-colors no-underline">
+        Learn More About Us
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round">
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12 5 19 12 12 19" />
+        </svg>
       </a>
-      <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7">Building tomorrow's landmarks with precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
-      <ul class="list-none p-0 m-0 flex flex-col gap-3">
-        <li class="flex items-start gap-[10px]">
-          <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span class="text-[12.5px] text-white/55">Zone Industrielle, Blida, Algeria</span>
-        </li>
-        <li class="flex items-start gap-[10px]">
-          <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          <a href="tel:+213000000000" class="text-[12.5px] text-white/55 hover:text-gold transition-colors no-underline">+213 (0) 00 00 00 00</a>
-        </li>
-        <li class="flex items-start gap-[10px]">
-          <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <a href="/cdn-cgi/l/email-protection#1e7d71706a7f7d6a5e7b6a7c337f7d76716b6c77307a64" class="text-[12.5px] text-white/55 hover:text-gold transition-colors no-underline"><span class="__cf_email__" data-cfemail="62010d0c16030116220716004f03010a0d17100b4c0618">[email&#160;protected]</span></a>
-        </li>
-      </ul>
     </div>
+  </section>
 
-    <!-- Navigation -->
-    <div>
-      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Navigation</div>
-      <ul class="list-none p-0 m-0 flex flex-col gap-[10px]">
-        <li><a href="index.html"    class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
-        <li><a href="about.html"    class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
-        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
-        <li><a href="projects.html" class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
-        <li><a href="contact.html"  class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
-      </ul>
+
+  <!-- ═══════════════════════════════ STATS BAR ═══════════════════════════════ -->
+  <div id="stats" class="grid grid-cols-4 bg-navy border-b-[3px] border-gold">
+    <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
+      <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="15"
+        data-suffix="+">15+</div>
+      <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Years Experience</div>
     </div>
-
-    <!-- Services -->
-    <div>
-      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Services</div>
-      <ul class="list-none p-0 m-0 flex flex-col gap-[10px]">
-        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Residential Construction</a></li>
-        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Commercial Buildings</a></li>
-        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Industrial Works</a></li>
-        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Renovation &amp; Retrofit</a></li>
-        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Project Management</a></li>
-        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Architectural Design</a></li>
-      </ul>
+    <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
+      <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="240"
+        data-suffix="+">240+</div>
+      <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Projects Completed</div>
     </div>
+    <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
+      <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="50"
+        data-suffix="+">50+</div>
+      <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Expert Engineers</div>
+    </div>
+    <div class="stat-item flex flex-col items-center justify-center py-10 px-4">
+      <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="12"
+        data-suffix="">12</div>
+      <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Awards Won</div>
+    </div>
+  </div>
 
-    <!-- Newsletter -->
-    <div>
-      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Stay Informed</div>
-      <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.18)] rounded-[4px] p-7">
-        <p class="text-[12.5px] text-white/55 leading-[1.6] mb-5">Subscribe to receive updates on our latest projects, industry insights, and company news.</p>
-        <div class="flex flex-col gap-[10px]">
-          <input type="email" placeholder="Your email address" class="bg-white/5 border border-[rgba(193,159,93,0.25)] rounded-[3px] px-[14px] py-[10px] font-sans text-[12.5px] text-white placeholder-white/30 transition-all"/>
-          <button type="button" class="bg-gold font-condensed text-[12px] font-bold tracking-[1.8px] uppercase text-navy py-[10px] px-[18px] rounded-[3px] hover:opacity-88 transition-opacity cursor-pointer border-none">Subscribe &rarr;</button>
+
+  <!-- ═══════════════════════════════ SERVICES ═══════════════════════════════ -->
+  <section id="services" class="bg-light-bg py-24 px-12">
+    <div class="max-w-[1200px] mx-auto">
+      <!-- Header -->
+      <div id="svc-header" class="text-center max-w-[680px] mx-auto mb-14">
+        <div class="svc-eyebrow mb-5">
+          <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Our Expertise</span>
+        </div>
+        <h2
+          class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-4">
+          Core Construction Services</h2>
+        <p class="text-[15px] text-muted leading-[1.7]">We provide comprehensive solutions tailored to meet the unique
+          demands of each project, ensuring durability and excellence.</p>
+      </div>
+
+      <!-- Grid -->
+      <div class="grid grid-cols-3 gap-6 max-sm:grid-cols-1 max-md:grid-cols-2" id="svc-grid">
+        <!-- Card 1 -->
+        <div
+          class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+          <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+          </div>
+          <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Residential Construction</h3>
+          <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Custom homes and multi-unit complexes built with
+            premium materials and modern design.</p>
+          <a href="#"
+            class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
+            More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></a>
+        </div>
+        <!-- Card 2 -->
+        <div
+          class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+          <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+              <line x1="12" y1="12" x2="12" y2="16" />
+              <line x1="10" y1="14" x2="14" y2="14" />
+            </svg>
+          </div>
+          <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Commercial &amp; Industrial</h3>
+          <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Large-scale warehouses, office buildings, and
+            retail spaces designed for efficiency.</p>
+          <a href="#"
+            class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
+            More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></a>
+        </div>
+        <!-- Card 3 -->
+        <div
+          class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+          <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+            </svg>
+          </div>
+          <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Renovation &amp; Remodeling</h3>
+          <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Transforming existing structures with structural
+            reinforcements and aesthetic upgrades.</p>
+          <a href="#"
+            class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
+            More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></a>
+        </div>
+        <!-- Card 4 -->
+        <div
+          class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+          <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round">
+              <path d="M2 20h20M6 20V10M10 20V4M14 20V10M18 20V4" />
+            </svg>
+          </div>
+          <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">General Contracting</h3>
+          <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Complete project management from initial
+            planning to final inspection.</p>
+          <a href="#"
+            class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
+            More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></a>
+        </div>
+        <!-- Card 5 -->
+        <div
+          class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+          <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round">
+              <rect x="1" y="3" width="15" height="13" rx="2" />
+              <path d="M16 8h4l3 3v5h-7V8z" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+          </div>
+          <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Heavy Machinery</h3>
+          <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Site preparation, excavation, and earthmoving
+            services with our fleet of equipment.</p>
+          <a href="#"
+            class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
+            More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></a>
+        </div>
+        <!-- Card 6 -->
+        <div
+          class="service-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-9 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+          <div class="w-16 h-16 bg-navy rounded-[4px] flex items-center justify-center mb-7 flex-shrink-0">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+              stroke-linecap="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+          <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Maintenance Services</h3>
+          <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Ongoing structural maintenance and facility
+            management solutions.</p>
+          <a href="#"
+            class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
+            More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></a>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Divider -->
-  <div class="relative z-10 max-w-[1200px] mx-auto px-12">
-    <hr class="border-none border-t border-[rgba(193,159,93,0.15)]"/>
-  </div>
 
-  <!-- Bottom bar -->
-  <div class="relative z-10 max-w-[1200px] mx-auto px-12 py-5 flex items-center justify-between gap-5 flex-wrap">
-    <p class="text-[11.5px] text-white/35">&copy; 2025 <a href="#" class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri Toufik</a>. All rights reserved.</p>
-    <div class="flex items-center gap-[10px]">
-      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="Facebook"><svg class="w-[13px] h-[13px] fill-white/50 hover:fill-gold" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="LinkedIn"><svg class="w-[13px] h-[13px] fill-white/50" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
-      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="Instagram"><svg class="w-[13px] h-[13px] fill-none stroke-white/50 stroke-[1.5]" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+  <!-- ═══════════════════════════════ PROJECTS ═══════════════════════════════ -->
+  <section id="projects" class="bg-navy py-24 px-12 relative overflow-hidden">
+    <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+    <div class="max-w-[1200px] mx-auto relative z-10">
+
+      <!-- Header row -->
+      <div class="flex items-end justify-between gap-8 mb-12 flex-wrap">
+        <div id="proj-header-left">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-10 h-[1px] bg-gold inline-block"></span>
+            <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Portfolio</span>
+          </div>
+          <h2
+            class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-3">
+            Featured Projects</h2>
+          <p class="text-[13.5px] text-white/50 leading-[1.65] max-w-[360px]">Discover how we bring architectural
+            concepts to life through our diverse range of successful projects.</p>
+        </div>
+        <div id="proj-filters" class="flex items-center gap-[10px] flex-wrap">
+          <button
+            class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-5 py-2 rounded-full border-2 border-gold bg-gold text-navy transition-all"
+            data-filter="all">All</button>
+          <button
+            class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-5 py-2 rounded-full border border-white/20 text-white/60 hover:border-white/50 hover:text-white transition-all"
+            data-filter="commercial">Commercial</button>
+          <button
+            class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-5 py-2 rounded-full border border-white/20 text-white/60 hover:border-white/50 hover:text-white transition-all"
+            data-filter="residential">Residential</button>
+          <button
+            class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-5 py-2 rounded-full border border-white/20 text-white/60 hover:border-white/50 hover:text-white transition-all"
+            data-filter="industrial">Industrial</button>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="grid grid-cols-3 gap-4 mb-12 max-sm:grid-cols-1 max-md:grid-cols-2" id="proj-grid">
+        <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer"
+          data-category="commercial">
+          <img class="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" alt="Downtown Tower" />
+          <div
+            class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
+            <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
+            <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Downtown Tower Complex</div>
+            <a href="#"
+              class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
+              Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer"
+          data-category="residential">
+          <img class="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Luxury Villa" />
+          <div
+            class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
+            <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Residential</span>
+            <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Luxury Villa Interior</div>
+            <a href="#"
+              class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
+              Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer"
+          data-category="industrial">
+          <img class="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" alt="Industrial Site" />
+          <div
+            class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
+            <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Industrial</span>
+            <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Industrial Site Preparation
+            </div>
+            <a href="#"
+              class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
+              Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer"
+          data-category="commercial">
+          <img class="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80" alt="Blueprint Design" />
+          <div
+            class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
+            <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
+            <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Architectural Blueprint
+              Design</div>
+            <a href="#"
+              class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
+              Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer"
+          data-category="industrial">
+          <img class="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80" alt="Site Team" />
+          <div
+            class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
+            <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Industrial</span>
+            <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Site Engineering Team</div>
+            <a href="#"
+              class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
+              Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer"
+          data-category="commercial">
+          <img class="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1464082354059-27db6ce50048?w=800&q=80" alt="High-Rise" />
+          <div
+            class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
+            <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
+            <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">High-Rise Development</div>
+            <a href="#"
+              class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
+              Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center">
+        <a href="projects.html"
+          class="inline-block border border-white/35 font-condensed text-[12px] font-bold tracking-[2.5px] uppercase text-white px-12 py-4 hover:border-gold hover:bg-gold hover:text-navy transition-all no-underline">View
+          All Projects</a>
+      </div>
     </div>
-  </div>
-</footer>
+  </section>
 
 
-<!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script>
-window.addEventListener('load', () => {
-gsap.registerPlugin(ScrollTrigger);
+  <!-- ═══════════════════════════════ CONTACT ═══════════════════════════════ -->
+  <section id="contact" class="bg-navy py-24 px-12 relative overflow-hidden">
+    <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+    <div
+      class="max-w-[1200px] mx-auto relative z-10 grid grid-cols-2 gap-[72px] items-start max-md:grid-cols-1 max-md:gap-12">
 
-// ═══════════ VIDEO CROSSFADE ═══════════
-const vid1 = document.getElementById('hero-vid-1');
-const vid2 = document.getElementById('hero-vid-2');
-let active = vid1, inactive = vid2;
+      <!-- Left -->
+      <div id="contact-left">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-10 h-[1px] bg-gold inline-block"></span>
+          <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Get In Touch</span>
+        </div>
+        <h2
+          class="font-condensed text-[clamp(32px,4.5vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-5">
+          Let's Build Something Great Together</h2>
+        <p class="text-[13.5px] text-white/50 leading-[1.75] mb-10 max-w-[400px]">Ready to start your next project?
+          Contact us today for a consultation and quote. We are here to answer any questions you may have.</p>
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-11 h-11 bg-[rgba(193,159,93,0.12)] rounded-[4px] flex items-center justify-center flex-shrink-0">
+              <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <div><strong class="block text-[13px] font-bold text-white mb-[2px]">Our Location</strong><span
+                class="text-[12.5px] text-white/50">123 Construction Ave, Algiers, Algeria</span></div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div
+              class="w-11 h-11 bg-[rgba(193,159,93,0.12)] rounded-[4px] flex items-center justify-center flex-shrink-0">
+              <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+              </svg>
+            </div>
+            <div><strong class="block text-[13px] font-bold text-white mb-[2px]">Phone Number</strong><span
+                class="text-[12.5px] text-white/50">+213 555 123 456</span></div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div
+              class="w-11 h-11 bg-[rgba(193,159,93,0.12)] rounded-[4px] flex items-center justify-center flex-shrink-0">
+              <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </div>
+            <div><strong class="block text-[13px] font-bold text-white mb-[2px]">Email Address</strong><span
+                class="text-[12.5px] text-white/50"><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                  data-cfemail="7615191802171502361302145b17151e1903041f5815191b">[email&#160;protected]</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-function crossfade() {
-  inactive.currentTime = 0;
-  inactive.play();
-  gsap.to(active,   { opacity: 0, duration: 1.2, ease: 'power1.inOut' });
-  gsap.to(inactive, { opacity: 1, duration: 1.2, ease: 'power1.inOut' });
-  [active, inactive] = [inactive, active];
-}
-
-vid1.addEventListener('ended', crossfade);
-vid2.addEventListener('ended', crossfade);
-vid1.play();
-
-// ═══════════ HERO — on load ═══════════
-const heroTl = gsap.timeline({ delay: 0.15 });
-heroTl
-  .from('#hero-vid-1', { opacity: 0, duration: 1.8, ease: 'power1.inOut' })
-  .from('#hero-eyebrow',  { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=1.0')
-  .from('#hero-headline', { opacity: 0, y: 36, duration: 0.65, ease: 'power2.out' }, '-=0.25')
-  .from('#hero-sub',      { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=0.35')
-  .from('#hero-btns > *', { opacity: 0, y: 20, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, '-=0.3')
-  .from('.corner-tl',     { opacity: 0, scale: 0.7, duration: 0.9, ease: 'power3.out' }, '-=0.8')
-  .from('.corner-br',     { opacity: 0, scale: 0.7, duration: 0.9, ease: 'power3.out' }, '-=0.75')
-  .from('.hero-circle',   { opacity: 0, scale: 0.6, duration: 1.1, ease: 'power3.out' }, '-=0.9')
-  .from('.hero-vline',    { scaleY: 0, transformOrigin: 'top', duration: 1.2, ease: 'power2.inOut' }, '-=0.9')
-  .from('.hero-dots span',{ opacity: 0, stagger: { each: 0.04, from: 'random' }, duration: 0.4 }, '-=0.6');
-
-// ═══════════ ABOUT ═══════════
-gsap.from('#about-images', {
-  scrollTrigger: { trigger: '#about', start: 'top 78%', once: true },
-  x: -60, opacity: 0, duration: 0.85, ease: 'power2.out'
-});
-gsap.from('#about-content > *', {
-  scrollTrigger: { trigger: '#about', start: 'top 78%', once: true },
-  x: 50, opacity: 0, stagger: 0.1, duration: 0.7, ease: 'power2.out'
-});
-
-// ═══════════ STATS — counter animation ═══════════
-document.querySelectorAll('.stat-num').forEach(el => {
-  const target  = parseInt(el.dataset.target);
-  const suffix  = el.dataset.suffix || '';
-  const obj     = { val: 0 };
-  gsap.to(obj, {
-    scrollTrigger: { trigger: '#stats', start: 'top 85%', once: true },
-    val: target,
-    duration: 2.2,
-    ease: 'power1.out',
-    onUpdate() { el.textContent = Math.round(obj.val) + suffix; }
-  });
-});
-gsap.from('.stat-item', {
-  scrollTrigger: { trigger: '#stats', start: 'top 85%', once: true },
-  y: 30, opacity: 0, stagger: 0.12, duration: 0.6, ease: 'power2.out'
-});
-
-// ═══════════ SERVICES ═══════════
-gsap.from('#svc-header > *', {
-  scrollTrigger: { trigger: '#services', start: 'top 78%', once: true },
-  y: 40, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
-});
-gsap.from('.service-card', {
-  scrollTrigger: { trigger: '#svc-grid', start: 'top 82%', once: true },
-  y: 55, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
-});
-
-// ═══════════ PROJECTS ═══════════
-gsap.from('#proj-header-left > *', {
-  scrollTrigger: { trigger: '#projects', start: 'top 78%', once: true },
-  x: -40, opacity: 0, stagger: 0.1, duration: 0.7, ease: 'power2.out'
-});
-gsap.from('#proj-filters', {
-  scrollTrigger: { trigger: '#projects', start: 'top 78%', once: true },
-  x: 40, opacity: 0, duration: 0.7, ease: 'power2.out'
-});
-gsap.from('.project-card', {
-  scrollTrigger: { trigger: '#proj-grid', start: 'top 82%', once: true },
-  scale: 0.88, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
-});
-
-// ═══════════ CONTACT ═══════════
-gsap.from('#contact-left > *', {
-  scrollTrigger: { trigger: '#contact', start: 'top 78%', once: true },
-  x: -50, opacity: 0, stagger: 0.1, duration: 0.75, ease: 'power2.out'
-});
-gsap.from('#contact-form', {
-  scrollTrigger: { trigger: '#contact', start: 'top 78%', once: true },
-  x: 50, opacity: 0, duration: 0.85, ease: 'power2.out'
-});
-
-// ═══════════ FOOTER ═══════════
-gsap.from('.footer-body > *', {
-  scrollTrigger: { trigger: '#footer', start: 'top 88%', once: true },
-  y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out'
-});
-
-// ═══════════ HAMBURGER ═══════════
-const hamburger = document.getElementById('hamburger');
-const drawer    = document.getElementById('nav-drawer');
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('open');
-  drawer.classList.toggle('open');
-});
-drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  hamburger.classList.remove('open');
-  drawer.classList.remove('open');
-}));
-
-// ═══════════ SCROLL-SPY ═══════════
-const sections    = document.querySelectorAll('section[id], #stats');
-const navLinks    = document.querySelectorAll('.nav-link');
-const drawerLinks = document.querySelectorAll('.nav-drawer a');
-const sectionMap  = { hero:'index.html', about:'about.html', stats:'about.html', services:'services.html', projects:'projects.html', contact:'contact.html' };
-
-function setActive(id) {
-  const target = sectionMap[id];
-  navLinks.forEach(a    => a.classList.toggle('active', a.getAttribute('href') === target));
-  drawerLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === target));
-}
-
-const spyObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-}, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-sections.forEach(s => spyObserver.observe(s));
+      <!-- Right: form card -->
+      <div id="contact-form"
+        class="bg-navy-card border border-[rgba(193,159,93,0.2)] border-t-[3px] border-t-gold rounded-[3px] p-10">
+        <h3 class="font-barlow text-[20px] font-bold text-white mb-7">Request a Quote</h3>
+        <div class="grid grid-cols-2 gap-4 mb-4 max-sm:grid-cols-1">
+          <div class="flex flex-col gap-[6px]">
+            <label class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/45">Name</label>
+            <input type="text" placeholder="John Doe"
+              class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white placeholder-white/25 transition-all" />
+          </div>
+          <div class="flex flex-col gap-[6px]">
+            <label class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/45">Phone</label>
+            <input type="tel" placeholder="+213..."
+              class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white placeholder-white/25 transition-all" />
+          </div>
+        </div>
+        <div class="flex flex-col gap-[6px] mb-4">
+          <label class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/45">Email</label>
+          <input type="email" placeholder="john@example.com"
+            class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white placeholder-white/25 transition-all" />
+        </div>
+        <div class="flex flex-col gap-[6px] mb-5">
+          <label class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/45">Message</label>
+          <textarea placeholder="Tell us about your project..." rows="5"
+            class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white placeholder-white/25 transition-all resize-vertical leading-relaxed"></textarea>
+        </div>
+        <button type="button"
+          class="w-full bg-gold font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-navy py-4 rounded-[2px] hover:opacity-88 transition-opacity cursor-pointer border-none">Send
+          Message</button>
+      </div>
+    </div>
+  </section>
 
 
-// ═══════════ PROJECT FILTER ═══════════
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => {
-      b.classList.remove('bg-gold', 'border-gold', 'text-navy', 'border-2');
-      b.classList.add('border', 'text-white\/60', 'border-white\/20');
-    });
-    btn.classList.add('bg-gold', 'border-gold', 'text-navy', 'border-2');
-    btn.classList.remove('border', 'text-white\/60', 'border-white\/20');
+  <!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+  <footer id="footer" class="bg-[rgb(15,19,35)] relative overflow-hidden">
+    <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+    <!-- Gold top rule -->
+    <div class="footer-topline relative z-10"></div>
 
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.project-card').forEach(card => {
-      const show = filter === 'all' || card.dataset.category === filter;
-      card.style.display = show ? '' : 'none';
-    });
-  });
-});
+    <!-- Body grid -->
+    <div
+      class="footer-body relative z-10 max-w-[1200px] mx-auto px-12 pt-16 pb-12 grid grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
 
-ScrollTrigger.refresh();
-}); // end window load
-</script>
+      <!-- Brand -->
+      <div>
+        <a href="#hero" class="flex items-center gap-3 no-underline mb-5">
+          <div class="w-11 h-11 bg-gold rounded-[6px] flex items-center justify-center flex-shrink-0"
+            style="display:none">
+            <svg class="w-[26px] h-[26px] fill-navy" viewBox="0 0 24 24">
+              <rect x="3" y="14" width="3" height="7" />
+              <rect x="8" y="10" width="3" height="11" />
+              <rect x="13" y="12" width="3" height="9" />
+              <rect x="18" y="8" width="3" height="13" />
+              <line x1="4" y1="6" x2="22" y2="2" stroke="#1e243c" stroke-width="2" stroke-linecap="round" fill="none" />
+            </svg>
+          </div>
+          <img src="C:\Users\Sarah\Desktop\WORK\AI WEB DEV AGENCY\EURL ETB Website\assets\images\Site Logo Dark.png"
+            alt="ETB Achouri Toufik" style="height:44px; margin-bottom:4px;">
+        </a>
+        <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7">Building tomorrow's landmarks with
+          precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
+        <ul class="list-none p-0 m-0 flex flex-col gap-3">
+          <li class="flex items-start gap-[10px]">
+            <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d"
+              stroke-width="2" stroke-linecap="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="text-[12.5px] text-white/55">Zone Industrielle, Blida, Algeria</span>
+          </li>
+          <li class="flex items-start gap-[10px]">
+            <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d"
+              stroke-width="2" stroke-linecap="round">
+              <path
+                d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+            </svg>
+            <a href="tel:+213000000000"
+              class="text-[12.5px] text-white/55 hover:text-gold transition-colors no-underline">+213 (0) 00 00 00
+              00</a>
+          </li>
+          <li class="flex items-start gap-[10px]">
+            <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d"
+              stroke-width="2" stroke-linecap="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            <a href="/cdn-cgi/l/email-protection#1e7d71706a7f7d6a5e7b6a7c337f7d76716b6c77307a64"
+              class="text-[12.5px] text-white/55 hover:text-gold transition-colors no-underline"><span
+                class="__cf_email__"
+                data-cfemail="62010d0c16030116220716004f03010a0d17100b4c0618">[email&#160;protected]</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <div
+          class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">
+          Navigation</div>
+        <ul class="list-none p-0 m-0 flex flex-col gap-[10px]">
+          <li><a href="index.html" class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
+          <li><a href="about.html" class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
+          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
+          <li><a href="projects.html" class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
+          <li><a href="contact.html" class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <div
+          class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">
+          Services</div>
+        <ul class="list-none p-0 m-0 flex flex-col gap-[10px]">
+          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Residential
+              Construction</a></li>
+          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Commercial Buildings</a>
+          </li>
+          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Industrial Works</a></li>
+          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Renovation &amp;
+              Retrofit</a></li>
+          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Project Management</a>
+          </li>
+          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Architectural Design</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div>
+        <div
+          class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">
+          Stay Informed</div>
+        <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.18)] rounded-[4px] p-7">
+          <p class="text-[12.5px] text-white/55 leading-[1.6] mb-5">Subscribe to receive updates on our latest projects,
+            industry insights, and company news.</p>
+          <div class="flex flex-col gap-[10px]">
+            <input type="email" placeholder="Your email address"
+              class="bg-white/5 border border-[rgba(193,159,93,0.25)] rounded-[3px] px-[14px] py-[10px] font-sans text-[12.5px] text-white placeholder-white/30 transition-all" />
+            <button type="button"
+              class="bg-gold font-condensed text-[12px] font-bold tracking-[1.8px] uppercase text-navy py-[10px] px-[18px] rounded-[3px] hover:opacity-88 transition-opacity cursor-pointer border-none">Subscribe
+              &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="relative z-10 max-w-[1200px] mx-auto px-12">
+      <hr class="border-none border-t border-[rgba(193,159,93,0.15)]" />
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="relative z-10 max-w-[1200px] mx-auto px-12 py-5 flex items-center justify-between gap-5 flex-wrap">
+      <p class="text-[11.5px] text-white/35">&copy; 2025 <a href="#"
+          class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri
+          Toufik</a>. All rights reserved.</p>
+      <div class="flex items-center gap-[10px]">
+        <a href="#"
+          class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all"
+          aria-label="Facebook"><svg class="w-[13px] h-[13px] fill-white/50 hover:fill-gold" viewBox="0 0 24 24">
+            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+          </svg></a>
+        <a href="#"
+          class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all"
+          aria-label="LinkedIn"><svg class="w-[13px] h-[13px] fill-white/50" viewBox="0 0 24 24">
+            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+            <circle cx="4" cy="4" r="2" />
+          </svg></a>
+        <a href="#"
+          class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all"
+          aria-label="Instagram"><svg class="w-[13px] h-[13px] fill-none stroke-white/50 stroke-[1.5]"
+            viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+          </svg></a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════ -->
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ═══════════ VIDEO CROSSFADE ═══════════
+      const vid1 = document.getElementById('hero-vid-1');
+      const vid2 = document.getElementById('hero-vid-2');
+      let active = vid1, inactive = vid2;
+
+      function crossfade() {
+        inactive.currentTime = 0;
+        inactive.play();
+        gsap.to(active, { opacity: 0, duration: 1.2, ease: 'power1.inOut' });
+        gsap.to(inactive, { opacity: 1, duration: 1.2, ease: 'power1.inOut' });
+        [active, inactive] = [inactive, active];
+      }
+
+      vid1.addEventListener('ended', crossfade);
+      vid2.addEventListener('ended', crossfade);
+      vid1.play();
+
+      // ═══════════ HERO — on load ═══════════
+      const heroTl = gsap.timeline({ delay: 0.15 });
+      heroTl
+        .from('#hero-vid-1', { opacity: 0, duration: 1.8, ease: 'power1.inOut' })
+        .from('#hero-eyebrow', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=1.0')
+        .from('#hero-headline', { opacity: 0, y: 36, duration: 0.65, ease: 'power2.out' }, '-=0.25')
+        .from('#hero-sub', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=0.35')
+        .from('#hero-btns > *', { opacity: 0, y: 20, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+        .from('.corner-tl', { opacity: 0, scale: 0.7, duration: 0.9, ease: 'power3.out' }, '-=0.8')
+        .from('.corner-br', { opacity: 0, scale: 0.7, duration: 0.9, ease: 'power3.out' }, '-=0.75')
+        .from('.hero-circle', { opacity: 0, scale: 0.6, duration: 1.1, ease: 'power3.out' }, '-=0.9')
+        .from('.hero-vline', { scaleY: 0, transformOrigin: 'top', duration: 1.2, ease: 'power2.inOut' }, '-=0.9')
+        .from('.hero-dots span', { opacity: 0, stagger: { each: 0.04, from: 'random' }, duration: 0.4 }, '-=0.6');
+
+      // ═══════════ ABOUT ═══════════
+      gsap.from('#about-images', {
+        scrollTrigger: { trigger: '#about', start: 'top 78%', once: true },
+        x: -60, opacity: 0, duration: 0.85, ease: 'power2.out'
+      });
+      gsap.from('#about-content > *', {
+        scrollTrigger: { trigger: '#about', start: 'top 78%', once: true },
+        x: 50, opacity: 0, stagger: 0.1, duration: 0.7, ease: 'power2.out'
+      });
+
+      // ═══════════ STATS — counter animation ═══════════
+      document.querySelectorAll('.stat-num').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          scrollTrigger: { trigger: '#stats', start: 'top 85%', once: true },
+          val: target,
+          duration: 2.2,
+          ease: 'power1.out',
+          onUpdate() { el.textContent = Math.round(obj.val) + suffix; }
+        });
+      });
+      gsap.from('.stat-item', {
+        scrollTrigger: { trigger: '#stats', start: 'top 85%', once: true },
+        y: 30, opacity: 0, stagger: 0.12, duration: 0.6, ease: 'power2.out'
+      });
+
+      // ═══════════ SERVICES ═══════════
+      gsap.from('#svc-header > *', {
+        scrollTrigger: { trigger: '#services', start: 'top 78%', once: true },
+        y: 40, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
+      });
+      gsap.from('.service-card', {
+        scrollTrigger: { trigger: '#svc-grid', start: 'top 82%', once: true },
+        y: 55, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
+      });
+
+      // ═══════════ PROJECTS ═══════════
+      gsap.from('#proj-header-left > *', {
+        scrollTrigger: { trigger: '#projects', start: 'top 78%', once: true },
+        x: -40, opacity: 0, stagger: 0.1, duration: 0.7, ease: 'power2.out'
+      });
+      gsap.from('#proj-filters', {
+        scrollTrigger: { trigger: '#projects', start: 'top 78%', once: true },
+        x: 40, opacity: 0, duration: 0.7, ease: 'power2.out'
+      });
+      gsap.from('.project-card', {
+        scrollTrigger: { trigger: '#proj-grid', start: 'top 82%', once: true },
+        scale: 0.88, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
+      });
+
+      // ═══════════ CONTACT ═══════════
+      gsap.from('#contact-left > *', {
+        scrollTrigger: { trigger: '#contact', start: 'top 78%', once: true },
+        x: -50, opacity: 0, stagger: 0.1, duration: 0.75, ease: 'power2.out'
+      });
+      gsap.from('#contact-form', {
+        scrollTrigger: { trigger: '#contact', start: 'top 78%', once: true },
+        x: 50, opacity: 0, duration: 0.85, ease: 'power2.out'
+      });
+
+      // ═══════════ FOOTER ═══════════
+      gsap.from('.footer-body > *', {
+        scrollTrigger: { trigger: '#footer', start: 'top 88%', once: true },
+        y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out'
+      });
+
+      // ═══════════ HAMBURGER ═══════════
+      const hamburger = document.getElementById('hamburger');
+      const drawer = document.getElementById('nav-drawer');
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        drawer.classList.toggle('open');
+      });
+      drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        drawer.classList.remove('open');
+      }));
+
+      // ═══════════ SCROLL-SPY ═══════════
+      const sections = document.querySelectorAll('section[id], #stats');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const drawerLinks = document.querySelectorAll('.nav-drawer a');
+      const sectionMap = { hero: 'index.html', about: 'about.html', stats: 'about.html', services: 'services.html', projects: 'projects.html', contact: 'contact.html' };
+
+      function setActive(id) {
+        const target = sectionMap[id];
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === target));
+        drawerLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === target));
+      }
+
+      const spyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+      sections.forEach(s => spyObserver.observe(s));
+
+
+      // ═══════════ PROJECT FILTER ═══════════
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('bg-gold', 'border-gold', 'text-navy', 'border-2');
+            b.classList.add('border', 'text-white\/60', 'border-white\/20');
+          });
+          btn.classList.add('bg-gold', 'border-gold', 'text-navy', 'border-2');
+          btn.classList.remove('border', 'text-white\/60', 'border-white\/20');
+
+          const filter = btn.dataset.filter;
+          document.querySelectorAll('.project-card').forEach(card => {
+            const show = filter === 'all' || card.dataset.category === filter;
+            card.style.display = show ? '' : 'none';
+          });
+        });
+      });
+
+      ScrollTrigger.refresh();
+    }); // end window load
+  </script>
 </body>
+
 </html>
