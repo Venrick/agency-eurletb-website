@@ -1,12 +1,10 @@
-# Homepage
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EURL ETB Achouri Toufik</title>
+  <title>EURL ETB</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap"
     rel="stylesheet" />
@@ -58,7 +56,7 @@
     /* ── Geometric corners ── */
     .corner-tl {
       position: absolute;
-      top: 80px;
+      top: 150px;
       left: 48px;
       width: 120px;
       height: 120px;
@@ -505,7 +503,7 @@
         EURL ETB Achouri Toufik delivers world-class construction solutions,
         merging architectural innovation with industrial strength.
       </p>
-      <div class="flex flex-wrap justify-center gap-4 mt-8">
+      <div id="hero-btns" class="flex flex-wrap justify-center gap-4 mt-8">
         <a href="projects.html"
           class="bg-gold text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-white transition-all no-underline shadow-lg">
           View Our Projects &rarr;
@@ -1232,7 +1230,7 @@
         .from('#hero-eyebrow', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=1.0')
         .from('#hero-headline', { opacity: 0, y: 36, duration: 0.65, ease: 'power2.out' }, '-=0.25')
         .from('#hero-sub', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=0.35')
-        .from('#hero-btns > *', { opacity: 0, y: 20, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+        .from('#hero-btns > *', { opacity: 0, y: 20, scale: 0.9, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, '-=0.3')
         .from('.corner-tl', { opacity: 0, scale: 0.7, duration: 0.9, ease: 'power3.out' }, '-=0.8')
         .from('.corner-br', { opacity: 0, scale: 0.7, duration: 0.9, ease: 'power3.out' }, '-=0.75')
         .from('.hero-circle', { opacity: 0, scale: 0.6, duration: 1.1, ease: 'power3.out' }, '-=0.9')
