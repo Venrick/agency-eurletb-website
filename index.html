@@ -505,11 +505,11 @@
       </p>
       <div id="hero-btns" class="flex flex-wrap justify-center gap-4 mt-8">
         <a href="projects.html"
-          class="cta-btn bg-gold text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-white transition-all no-underline shadow-lg">
+          class="cta-btn bg-gold text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-white transition-colors no-underline shadow-lg">
           View Our Projects &rarr;
         </a>
         <a href="contact.html"
-          class="cta-btn border border-gold text-gold font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-gold hover:text-navy transition-all no-underline">
+          class="cta-btn border border-gold text-gold font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-gold hover:text-navy transition-colors no-underline">
           Get a Quote
         </a>
       </div>
@@ -1230,7 +1230,7 @@
         .from('#hero-eyebrow', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=1.0')
         .from('#hero-headline', { opacity: 0, y: 36, duration: 0.65, ease: 'power2.out' }, '-=0.25')
         .from('#hero-sub', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=0.35')
-        .fromTo('.cta-btn', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out' }, '-=0.2')
+        .fromTo('.cta-btn', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.0, stagger: 0.15, ease: 'expo.out' }, '-=0.2')
         .from('.corner-tl', { opacity: 0, scale: 0.7, duration: 0.9, ease: 'power3.out' }, '-=0.8')
         .from('.corner-br', { opacity: 0, scale: 0.7, duration: 0.9, ease: 'power3.out' }, '-=0.75')
         .from('.hero-circle', { opacity: 0, scale: 0.6, duration: 1.1, ease: 'power3.out' }, '-=0.9')
