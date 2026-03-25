@@ -4,7 +4,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EURL ETB</title>
+  <meta name="description" content="EURL ETB Achouri Toufik — Construction & Génie Civil à Blida. Expertise en bâtiments résidentiels, commerciaux et industriels depuis 2009." />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://etbachouri.com/" />
+  <meta property="og:title" content="EURL ETB Achouri Toufik | Construction Excellence" />
+  <meta property="og:description" content="Première entreprise de construction à Blida spécialisée dans les projets résidentiels, commerciaux et industriels de haute précision." />
+  <meta property="og:image" content="assets/images/og-cover.jpg" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://etbachouri.com/" />
+  <meta property="twitter:title" content="EURL ETB Achouri Toufik | Construction Excellence" />
+  <meta property="twitter:description" content="Première entreprise de construction à Blida spécialisée dans les projets résidentiels, commerciaux et industriels de haute précision." />
+  <meta property="twitter:image" content="assets/images/og-cover.jpg" />
+
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <title>EURL ETB Achouri Toufik | Construction & Génie Civil</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap"
     rel="stylesheet" />
@@ -251,6 +268,31 @@
       box-shadow: 0 8px 32px rgba(30, 36, 60, .12);
     }
 
+    .company-preview-card {
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+    }
+
+    .company-preview-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0;
+      background: #c19f5d;
+      transition: width 0.4s ease;
+    }
+
+    .company-preview-card:hover::before {
+      width: 100%;
+    }
+
+    .company-preview-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(30, 36, 60, .12);
+    }
+
     /* ── Project card ── */
     .project-overlay {
       opacity: 0;
@@ -418,26 +460,35 @@
         <img src="assets/images/site-logo-dark.png" alt="ETB Achouri Toufik" class="logo-light" style="height:84px;">
       </a>
 
-      <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
-        <li><a href="index.html"
-            class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a>
-        </li>
-        <li><a href="about.html"
-            class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a>
-        </li>
-        <li><a href="services.html"
-            class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a>
-        </li>
-        <li><a href="projects.html"
-            class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a>
-        </li>
-        <li><a href="contact.html"
-            class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a>
-        </li>
-        <li><a href="contact.html"
-            class="font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Get
-            a Quote</a></li>
-      </ul>
+      <div class="flex items-center gap-7">
+        <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
+          <li><a href="index.html"
+              class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a>
+          </li>
+          <li><a href="about.html"
+              class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a>
+          </li>
+          <li><a href="services.html"
+              class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a>
+          </li>
+          <li><a href="companies.html"
+              class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Companies</a>
+          </li>
+          <li><a href="projects.html"
+              class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a>
+          </li>
+          <li><a href="contact.html"
+              class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a>
+          </li>
+        </ul>
+        <a href="contact.html"
+          class="nav-desktop font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Get
+          a Quote</a>
+
+        <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile drawer -->
@@ -445,6 +496,7 @@
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
+      <a href="companies.html">Companies</a>
       <a href="projects.html">Projects</a>
       <a href="contact.html">Contact</a>
       <a href="contact.html" class="text-gold font-bold">Get a Quote</a>
@@ -458,12 +510,12 @@
     <!-- Background video -->
     <!-- Video 1 -->
     <video id="hero-vid-1" class="absolute inset-0 w-full h-full object-cover z-0" muted playsinline
-      poster="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80">
-      <source src="C:\Users\Sarah\Downloads\14134260-uhd_3840_2160_25fps.mp4" type="video/mp4" />
+      poster="https://images.pexels.com/photos/159358/construction-site-build-architect-159358.jpeg?auto=compress&cs=tinysrgb&w=1600">
+      <source src="https://player.vimeo.com/external/494247587.sd.mp4?s=bc63f33b1e39a3f29533b66472d46e9df935c158&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
     </video>
     <!-- Video 2 (starts hidden) -->
     <video id="hero-vid-2" class="absolute inset-0 w-full h-full object-cover z-0" muted playsinline style="opacity:0;">
-      <source src="C:\Users\Sarah\Downloads\12201829-uhd_3840_2160_30fps.mp4" type="video/mp4" />
+      <source src="https://player.vimeo.com/external/494248566.sd.mp4?s=d0100d33ab1dff6e1d904c1075306d67f539ecb0&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
     </video>
 
     <!-- Dark gradient overlay — keeps text legible -->
@@ -630,7 +682,7 @@
 
 
   <!-- ═══════════════════════════════ STATS BAR ═══════════════════════════════ -->
-  <div id="stats" class="grid grid-cols-4 bg-navy border-b-[3px] border-gold">
+  <div id="stats" class="grid grid-cols-4 max-sm:grid-cols-2 bg-navy border-b-[3px] border-gold">
     <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
       <div class="stat-num font-condensed text-[48px] font-extrabold text-gold leading-none mb-2" data-target="15"
         data-suffix="+">15+</div>
@@ -684,7 +736,7 @@
           <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Residential Construction</h3>
           <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Custom homes and multi-unit complexes built with
             premium materials and modern design.</p>
-          <a href="#"
+          <a href="services.html"
             class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
             More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
               stroke-linecap="round">
@@ -707,7 +759,7 @@
           <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Commercial &amp; Industrial</h3>
           <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Large-scale warehouses, office buildings, and
             retail spaces designed for efficiency.</p>
-          <a href="#"
+          <a href="services.html"
             class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
             More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
               stroke-linecap="round">
@@ -728,7 +780,7 @@
           <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Renovation &amp; Remodeling</h3>
           <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Transforming existing structures with structural
             reinforcements and aesthetic upgrades.</p>
-          <a href="#"
+          <a href="services.html"
             class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
             More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
               stroke-linecap="round">
@@ -748,7 +800,7 @@
           <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">General Contracting</h3>
           <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Complete project management from initial
             planning to final inspection.</p>
-          <a href="#"
+          <a href="services.html"
             class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
             More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
               stroke-linecap="round">
@@ -771,7 +823,7 @@
           <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Heavy Machinery</h3>
           <p class="text-[13.5px] text-muted leading-[1.7] flex-1 mb-6">Site preparation, excavation, and earthmoving
             services with our fleet of equipment.</p>
-          <a href="#"
+          <a href="services.html"
             class="font-condensed text-[11px] font-bold tracking-[1.8px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-2">Learn
             More <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
               stroke-linecap="round">
@@ -806,6 +858,91 @@
 
 
   <!-- ═══════════════════════════════ PROJECTS ═══════════════════════════════ -->
+  <!-- Companies preview -->
+  <section id="companies" class="bg-white py-24 px-12">
+    <div class="max-w-[1200px] mx-auto">
+      <div id="companies-header" class="text-center max-w-[760px] mx-auto mb-14">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <span class="w-8 h-[1px] bg-gold inline-block"></span>
+          <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Group Companies</span>
+          <span class="w-8 h-[1px] bg-gold inline-block"></span>
+        </div>
+        <h2
+          class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-4">
+          Companies Within <span class="text-gold">Our Group</span>
+        </h2>
+        <p class="text-[14px] text-muted leading-[1.75]">
+          Explore the specialized entities that operate alongside ETB Achouri Toufik, each focused on distinct sectors.
+        </p>
+      </div>
+
+      <div id="companies-grid" class="grid grid-cols-4 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
+        <article
+          class="company-preview-card bg-light-bg border border-[rgba(30,36,60,0.08)] rounded-[3px] p-7 shadow-[0_2px_16px_rgba(30,36,60,0.06)] flex flex-col">
+          <div class="flex items-center gap-4 mb-5 pb-5 border-b border-[rgba(30,36,60,0.06)]">
+            <div class="w-12 h-12 bg-navy rounded-[5px] flex items-center justify-center flex-shrink-0">
+              <span class="font-condensed text-[14px] font-bold text-gold">EA</span>
+            </div>
+            <h3 class="font-barlow text-[17px] font-semibold text-navy leading-tight">EURL ETB Achouri Toufik</h3>
+          </div>
+          <p class="text-[13.5px] text-muted leading-[1.75] mb-6 flex-1">Civil engineering and full-spectrum construction delivery.</p>
+          <a href="contact.html?company=etb"
+            class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-1">Contact
+            &rarr;</a>
+        </article>
+
+        <article
+          class="company-preview-card bg-light-bg border border-[rgba(30,36,60,0.08)] rounded-[3px] p-7 shadow-[0_2px_16px_rgba(30,36,60,0.06)] flex flex-col">
+          <div class="flex items-center gap-4 mb-5 pb-5 border-b border-[rgba(30,36,60,0.06)]">
+            <div class="w-12 h-12 bg-navy rounded-[5px] flex items-center justify-center flex-shrink-0">
+              <span class="font-condensed text-[14px] font-bold text-gold">BM</span>
+            </div>
+            <h3 class="font-barlow text-[17px] font-semibold text-navy leading-tight">SARL BITUMAX</h3>
+          </div>
+          <p class="text-[13.5px] text-muted leading-[1.75] mb-6 flex-1">Road works, logistics, paving, and public works execution.</p>
+          <a href="contact.html?company=bitumax"
+            class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-1">Contact
+            &rarr;</a>
+        </article>
+
+        <article
+          class="company-preview-card bg-light-bg border border-[rgba(30,36,60,0.08)] rounded-[3px] p-7 shadow-[0_2px_16px_rgba(30,36,60,0.06)] flex flex-col">
+          <div class="flex items-center gap-4 mb-5 pb-5 border-b border-[rgba(30,36,60,0.06)]">
+            <div class="w-12 h-12 bg-navy rounded-[5px] flex items-center justify-center flex-shrink-0">
+              <span class="font-condensed text-[14px] font-bold text-gold">BA</span>
+            </div>
+            <h3 class="font-barlow text-[17px] font-semibold text-navy leading-tight">BATI Achouri</h3>
+          </div>
+          <p class="text-[13.5px] text-muted leading-[1.75] mb-6 flex-1">Building and infrastructure works from planning to finish.</p>
+          <a href="contact.html?company=bati-achouri"
+            class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-1">Contact
+            &rarr;</a>
+        </article>
+
+        <article
+          class="company-preview-card bg-light-bg border border-[rgba(30,36,60,0.08)] rounded-[3px] p-7 shadow-[0_2px_16px_rgba(30,36,60,0.06)] flex flex-col">
+          <div class="flex items-center gap-4 mb-5 pb-5 border-b border-[rgba(30,36,60,0.06)]">
+            <div class="w-12 h-12 bg-navy rounded-[5px] flex items-center justify-center flex-shrink-0">
+              <span class="font-condensed text-[14px] font-bold text-gold">BK</span>
+            </div>
+            <h3 class="font-barlow text-[17px] font-semibold text-navy leading-tight">SARL BATIKRAM</h3>
+          </div>
+          <p class="text-[13.5px] text-muted leading-[1.75] mb-6 flex-1">Real estate promotion and development opportunities.</p>
+          <a href="contact.html?company=batikram"
+            class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-1">Contact
+            &rarr;</a>
+        </article>
+      </div>
+
+      <div class="mt-12 flex justify-center">
+        <a href="companies.html"
+          class="bg-navy text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:bg-navy-dark transition-colors no-underline">
+          View All Companies &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
   <section id="projects" class="bg-navy py-24 px-12 relative overflow-hidden">
     <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
     <div class="max-w-[1200px] mx-auto relative z-10">
@@ -849,7 +986,7 @@
             class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
             <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
             <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Downtown Tower Complex</div>
-            <a href="#"
+            <a href="projects.html"
               class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
               Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round">
@@ -866,7 +1003,7 @@
             class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
             <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Residential</span>
             <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Luxury Villa Interior</div>
-            <a href="#"
+            <a href="projects.html"
               class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
               Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round">
@@ -884,7 +1021,7 @@
             <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Industrial</span>
             <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Industrial Site Preparation
             </div>
-            <a href="#"
+            <a href="projects.html"
               class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
               Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round">
@@ -902,7 +1039,7 @@
             <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
             <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Architectural Blueprint
               Design</div>
-            <a href="#"
+            <a href="projects.html"
               class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
               Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round">
@@ -919,7 +1056,7 @@
             class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
             <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Industrial</span>
             <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">Site Engineering Team</div>
-            <a href="#"
+            <a href="projects.html"
               class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
               Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round">
@@ -936,7 +1073,7 @@
             class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.92)] to-transparent flex flex-col justify-end p-6">
             <span class="font-condensed text-[9px] font-bold tracking-[2px] uppercase text-gold mb-1">Commercial</span>
             <div class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-2">High-Rise Development</div>
-            <a href="#"
+            <a href="projects.html"
               class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold no-underline flex items-center gap-1">View
               Project <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round">
@@ -1119,6 +1256,7 @@
           <li><a href="index.html" class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
           <li><a href="about.html" class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
           <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
+          <li><a href="companies.html" class="fnav-link text-[13px] text-white/55 no-underline">Companies</a></li>
           <li><a href="projects.html" class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
           <li><a href="contact.html" class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
         </ul>
@@ -1170,7 +1308,7 @@
 
     <!-- Bottom bar -->
     <div class="relative z-10 max-w-[1200px] mx-auto px-12 py-5 flex items-center justify-between gap-5 flex-wrap">
-      <p class="text-[11.5px] text-white/35">&copy; 2025 <a href="#"
+      <p class="text-[11.5px] text-white/35">&copy; <span id="copyright-year">2025</span> <a href="#"
           class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri
           Toufik</a>. All rights reserved.</p>
       <div class="flex items-center gap-[10px]">
@@ -1275,6 +1413,15 @@
         y: 55, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
       });
 
+      // COMPANIES
+      gsap.from('#companies-header > *', {
+        scrollTrigger: { trigger: '#companies', start: 'top 78%', once: true },
+        y: 30, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
+      });
+      gsap.from('.company-preview-card', {
+        scrollTrigger: { trigger: '#companies-grid', start: 'top 82%', once: true },
+        y: 45, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out'
+      });
       // ═══════════ PROJECTS ═══════════
       gsap.from('#proj-header-left > *', {
         scrollTrigger: { trigger: '#projects', start: 'top 78%', once: true },
@@ -1317,11 +1464,15 @@
         drawer.classList.remove('open');
       }));
 
+      // ═══════════ FOOTER YEAR ═══════════
+      const footerYear = document.getElementById('copyright-year');
+      if (footerYear) footerYear.textContent = new Date().getFullYear();
+
       // ═══════════ SCROLL-SPY ═══════════
       const sections = document.querySelectorAll('section[id], #stats');
       const navLinks = document.querySelectorAll('.nav-link');
       const drawerLinks = document.querySelectorAll('.nav-drawer a');
-      const sectionMap = { hero: 'index.html', about: 'about.html', stats: 'about.html', services: 'services.html', projects: 'projects.html', contact: 'contact.html' };
+      const sectionMap = { hero: 'index.html', about: 'about.html', stats: 'about.html', services: 'services.html', companies: 'companies.html', projects: 'projects.html', contact: 'contact.html' };
 
       function setActive(id) {
         const target = sectionMap[id];
@@ -1354,6 +1505,31 @@
       });
 
       ScrollTrigger.refresh();
+
+      // ═══════════ FORM LOGIC ═══════════
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const btn = contactForm.querySelector('button');
+          const originalText = btn.innerHTML;
+          btn.disabled = true;
+          btn.innerHTML = 'Sending...';
+
+          setTimeout(() => {
+            btn.innerHTML = 'Message Sent Successfully!';
+            btn.classList.remove('bg-gold');
+            btn.classList.add('bg-green-600', 'text-white');
+            contactForm.reset();
+            setTimeout(() => {
+              btn.innerHTML = originalText;
+              btn.disabled = false;
+              btn.classList.add('bg-gold');
+              btn.classList.remove('bg-green-600', 'text-white');
+            }, 3000);
+          }, 1500);
+        });
+      }
     }); // end window load
   </script>
 </body>

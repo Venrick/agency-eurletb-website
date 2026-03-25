@@ -1,10 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects | EURL ETB Achouri Toufik</title>
+  <meta name="description" content="Explorez notre portfolio de projets emblématiques : bâtiments industriels, infrastructures de santé et complexes résidentiels à travers l'Algérie." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://etbachouri.com/projects.html" />
+  <meta property="og:title" content="Our Portfolio | EURL ETB Achouri Toufik" />
+  <meta property="og:description" content="Découvrez l'excellence de nos réalisations. Chaque projet est une preuve de notre engagement envers la qualité et l'innovation." />
+  <meta property="og:image" content="assets/images/og-cover.jpg" />
+
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <title>Our Projects — EURL ETB Achouri Toufik</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap"
     rel="stylesheet" />
@@ -262,6 +272,32 @@
       transform: translate(-50%, -50%);
     }
 
+    .map-pin {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      cursor: pointer;
+      z-index: 10;
+      background: none;
+      border: none;
+      padding: 0;
+      transition: transform 0.2s;
+    }
+    .map-pin:hover { transform: translate(-50%, -100%) scale(1.15); }
+    .map-pin-label {
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #c19f5d;
+      opacity: 0.7;
+    }
+
     .filter-btn-active {
       background: #c19f5d !important;
       border-color: #c19f5d !important;
@@ -348,7 +384,6 @@
       <a href="index.html" class="flex items-center no-underline">
         <img src="assets/images/site-logo-dark.png" alt="ETB Achouri Toufik" class="logo-light" style="height:84px;">
       </a>
-
       <div class="flex items-center gap-9">
         <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
           <li><a href="index.html"
@@ -359,6 +394,9 @@
           </li>
           <li><a href="services.html"
               class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a>
+          </li>
+          <li><a href="companies.html"
+              class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Companies</a>
           </li>
           <li><a href="projects.html"
               class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a>
@@ -382,6 +420,7 @@
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
+      <a href="companies.html">Companies</a>
       <a href="projects.html" class="active">Projects</a>
       <a href="contact.html">Contact</a>
       <a href="contact.html" class="text-gold font-bold">Get a Quote</a>
@@ -390,7 +429,7 @@
 
   <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
   <section id="projects-hero"
-    class="relative min-h-[520px] bg-navy pt-[160px] pb-32 flex items-center overflow-hidden border-b-[3px] border-gold">
+    class="relative min-h-[700px] bg-navy pt-[180px] pb-32 flex items-center overflow-hidden border-b-[3px] border-gold">
     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
       style="background-image:url('assets/images/projects-hero.jpeg'); opacity:0.18;"></div>
     <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
@@ -419,344 +458,106 @@
   </section>
 
   <!-- ═══════════════════════════════ PROJECT MAP ═══════════════════════════════ -->
-  <section id="map" class="py-20 bg-navy-dark">
-    <div class="max-w-[1480px] mx-auto px-6">
-
-      <!-- Section header -->
-      <div class="max-w-screen-xl mx-auto text-center mb-12">
+  <section id="map-section" class="py-20 bg-navy-dark overflow-hidden">
+    <div class="max-w-[1440px] mx-auto px-6">
+      <div id="map-header" class="text-center mb-12">
         <span class="text-gold font-condensed text-sm tracking-[0.2em] uppercase">Nationwide Presence</span>
         <h2 class="font-condensed text-4xl font-bold text-white mt-2">Project Locations</h2>
-        <p class="text-muted mt-3 max-w-xl mx-auto text-sm">
-          Click any marker to view project details.
-        </p>
+        <p class="text-muted mt-3 max-w-xl mx-auto text-sm">Click any marker to view project details across our regional network.</p>
       </div>
 
-      <!--
-      FRAME
-      ─────────────────────────────────────────────────────────────────
-      NO fixed height — the left column's image determines height.
-      Flexbox default align-items:stretch makes the right column
-      automatically match whatever height the left column ends up being.
-      overflow:hidden clips the bottom empty strip of the SVG viewBox.
-    -->
-      <div id="map-frame" class="flex flex-col md:flex-row" style="gap:1.25rem; align-items:stretch;">
+      <div id="map-frame" class="flex flex-col md:flex-row relative">
+        <div id="map-left-col" class="w-full md:w-[65%] h-[600px] relative">
+          <img src="assets/images/dz-05.svg" alt="Map" class="w-full h-full object-cover opacity-60">
+          
+          <!-- Pin: Algiers -->
+          <button class="map-pin" style="left:51%; top:18%;" data-project="algiers-tower" aria-label="Algiers">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label">Algiers</span>
+          </button>
+          
+          <!-- Pin: Blida -->
+          <button class="map-pin" style="left:48%; top:23%;" data-project="blida-complex" aria-label="Blida">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label">Blida</span>
+          </button>
 
-        <!-- ── LEFT: Map ── -->
-        <div id="map-left-wrapper"
-          style="flex:1; border:1px solid rgba(193,159,93,0.3); border-radius:4px; overflow:hidden; position:relative; aspect-ratio:1440/610; background:rgba(30,36,60,0.4);">
-          <div id="map-left-col" style="position:relative; width:100%; height:100%; overflow:hidden;">
+          <!-- Pin: Oran -->
+          <button class="map-pin" style="left:20%; top:35%;" data-project="oran-warehouse" aria-label="Oran">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label">Oran</span>
+          </button>
 
-            <!-- Map Image - absolute so it fits the aspect-ratio container -->
-            <img src="assets\images\dz-05.svg" alt="Algeria map" id="algeria-map-img" draggable="false"
-              style="position:absolute; top:0; left:0; width:100%; height:auto; display:block;" />
-
-            <!-- ── PINS ──
-               Coordinates from full 1440x810 viewBox.
-               The container clips the Saharan bottom.
-          -->
-
-            <!-- Algiers -->
-            <button class="map-pin"
-              style="position:absolute; left:49.2%; top:18.0%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;"
-              data-project="algiers-tower" aria-label="Algiers Business Tower">
-              <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon">
-                <path
-                  d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                  fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Algiers</span>
-            </button>
-
-            <!-- Blida -->
-            <button class="map-pin"
-              style="position:absolute; left:46.3%; top:22.1%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;"
-              data-project="blida-complex" aria-label="Blida Residential Complex">
-              <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon">
-                <path
-                  d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                  fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Blida</span>
-            </button>
-
-            <!-- Oran -->
-            <button class="map-pin"
-              style="position:absolute; left:15.3%; top:39.6%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;"
-              data-project="oran-warehouse" aria-label="Oran Industrial Warehouse">
-              <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon">
-                <path
-                  d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                  fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Oran</span>
-            </button>
-
-            <!-- Constantine -->
-            <button class="map-pin"
-              style="position:absolute; left:80.9%; top:24.8%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;"
-              data-project="constantine-mall" aria-label="Constantine Retail Centre">
-              <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon">
-                <path
-                  d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                  fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Constantine</span>
-            </button>
-
-            <!-- Sétif -->
-            <button class="map-pin"
-              style="position:absolute; left:75.9%; top:25.8%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;"
-              data-project="setif-factory" aria-label="Sétif Production Facility">
-              <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon">
-                <path
-                  d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                  fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Sétif</span>
-            </button>
-
-            <!-- Tizi Ouzou -->
-            <button class="map-pin"
-              style="position:absolute; left:52.8%; top:17.3%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;"
-              data-project="tizi-school" aria-label="Tizi Ouzou School Campus">
-              <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon">
-                <path
-                  d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                  fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Tizi Ouzou</span>
-            </button>
-
-            <!-- Médéa -->
-            <button class="map-pin"
-              style="position:absolute; left:47.2%; top:25.9%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;"
-              data-project="medea-villas" aria-label="Médéa Villa Compound">
-              <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon">
-                <path
-                  d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                  fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Médéa</span>
-            </button>
-
-            <!-- Annaba -->
-            <button class="map-pin"
-              style="position:absolute; left:87.2%; top:14.8%; transform:translate(-50%,-100%); cursor:pointer; z-index:10;"
-              data-project="annaba-residences" aria-label="Annaba Coastal Residences">
-              <svg width="28" height="36" viewBox="0 0 28 36" fill="none" class="map-pin-icon">
-                <path
-                  d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                  fill="#c19f5d" />
-                <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.9" />
-              </svg>
-              <span class="map-pin-label">Annaba</span>
-            </button>
-          </div>
+          <!-- Pin: Constantine -->
+          <button class="map-pin" style="left:82%; top:24%;" data-project="constantine-mall" aria-label="Constantine">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label">Constantine</span>
+          </button>
         </div>
 
-        <!-- ── RIGHT: Panel col ── -->
-        <div id="map-right-col" class="w-full md:w-[30%]"
-          style="flex-shrink:0; position:relative; overflow:hidden; background:#1a2036; border:1px solid rgba(193,159,93,0.3); border-radius:4px; min-height:440px;">
-
-          <!-- Placeholder -->
-          <div id="map-placeholder"
-            style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; pointer-events:none;">
-            <svg width="32" height="40" viewBox="0 0 28 36" fill="none" style="opacity:0.25;">
-              <path
-                d="M14 0C6.268 0 0 6.268 0 14c0 9.625 12.411 21.368 13.15 22.065a1.2 1.2 0 001.7 0C15.589 35.368 28 23.625 28 14 28 6.268 21.732 0 14 0z"
-                fill="#c19f5d" />
-              <circle cx="14" cy="13" r="5.5" fill="white" fill-opacity="0.5" />
-            </svg>
-            <span
-              style="color:#c19f5d; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; opacity:0.4;">Select
-              a location</span>
+        <div id="map-right-col" class="w-full md:w-[35%] overflow-hidden relative min-h-[440px]">
+          <div id="map-placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-navy-card">
+            <svg class="w-12 h-12 text-gold/20 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span class="font-condensed text-sm tracking-[2px] uppercase text-gold/50">Select a Location</span>
+            <p class="text-xs text-white/30 mt-2 max-w-[200px]">Interact with the map marker to view site-specific data.</p>
           </div>
-
-          <!-- Info Panel — GSAP sets x:'100%' in JS -->
-          <div id="map-info-panel"
-            style="position:absolute; inset:0; background:#1a2036; display:flex; flex-direction:column;">
-
-            <button id="map-panel-close"
-              style="position:absolute; top:16px; right:20px; z-index:30; font-size:1.25rem; line-height:1; background:none; border:none; cursor:pointer; color:#5a5f72; transition:color 0.15s ease;"
-              onmouseover="this.style.color='#c19f5d'" onmouseout="this.style.color='#5a5f72'">✕</button>
-
-            <div class="panel-scroll-content"
-              style="display:flex; flex-direction:column; height:100%; overflow-y:auto; padding:1.5rem; padding-top:2.5rem; box-sizing:border-box;">
-
-              <span id="panel-category"
-                style="color:#c19f5d; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;"></span>
-
-              <h3 id="panel-name"
-                style="color:white; font-family:'Barlow Condensed',sans-serif; font-size:1.4rem; font-weight:700; margin:4px 0 4px; line-height:1.2;">
-              </h3>
-
-              <p id="panel-city" style="color:#5a5f72; font-size:0.875rem; margin:0;"></p>
-
-              <div style="margin-top:1.25rem; display:flex; flex-direction:column; gap:10px; font-size:0.875rem;">
-                <div
-                  style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
-                  <span style="color:#5a5f72;">Year</span>
-                  <span id="panel-year" style="color:white; font-weight:500;"></span>
-                </div>
-                <div
-                  style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
-                  <span style="color:#5a5f72;">Surface</span>
-                  <span id="panel-area" style="color:white; font-weight:500;"></span>
-                </div>
-                <div
-                  style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
-                  <span style="color:#5a5f72;">Status</span>
-                  <span id="panel-status" style="color:white; font-weight:500;"></span>
-                </div>
-              </div>
-
-              <p id="panel-desc"
-                style="color:white; opacity:0.6; font-size:0.875rem; margin-top:1.25rem; line-height:1.5;"></p>
-
-              <div style="margin-top:1.25rem;">
-                <div
-                  style="display:flex; justify-content:space-between; font-size:0.75rem; color:#5a5f72; margin-bottom:6px;">
-                  <span>Completion</span>
-                  <span id="panel-pct" style="color:#c19f5d; font-weight:500;"></span>
-                </div>
-                <div
-                  style="width:100%; height:5px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,0.08);">
-                  <div id="panel-bar" style="width:0%; height:100%; border-radius:999px; background:#c19f5d;"></div>
-                </div>
-              </div>
-
-              <div style="flex:1;"></div>
-
-              <a href="#projects"
-                style="display:block; width:100%; text-align:center; background:#c19f5d; color:#1e243c; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; padding:12px; border-radius:2px; text-decoration:none; margin-top:1.25rem; box-sizing:border-box;">
-                View Project
-              </a>
-
+          
+          <div id="map-info-panel" class="absolute inset-0 bg-navy-card p-8 flex flex-col">
+            <button id="map-panel-close" class="absolute top-4 right-4 text-white/40 hover:text-gold text-xl">✕</button>
+            <span id="panel-category" class="font-condensed text-[11px] tracking-[2px] uppercase text-gold">Commercial</span>
+            <h3 id="panel-name" class="font-condensed text-2xl font-bold text-white mt-1">Algiers Tower</h3>
+            <p id="panel-city" class="text-sm text-white/40 mb-6">Algiers, Algeria</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8">
+              <div><span class="block text-[10px] text-white/30 uppercase">Year</span><span id="panel-year" class="text-sm text-white">2023</span></div>
+              <div><span class="block text-[10px] text-white/30 uppercase">Surface</span><span id="panel-area" class="text-sm text-white">12k m²</span></div>
+              <div><span class="block text-[10px] text-white/30 uppercase">Status</span><span id="panel-status" class="text-sm text-white font-bold">Completed</span></div>
+            </div>
+            
+            <p id="panel-desc" class="text-sm text-white/60 leading-relaxed line-clamp-4">Detailed architectural engineering and structural integrity analysis...</p>
+            
+            <div class="mt-auto">
+              <div class="flex justify-between text-[10px] mb-2"><span class="text-white/40">COMPLETION</span><span id="panel-pct" class="text-gold">100%</span></div>
+              <div class="w-full h-[3px] bg-white/10 rounded-full overflow-hidden"><div id="panel-bar" class="h-full bg-gold w-full"></div></div>
             </div>
           </div>
-
         </div>
-      </div><!-- /map-frame -->
-
+      </div>
     </div>
   </section>
 
-  <!-- ── Styles ── -->
-  <style>
-    #map-container {
-      user-select: none;
-    }
-
-    .map-pin-icon {
-      display: block;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
-      transition: transform 0.18s ease, filter 0.18s ease;
-    }
-
-    .map-pin:hover .map-pin-icon,
-    .map-pin.active .map-pin-icon {
-      transform: scale(1.25);
-      filter: drop-shadow(0 4px 8px rgba(193, 159, 93, 0.6));
-    }
-
-    .map-pin-label {
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-4px);
-      background: rgba(15, 19, 35, 0.92);
-      color: #c19f5d;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      padding: 2px 7px;
-      border-radius: 2px;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.15s ease;
-    }
-
-    .map-pin:hover .map-pin-label,
-    .map-pin.active .map-pin-label {
-      opacity: 1;
-    }
-
-    /* Hide scrollbar for the info panel content */
-    .panel-scroll-content::-webkit-scrollbar {
-      display: none;
-    }
-
-    .panel-scroll-content {
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-  </style>
   <!-- ═══════════════════════════════ PROJECT CARDS ═══════════════════════════════ -->
   <section id="all-projects" class="bg-navy py-24 px-12">
     <div class="max-w-[1200px] mx-auto">
-      <!-- Header -->
       <div class="flex flex-col md:flex-row justify-between items-end gap-8 mb-12">
         <div id="cards-header">
           <div class="flex items-center gap-3 mb-4">
             <span class="w-10 h-[1px] bg-gold inline-block"></span>
             <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Portfolio</span>
           </div>
-          <h2
-            class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px]">
-            Featured Projects</h2>
+          <h2 class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px]">Featured Projects</h2>
         </div>
 
         <div id="filters" class="flex flex-wrap gap-3">
-          <button
-            class="filter-btn filter-btn-active font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-6 py-2 rounded-full border border-white/20 text-white/60 transition-all"
-            data-filter="all">All</button>
-          <button
-            class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-6 py-2 rounded-full border border-white/20 text-white/60 transition-all"
-            data-filter="commercial">Commercial</button>
-          <button
-            class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-6 py-2 rounded-full border border-white/20 text-white/60 transition-all"
-            data-filter="residential">Residential</button>
-          <button
-            class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-6 py-2 rounded-full border border-white/20 text-white/60 transition-all"
-            data-filter="industrial">Industrial</button>
+          <button class="filter-btn filter-btn-active font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-6 py-2 rounded-full border border-white/20 text-white/60 transition-all" data-filter="all">All</button>
+          <button class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-6 py-2 rounded-full border border-white/20 text-white/60 transition-all" data-filter="commercial">Commercial</button>
+          <button class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-6 py-2 rounded-full border border-white/20 text-white/60 transition-all" data-filter="residential">Residential</button>
+          <button class="filter-btn font-condensed text-[11px] font-bold tracking-[1.5px] uppercase px-6 py-2 rounded-full border border-white/20 text-white/60 transition-all" data-filter="industrial">Industrial</button>
         </div>
       </div>
 
-      <!-- Grid -->
-      <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Projects will be injected here for consistency or coded static -->
-      </div>
+      <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
   </section>
 
   <!-- ═══════════════════════════════ CTA SECTION ═══════════════════════════════ -->
   <section id="projects-cta" class="bg-gold py-20 px-12">
     <div class="max-w-[800px] mx-auto text-center relative z-10">
-      <h2 class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-navy leading-[1.1] mb-4">
-        Have a Project in Mind?
-      </h2>
-      <p class="text-[15px] text-navy/70 mb-10 leading-relaxed italic">
-        Let's discuss your next build. Our team is ready to bring your vision to life with precision and expertise.
-      </p>
+      <h2 class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-navy leading-[1.1] mb-4">Have a Project in Mind?</h2>
+      <p class="text-[15px] text-navy/70 mb-10 leading-relaxed italic">Let's discuss your next build. Our team is ready to bring your vision to life.</p>
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="contact.html"
-          class="bg-navy text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-navy-dark transition-all no-underline shadow-lg">
-          Contact Us &rarr;
-        </a>
-        <a href="services.html"
-          class="border-2 border-navy text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-navy hover:text-white transition-all no-underline">
-          Our Services
-        </a>
+        <a href="contact.html" class="bg-navy text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-navy-dark transition-all no-underline shadow-lg">Contact Us &rarr;</a>
+        <a href="services.html" class="border-2 border-navy text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-10 py-4 hover:bg-navy hover:text-white transition-all no-underline">Our Services</a>
       </div>
     </div>
   </section>
@@ -765,123 +566,49 @@
   <footer id="footer" class="bg-[rgb(15,19,35)] relative overflow-hidden">
     <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
     <div class="footer-topline relative z-10"></div>
-
-    <div
-      class="footer-body relative z-10 max-w-[1200px] mx-auto px-12 pt-16 pb-12 grid grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
-      <!-- Brand -->
+    <div class="footer-body relative z-10 max-w-[1200px] mx-auto px-12 pt-16 pb-12 grid grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
       <div>
-        <a href="index.html" class="flex items-center gap-3 no-underline mb-5">
-          <img src="assets/images/logo-dark.svg" alt="ETB Achouri Toufik" style="height:88px; margin-bottom:4px;">
-        </a>
-        <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7">Building tomorrow's landmarks with
-          precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
+        <a href="index.html" class="flex items-center gap-3 no-underline mb-5"><img src="assets/images/site-logo-dark.png" alt="Logo" style="height:88px;"></a>
+        <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7">Building tomorrow's landmarks with precision since 2009.</p>
         <ul class="list-none p-0 m-0 flex flex-col gap-3">
-          <li class="flex items-start gap-[10px]">
-            <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d"
-              stroke-width="2" stroke-linecap="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            <span class="text-[12.5px] text-white/55">Zone Industrielle, Blida, Algeria</span>
-          </li>
-          <li class="flex items-start gap-[10px]">
-            <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d"
-              stroke-width="2" stroke-linecap="round">
-              <path
-                d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-            </svg>
-            <a href="tel:+213000000000"
-              class="text-[12.5px] text-white/55 hover:text-gold transition-colors no-underline">+213 (0) 00 00 00
-              00</a>
-          </li>
-          <li class="flex items-start gap-[10px]">
-            <svg class="w-[14px] h-[14px] flex-shrink-0 mt-[2px]" viewBox="0 0 24 24" fill="none" stroke="#c19f5d"
-              stroke-width="2" stroke-linecap="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-              <polyline points="22,6 12,13 2,6" />
-            </svg>
-            <a href="mailto:contact@etbachouri.com"
-              class="text-[12.5px] text-white/55 hover:text-gold transition-colors no-underline">contact@etbachouri.com</a>
-          </li>
+          <li class="flex items-start gap-[10px] font-sans text-[12.5px] text-white/55"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Zone Industrielle, Blida, Algeria</li>
+          <li class="flex items-start gap-[10px] font-sans text-[12.5px] text-white/55"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg><a href="tel:+213000000000" class="hover:text-gold transition-colors">+213 (0) 00 00 00 00</a></li>
         </ul>
       </div>
-
-      <!-- Navigation -->
+      <div><div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5">Navigation</div><ul class="list-none p-0 m-0 space-y-2"><li><a href="index.html" class="fnav-link text-[13px] text-white/55">Home</a></li><li><a href="about.html" class="fnav-link text-[13px] text-white/55">About Us</a></li><li><a href="projects.html" class="fnav-link text-gold">Projects</a></li><li><a href="contact.html" class="fnav-link text-[13px] text-white/55">Contact</a></li></ul></div>
+      <div><div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5">Services</div><ul class="list-none p-0 m-0 space-y-2"><li><a href="services.html" class="fnav-link text-[13px] text-white/55">Construction</a></li><li><a href="services.html" class="fnav-link text-[13px] text-white/55">Industry</a></li><li><a href="services.html" class="fnav-link text-[13px] text-white/55">Management</a></li></ul></div>
       <div>
-        <div
-          class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">
-          Navigation</div>
-        <ul class="list-none p-0 m-0 flex flex-col gap-[10px]">
-          <li><a href="index.html" class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
-          <li><a href="about.html" class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
-          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
-          <li><a href="projects.html" class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
-          <li><a href="contact.html" class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
-        </ul>
-      </div>
-
-      <!-- Services -->
-      <div>
-        <div
-          class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">
-          Services</div>
-        <ul class="list-none p-0 m-0 flex flex-col gap-[10px]">
-          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Residential
-              Construction</a></li>
-          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Commercial Buildings</a>
-          </li>
-          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Industrial Works</a></li>
-          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Renovation &amp;
-              Retrofit</a></li>
-          <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Project Management</a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Newsletter -->
-      <div>
-        <div
-          class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">
-          Stay Informed</div>
-        <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.18)] rounded-[4px] p-7">
-          <p class="text-[12.5px] text-white/55 leading-[1.6] mb-5">Subscribe to receive updates on our latest projects,
-            industry insights, and company news.</p>
-          <div class="flex flex-col gap-[10px]">
-            <input type="email" placeholder="Your email address"
-              class="bg-white/5 border border-[rgba(193,159,93,0.25)] rounded-[3px] px-[14px] py-[10px] font-sans text-[12.5px] text-white placeholder-white/30 transition-all" />
-            <button type="button"
-              class="bg-gold font-condensed text-[12px] font-bold tracking-[1.8px] uppercase text-navy py-[10px] px-[18px] rounded-[3px] hover:opacity-88 transition-opacity cursor-pointer border-none shadow-md">Subscribe
-              &rarr;</button>
-          </div>
-        </div>
+        <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5">Newsletter</div>
+        <div class="bg-white/5 p-4 rounded"><p class="text-[11px] text-white/50 mb-3">Get our latest updates.</p><div class="flex gap-2"><input type="email" placeholder="Email" class="bg-white/10 border border-gold/20 text-xs px-3 py-2 w-full rouded"><button class="bg-gold text-navy font-bold text-[10px] px-3 rounded">GO</button></div></div>
       </div>
     </div>
-
-    <div class="relative z-10 max-w-[1200px] mx-auto px-12">
-      <hr class="border-none border-t border-[rgba(193,159,93,0.15)]" />
-    </div>
-
-    <div class="relative z-10 max-w-[1200px] mx-auto px-12 py-5 flex items-center justify-between gap-5 flex-wrap">
-      <p class="text-[11.5px] text-white/35">&copy; 2025 <a href="#"
-          class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri
-          Toufik</a>. All rights reserved.</p>
-      <div class="flex items-center gap-[10px]">
-        <a href="#"
-          class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all"
-          aria-label="Facebook"><svg class="w-[13px] h-[13px] fill-white/50 hover:fill-gold" viewBox="0 0 24 24">
-            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-          </svg></a>
-        <a href="#"
-          class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all"
-          aria-label="LinkedIn"><svg class="w-[13px] h-[13px] fill-white/50" viewBox="0 0 24 24">
-            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-            <circle cx="4" cy="4" r="2" />
-          </svg></a>
-      </div>
+    <div class="max-w-[1200px] mx-auto px-12 py-6 border-t border-white/5 flex justify-between items-center flex-wrap gap-4">
+      <p class="text-[11px] text-white/30">&copy; <span id="copyright-year">2025</span> <a href="#" class="text-gold/50 hover:text-gold transition-colors">EURL ETB Achouri Toufik</a>. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════ -->
+  <!-- Project Modal -->
+  <div id="project-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-6" style="display:none;">
+    <div id="modal-overlay" class="absolute inset-0 bg-[rgba(10,15,30,0.88)] backdrop-blur-sm"></div>
+    <div id="modal-box" class="relative z-10 bg-navy-card w-full max-w-2xl rounded-[4px] overflow-hidden flex flex-col md:flex-row max-h-[90vh]" style="border:1px solid rgba(193,159,93,0.25);">
+      <div class="md:w-[45%] flex-shrink-0 overflow-hidden min-h-[220px]"><img id="modal-img" src="" alt="" class="w-full h-full object-cover"></div>
+      <div class="flex flex-col p-8 overflow-y-auto flex-1">
+        <span id="modal-category" class="font-condensed text-[10px] tracking-[2px] uppercase text-gold"></span>
+        <h3 id="modal-name" class="font-condensed text-[1.6rem] font-bold text-white mt-1 leading-tight"></h3>
+        <p id="modal-city" class="text-muted text-sm mt-1 mb-5"></p>
+        <div class="space-y-3 mb-6 text-sm">
+          <div class="flex justify-between border-b border-white/5 pb-2"><span class="text-muted">Year</span><span id="modal-year" class="text-white"></span></div>
+          <div class="flex justify-between border-b border-white/5 pb-2"><span class="text-muted">Surface</span><span id="modal-area" class="text-white"></span></div>
+          <div class="flex justify-between border-b border-white/5 pb-2"><span class="text-muted">Status</span><span id="modal-status" class="text-white font-bold"></span></div>
+        </div>
+        <p id="modal-desc" class="text-white/60 text-sm leading-relaxed mb-8"></p>
+        <div class="mb-8"><div class="flex justify-between text-[10px] mb-2"><span class="text-white/40 uppercase">Completion</span><span id="modal-pct" class="text-gold"></span></div><div class="w-full h-[2px] bg-white/10 overflow-hidden"><div id="modal-bar" class="h-full bg-gold"></div></div></div>
+        <a href="contact.html" class="mt-auto block w-full text-center bg-gold text-navy font-condensed font-bold text-[11px] uppercase tracking-[2px] py-4 hover:bg-white transition-all no-underline">Discuss This Project &rarr;</a>
+      </div>
+      <button id="modal-close" class="absolute top-4 right-4 text-white/40 hover:text-gold text-xl bg-none border-none cursor-pointer">✕</button>
+    </div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script>
@@ -898,8 +625,6 @@
 
     window.addEventListener('load', () => {
       gsap.registerPlugin(ScrollTrigger);
-
-      // ═══════════ RENDER CARDS ═══════════
       const grid = document.getElementById('project-grid');
       Object.keys(projectData).forEach(id => {
         const p = projectData[id];
@@ -907,34 +632,15 @@
         card.className = `project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer`;
         card.setAttribute('data-category', p.category);
         card.setAttribute('data-id', id);
-        card.innerHTML = `
-      <img src="${p.image}" class="w-full h-full object-cover">
-      <div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.95)] to-transparent flex flex-col justify-end p-6">
-        <span class="font-condensed text-[9px] tracking-[2px] uppercase text-gold mb-1">${p.category}</span>
-        <h3 class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-1">${p.name}</h3>
-        <p class="text-[12px] text-white/60 mb-3">${p.city}, ${p.year}</p>
-        <div class="w-full h-[3px] bg-white/20 rounded mb-1">
-          <div class="h-full bg-gold" style="width: ${p.completion}%"></div>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-[10px] text-gold font-bold tracking-[1px] uppercase">${p.status} (${p.completion}%)</span>
-          <span class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold flex items-center gap-1">View Details <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg></span>
-        </div>
-      </div>
-    `;
+        card.innerHTML = `<img src="${p.image}" class="w-full h-full object-cover"><div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.95)] to-transparent flex flex-col justify-end p-6"><span class="font-condensed text-[9px] tracking-[2px] uppercase text-gold mb-1">${p.category}</span><h3 class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-1">${p.name}</h3><p class="text-[12px] text-white/60 mb-3">${p.city}, ${p.year}</p><div class="w-full h-[3px] bg-white/20 rounded mb-1"><div class="h-full bg-gold" style="width: ${p.completion}%"></div></div><div class="flex justify-between items-center"><span class="text-[10px] text-gold font-bold tracking-[1px] uppercase">${p.status} (${p.completion}%)</span><span class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold flex items-center gap-1">View Details <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"/></svg></span></div></div>`;
         grid.appendChild(card);
+        card.addEventListener('click', () => openModal(id));
       });
 
-      // ═══════════ MODAL LOGIC ═══════════
       const modal = document.getElementById('project-modal');
-      const modalBox = document.getElementById('modal-box');
-      const modalClose = document.getElementById('modal-close');
-      const modalOverlay = document.getElementById('modal-overlay');
-      let modalOpen = false;
-
+      const bar = document.getElementById('modal-bar');
       function openModal(id) {
-        const d = projectData[id];
-        if (!d) return;
+        const d = projectData[id]; if (!d) return;
         document.getElementById('modal-img').src = d.image;
         document.getElementById('modal-category').textContent = d.category;
         document.getElementById('modal-name').textContent = d.name;
@@ -944,251 +650,54 @@
         document.getElementById('modal-status').textContent = d.status;
         document.getElementById('modal-pct').textContent = d.completion + '%';
         document.getElementById('modal-desc').textContent = d.description;
-        gsap.set(document.getElementById('modal-bar'), { width: '0%' });
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' });
-        gsap.fromTo(modalBox, { scale: 0.94, y: 20 }, { scale: 1, y: 0, duration: 0.35, ease: 'power3.out' });
-        gsap.to(document.getElementById('modal-bar'), { width: d.completion + '%', duration: 0.8, ease: 'power2.out', delay: 0.3 });
-        modalOpen = true;
+        gsap.set(bar, { width: 0 }); modal.style.display = 'flex';
+        gsap.to(bar, { width: d.completion + '%', duration: 1, delay: 0.3 });
       }
+      document.getElementById('modal-close').addEventListener('click', () => modal.style.display='none');
+      document.getElementById('modal-overlay').addEventListener('click', () => modal.style.display='none');
 
-      function closeModal() {
-        if (!modalOpen) return;
-        gsap.to(modal, {
-          opacity: 0, duration: 0.2, ease: 'power2.in',
-          onComplete: () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-            modalOpen = false;
-          }
-        });
-      }
-
-      document.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('click', () => openModal(card.dataset.id));
-      });
-      modalClose.addEventListener('click', closeModal);
-      modalOverlay.addEventListener('click', closeModal);
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-      // ═══════════ MAP LOGIC ═══════════
-      const pins = document.querySelectorAll('.map-pin');
       const infoPanel = document.getElementById('map-info-panel');
-      const closeBtn = document.getElementById('map-panel-close');
-      const bar = document.getElementById('panel-bar');
-      const frame = document.getElementById('map-frame');
-      let activePin = null;
-      let isOpen = false;
-
-      // Ensure panel starts off-screen
+      const panelBar = document.getElementById('panel-bar');
       gsap.set(infoPanel, { x: '100%' });
-
-      function closePanel() {
-        if (!isOpen) return;
-        isOpen = false;
-
-        gsap.killTweensOf(infoPanel);
-        gsap.killTweensOf(bar);
-
-        gsap.to(infoPanel, {
-          x: '100%',
-          duration: 0.3,
-          ease: 'power2.in',
-          onComplete: () => {
-            gsap.set(bar, { width: '0%' });
-          }
-        });
-
-        if (activePin) {
-          activePin.classList.remove('active');
-          activePin = null;
-        }
-      }
-
-      function openPanel(project) {
-        const d = projectData[project];
-        if (!d) return;
-
-        document.getElementById('panel-category').textContent = d.category;
-        document.getElementById('panel-name').textContent = d.name;
-        document.getElementById('panel-city').textContent = d.city;
-        document.getElementById('panel-year').textContent = d.year;
-        document.getElementById('panel-area').textContent = d.area;
-        document.getElementById('panel-status').textContent = d.status;
-        document.getElementById('panel-pct').textContent = d.completion + '%';
-
-        const descEl = document.getElementById('panel-desc');
-        if (descEl) descEl.textContent = d.description;
-
-        gsap.killTweensOf(infoPanel);
-        gsap.killTweensOf(bar);
-        gsap.set(bar, { width: '0%' });
-
-        gsap.fromTo(infoPanel, { x: '100%' }, { x: '0%', duration: 0.4, ease: 'power3.out' });
-        gsap.to(bar, { width: d.completion + '%', duration: 0.8, ease: 'power2.out', delay: 0.35 });
-
-        isOpen = true;
-      }
-
-      pins.forEach(pin => {
-        pin.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const slug = pin.getAttribute('data-project');
-          if (activePin === pin) {
-            closePanel();
-            return;
-          }
-          if (activePin) activePin.classList.remove('active');
-          activePin = pin;
-          pin.classList.add('active');
-          openPanel(slug);
+      document.querySelectorAll('.map-pin').forEach(pin => {
+        pin.addEventListener('click', () => {
+          const d = projectData[pin.dataset.project]; if (!d) return;
+          document.getElementById('panel-category').textContent = d.category;
+          document.getElementById('panel-name').textContent = d.name;
+          document.getElementById('panel-city').textContent = d.city;
+          document.getElementById('panel-year').textContent = d.year;
+          document.getElementById('panel-area').textContent = d.area;
+          document.getElementById('panel-status').textContent = d.status;
+          document.getElementById('panel-pct').textContent = d.completion + '%';
+          document.getElementById('panel-desc').textContent = d.description;
+          gsap.set(panelBar, { width: 0 });
+          gsap.to(infoPanel, { x: 0, duration: 0.5 });
+          gsap.to(panelBar, { width: d.completion + '%', duration: 1, delay: 0.3 });
         });
       });
+      document.getElementById('map-panel-close').addEventListener('click', () => gsap.to(infoPanel, { x: '100%', duration: 0.4 }));
 
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closePanel();
-      });
-
-      document.addEventListener('click', (e) => {
-        if (isOpen && !frame.contains(e.target)) {
-          closePanel();
-        }
-      });
-
-      // ═══════════ FILTER LOGIC ═══════════
-      const filterBtns = document.querySelectorAll('.filter-btn');
-      filterBtns.forEach(btn => {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          const filter = btn.getAttribute('data-filter');
-
-          filterBtns.forEach(b => b.classList.remove('filter-btn-active'));
+          const f = btn.dataset.filter;
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn-active'));
           btn.classList.add('filter-btn-active');
-
-          // Filter cards
-          document.querySelectorAll('.project-card').forEach(card => {
-            if (filter === 'all' || card.getAttribute('data-category') === filter) {
-              card.style.display = 'block';
-              gsap.fromTo(card, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4 });
-            } else {
-              card.style.display = 'none';
-            }
-          });
-
-          // Highlight pins
-          pins.forEach(pin => {
-            const slug = pin.getAttribute('data-project');
-            const p = projectData[slug];
-            if (filter === 'all' || p.category === filter) {
-              pin.style.opacity = '1';
-              pin.style.transform = 'translate(-50%, -100%) scale(1)';
-            } else {
-              pin.style.opacity = '0.25';
-              pin.style.transform = 'translate(-50%, -100%) scale(0.85)';
-            }
+          document.querySelectorAll('.project-card').forEach(c => {
+            c.style.display = (f === 'all' || c.dataset.category === f) ? 'block' : 'none';
           });
         });
       });
 
-      // ═══════════ HERO ANIMATION ═══════════
-      const heroTl = gsap.timeline({ delay: 0.1 });
-      heroTl
-        .from('#hero-eyebrow', { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' })
-        .from('#hero-title', { opacity: 0, y: 30, duration: 0.6, ease: 'power2.out' }, '-=0.3')
-        .from('#hero-subtext', { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' }, '-=0.3')
-        .from('#hero-breadcrumb', { opacity: 0, scale: 0.95, duration: 0.4, ease: 'power2.out' }, '-=0.2');
-
-      // ═══════════ SECTION ANIMATIONS ═══════════
-      gsap.from('#map-header', {
-        scrollTrigger: { trigger: '#map-header', start: 'top 85%', once: true },
-        y: 30, opacity: 0, duration: 0.6
-      });
-
-      gsap.from('#project-map', {
-        scrollTrigger: { trigger: '#project-map', start: 'top 80%', once: true },
-        scale: 0.96, opacity: 0, duration: 0.8, ease: 'power2.out'
-      });
-
-      gsap.from('.map-pin', {
-        scrollTrigger: { trigger: '#map-frame', start: 'top 75%', once: true },
-        scale: 0, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'back.out(1.7)'
-      });
-
-      gsap.from('#cards-header', {
-        scrollTrigger: { trigger: '#cards-header', start: 'top 85%', once: true },
-        x: -30, opacity: 0, duration: 0.6
-      });
-
-      gsap.from('.project-card', {
-        scrollTrigger: { trigger: '#project-grid', start: 'top 82%', once: true },
-        y: 55, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
-      });
-
-      gsap.from('#projects-cta', {
-        scrollTrigger: { trigger: '#projects-cta', start: 'top 85%', once: true },
-        y: 40, opacity: 0, duration: 0.6
-      });
-
-      // ═══════════ HAMBURGER ═══════════
       const hamburger = document.getElementById('hamburger');
       const drawer = document.getElementById('nav-drawer');
       hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('open');
         drawer.classList.toggle('open');
       });
+
+      const yearSpan = document.getElementById('copyright-year');
+      if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     });
   </script>
-  <!-- Project Modal -->
-  <div id="project-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-6" style="display:none;">
-    <div id="modal-overlay" class="absolute inset-0 bg-[rgba(10,15,30,0.88)] backdrop-blur-sm"></div>
-    <div id="modal-box"
-      class="relative z-10 bg-navy-card w-full max-w-2xl rounded-[4px] overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
-      style="border:1px solid rgba(193,159,93,0.25);">
-      <div class="md:w-[45%] flex-shrink-0 overflow-hidden" style="min-height:220px;">
-        <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
-      </div>
-      <div class="flex flex-col p-8 overflow-y-auto flex-1">
-        <span id="modal-category" class="font-condensed text-[10px] tracking-[2px] uppercase text-gold"></span>
-        <h3 id="modal-name" class="font-condensed text-[1.6rem] font-bold text-white mt-1 leading-tight"></h3>
-        <p id="modal-city" class="text-muted text-sm mt-1"></p>
-        <div class="mt-5 flex flex-col gap-3 text-sm">
-          <div
-            style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
-            <span class="text-muted">Year</span>
-            <span id="modal-year" class="text-white font-medium"></span>
-          </div>
-          <div
-            style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
-            <span class="text-muted">Surface</span>
-            <span id="modal-area" class="text-white font-medium"></span>
-          </div>
-          <div
-            style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px;">
-            <span class="text-muted">Status</span>
-            <span id="modal-status" class="text-white font-medium"></span>
-          </div>
-        </div>
-        <p id="modal-desc" class="text-white/60 text-sm mt-5 leading-relaxed"></p>
-        <div class="mt-5">
-          <div
-            style="display:flex; justify-content:space-between; font-size:0.75rem; color:#5a5f72; margin-bottom:6px;">
-            <span>Completion</span>
-            <span id="modal-pct" class="text-gold font-medium"></span>
-          </div>
-          <div style="width:100%; height:5px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,0.08);">
-            <div id="modal-bar" style="width:0%; height:100%; border-radius:999px; background:#c19f5d;"></div>
-          </div>
-        </div>
-        <a href="contact.html"
-          class="mt-auto pt-8 block w-full text-center bg-gold text-navy font-condensed font-bold text-[11px] uppercase tracking-[2px] py-3 hover:bg-white transition-all no-underline">
-          Discuss This Project &rarr;
-        </a>
-      </div>
-      <button id="modal-close"
-        class="absolute top-4 right-4 z-20 text-muted hover:text-gold transition-colors text-xl leading-none bg-none border-none cursor-pointer">✕</button>
-    </div>
-  </div>
 </body>
-
 </html>
