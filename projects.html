@@ -196,11 +196,17 @@
       position: relative;
       flex-shrink: 0;
       width: 65%;
+      aspect-ratio: 16 / 9;
       background: #0a0f1e;
       background-image:
         linear-gradient(rgba(193, 159, 93, 0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(193, 159, 93, 0.04) 1px, transparent 1px);
       background-size: 80px 80px;
+    }
+
+    #map-left-col > img {
+      display: block;
+      object-position: center bottom;
     }
 
     #map-right-col {
@@ -280,12 +286,20 @@
       background: none;
       border: none;
       padding: 0;
-      transition: transform 0.2s;
+      transition: transform 0.2s, opacity 0.25s ease;
+    }
+    .map-pin svg {
+      width: 26.4px;
+      height: 26.4px;
+      display: block;
+    }
+    .map-pin.map-pin--filter-dim {
+      opacity: 0.32;
+      z-index: 8;
     }
     .map-pin:hover { transform: translate(-50%, -100%) scale(1.15); }
     .map-pin-label {
       position: absolute;
-      bottom: -18px;
       left: 50%;
       transform: translateX(-50%);
       white-space: nowrap;
@@ -295,7 +309,22 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: #c19f5d;
-      opacity: 0.7;
+      pointer-events: none;
+      bottom: -18px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 12;
+    }
+    .map-pin-label--above {
+      bottom: 100%;
+      margin-bottom: 2px;
+    }
+    .map-pin:hover .map-pin-label,
+    .map-pin:focus-visible .map-pin-label,
+    .map-pin.map-pin--active .map-pin-label {
+      opacity: 1;
+      visibility: visible;
     }
 
     .filter-btn-active {
@@ -467,31 +496,61 @@
       </div>
 
       <div id="map-frame" class="flex flex-col md:flex-row relative">
-        <div id="map-left-col" class="w-full md:w-[65%] h-[600px] relative">
+        <div id="map-left-col" class="w-full md:w-[65%] relative">
           <img src="assets/images/dz-05.svg" alt="Map" class="w-full h-full object-cover opacity-60">
-          
-          <!-- Pin: Algiers -->
-          <button class="map-pin" style="left:51%; top:18%;" data-project="algiers-tower" aria-label="Algiers">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label">Algiers</span>
+
+          <!-- Pin: Oran — mockup: label above -->
+          <button type="button" class="map-pin" style="left:15%; top:calc(38% + 3px);" data-project="oran-warehouse" data-category="industrial" aria-label="Oran">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label map-pin-label--above">Oran</span>
           </button>
-          
-          <!-- Pin: Blida -->
-          <button class="map-pin" style="left:48%; top:23%;" data-project="blida-complex" aria-label="Blida">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+
+          <!-- Pin: Chlef — mockup: label above -->
+          <button type="button" class="map-pin" style="left:30.5%; top:calc(25% + 3px);" data-project="chlef-hub" data-category="industrial" aria-label="Chlef">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label map-pin-label--above">Chlef</span>
+          </button>
+
+          <!-- Pin: Ain Defla — mockup: label above -->
+          <button type="button" class="map-pin" style="left:37.5%; top:28%;" data-project="ain-defla-works" data-category="industrial" aria-label="Ain Defla">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label map-pin-label--above">Ain Defla</span>
+          </button>
+
+          <!-- Pin: Khemis Miliana — mockup: label below -->
+          <button type="button" class="map-pin" style="left:42%; top:29%;" data-project="khemis-campus" data-category="commercial" aria-label="Khemis Miliana">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label">Khemis Miliana</span>
+          </button>
+
+          <!-- Pin: Blida — mockup: label below -->
+          <button type="button" class="map-pin" style="left:46.5%; top:calc(21% + 3px);" data-project="blida-complex" data-category="residential" aria-label="Blida">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
             <span class="map-pin-label">Blida</span>
           </button>
 
-          <!-- Pin: Oran -->
-          <button class="map-pin" style="left:20%; top:35%;" data-project="oran-warehouse" aria-label="Oran">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label">Oran</span>
+          <!-- Pin: Algiers — mockup: label above -->
+          <button type="button" class="map-pin" style="left:49%; top:calc(16% + 3px);" data-project="algiers-tower" data-category="commercial" aria-label="Algiers">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label map-pin-label--above">Algiers</span>
           </button>
 
-          <!-- Pin: Constantine -->
-          <button class="map-pin" style="left:82%; top:24%;" data-project="constantine-mall" aria-label="Constantine">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+          <!-- Pin: Setif — mockup: label below -->
+          <button type="button" class="map-pin" style="left:71%; top:28%;" data-project="setif-factory" data-category="industrial" aria-label="Setif">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label">Setif</span>
+          </button>
+
+          <!-- Pin: Constantine — mockup: label below -->
+          <button type="button" class="map-pin" style="left:81.5%; top:24%;" data-project="constantine-mall" data-category="commercial" aria-label="Constantine">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
             <span class="map-pin-label">Constantine</span>
+          </button>
+
+          <!-- Pin: Djelfa — mockup: label below -->
+          <button type="button" class="map-pin" style="left:54%; top:66%;" data-project="djelfa-hub" data-category="industrial" aria-label="Djelfa">
+            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
+            <span class="map-pin-label">Djelfa</span>
           </button>
         </div>
 
@@ -616,6 +675,10 @@
       "algiers-tower": { name: "Algiers Business Tower", city: "Algiers", category: "commercial", year: "2023", area: "12,400 m²", status: "Completed", completion: 100, description: "A 14-floor commercial tower in the heart of Algiers featuring modern façade engineering and smart building systems.", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" },
       "blida-complex": { name: "Blida Residential Complex", city: "Blida", category: "residential", year: "2024", area: "8,200 m²", status: "In Progress", completion: 74, description: "72-unit residential complex with underground parking and landscaped communal areas.", image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80" },
       "oran-warehouse": { name: "Oran Industrial Warehouse", city: "Oran", category: "industrial", year: "2022", area: "18,500 m²", status: "Completed", completion: 100, description: "High-capacity logistics and storage facility built to international industrial standards.", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" },
+      "chlef-hub": { name: "Chlef Distribution Hub", city: "Chlef", category: "industrial", year: "2023", area: "6,800 m²", status: "Completed", completion: 100, description: "Regional distribution hub with climate-controlled storage and truck docking for the coastal corridor.", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" },
+      "ain-defla-works": { name: "Aïn Defla Works Yard", city: "Aïn Defla", category: "industrial", year: "2021", area: "4,200 m²", status: "Completed", completion: 100, description: "Equipment maintenance and precast yard supporting infrastructure projects across the Hauts Plateaux.", image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" },
+      "khemis-campus": { name: "Khemis Miliana Civic Annex", city: "Khemis Miliana", category: "commercial", year: "2022", area: "3,100 m²", status: "Completed", completion: 100, description: "Administrative annex and public meeting spaces with reinforced concrete frame and natural ventilation.", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80" },
+      "djelfa-hub": { name: "Djelfa Logistics Platform", city: "Djelfa", category: "industrial", year: "2024", area: "11,200 m²", status: "In Progress", completion: 55, description: "Central high-plateau logistics hub linking northern industrial corridors with southern routes.", image: "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80" },
       "constantine-mall": { name: "Constantine Retail Centre", city: "Constantine", category: "commercial", year: "2023", area: "9,700 m²", status: "Completed", completion: 100, description: "Multi-level retail and dining complex featuring open-plan floor layouts and natural lighting design.", image: "https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=800&q=80" },
       "annaba-residences": { name: "Annaba Coastal Residences", city: "Annaba", category: "residential", year: "2025", area: "5,400 m²", status: "In Progress", completion: 38, description: "Seaside residential development comprising 48 premium apartments with panoramic sea-facing balconies.", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" },
       "tizi-school": { name: "Tizi Ouzou School Campus", city: "Tizi Ouzou", category: "commercial", year: "2022", area: "6,100 m²", status: "Completed", completion: 100, description: "Two-block secondary school campus with sports facilities, built under a government infrastructure contract.", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80" },
@@ -636,6 +699,18 @@
         grid.appendChild(card);
         card.addEventListener('click', () => openModal(id));
       });
+
+      function applyPortfolioFilter(filter) {
+        document.querySelectorAll('.project-card').forEach(c => {
+          c.style.display = (filter === 'all' || c.dataset.category === filter) ? 'block' : 'none';
+        });
+        document.querySelectorAll('.map-pin').forEach(pin => {
+          const cat = pin.dataset.category;
+          const match = filter === 'all' || cat === filter;
+          pin.classList.toggle('map-pin--filter-dim', filter !== 'all' && !match);
+        });
+      }
+      applyPortfolioFilter('all');
 
       const modal = document.getElementById('project-modal');
       const bar = document.getElementById('modal-bar');
@@ -658,10 +733,16 @@
 
       const infoPanel = document.getElementById('map-info-panel');
       const panelBar = document.getElementById('panel-bar');
+      const allMapPins = () => document.querySelectorAll('.map-pin');
+      function clearMapPinActive() {
+        allMapPins().forEach(p => p.classList.remove('map-pin--active'));
+      }
       gsap.set(infoPanel, { x: '100%' });
       document.querySelectorAll('.map-pin').forEach(pin => {
         pin.addEventListener('click', () => {
           const d = projectData[pin.dataset.project]; if (!d) return;
+          clearMapPinActive();
+          pin.classList.add('map-pin--active');
           document.getElementById('panel-category').textContent = d.category;
           document.getElementById('panel-name').textContent = d.name;
           document.getElementById('panel-city').textContent = d.city;
@@ -675,16 +756,17 @@
           gsap.to(panelBar, { width: d.completion + '%', duration: 1, delay: 0.3 });
         });
       });
-      document.getElementById('map-panel-close').addEventListener('click', () => gsap.to(infoPanel, { x: '100%', duration: 0.4 }));
+      document.getElementById('map-panel-close').addEventListener('click', () => {
+        clearMapPinActive();
+        gsap.to(infoPanel, { x: '100%', duration: 0.4 });
+      });
 
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const f = btn.dataset.filter;
           document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn-active'));
           btn.classList.add('filter-btn-active');
-          document.querySelectorAll('.project-card').forEach(c => {
-            c.style.display = (f === 'all' || c.dataset.category === f) ? 'block' : 'none';
-          });
+          applyPortfolioFilter(f);
         });
       });
 
