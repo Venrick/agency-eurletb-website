@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quality & HSE Policy | EURL ETB Achouri Toufik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#1e243c',
+            'navy-dark': 'rgb(15,19,35)',
+            'navy-card': '#1a2036',
+            gold:  '#c19f5d',
+            'light-bg': '#f4f4f2',
+            muted: '#5a5f72',
+          },
+          fontFamily: {
+            sans:      ['Lato', 'sans-serif'],
+            barlow:    ['Barlow', 'sans-serif'],
+            condensed: ['Barlow Condensed', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ── Blueprint grid ── */
+    .blueprint-subtle { background-image: linear-gradient(rgba(193,159,93,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(193,159,93,.04) 1px,transparent 1px); background-size:48px 48px; }
+    
+    /* ── Nav active underline ── */
+    .nav-link { position:relative; padding-bottom:4px; }
+    .nav-link.active { color:#fff !important; }
+    .nav-link.active::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:2px; background:#c19f5d; }
+    
+    /* ── Hamburger ── */
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { width:24px; height:2px; background:#fff; display:block; transition:all .3s; transform-origin:center; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    
+    /* ── Mobile drawer ── */
+    .nav-drawer { max-height:0; overflow:hidden; transition:max-height .35s ease; background:#1e243c; }
+    .nav-drawer.open { max-height:450px; }
+    .nav-drawer a { display:block; padding:12px 24px; color:rgba(255,255,255,.75); text-decoration:none; font-size:14px; font-weight:500; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid rgba(193,159,93,.1); transition:color .2s; }
+    .nav-drawer a:hover,.nav-drawer a.active { color:#c19f5d; }
+    
+    /* ── Policy card ── */
+    .policy-card { transition:transform .25s,box-shadow .25s; position:relative; }
+    .policy-card::before { content:''; position:absolute; top:0; left:0; height:3px; width:0; background:#c19f5d; transition:width 0.4s ease; }
+    .policy-card:hover::before { width:100%; }
+    .policy-card:hover { transform:translateY(-4px); box-shadow:0 8px 32px rgba(30,36,60,.12); }
+
+    /* ── HSE card dark version ── */
+    .hse-card { transition:transform .25s,box-shadow .25s,border-color .25s; position:relative; }
+    .hse-card::before { content:''; position:absolute; top:0; left:0; height:3px; width:0; background:#c19f5d; transition:width 0.4s ease; }
+    .hse-card:hover::before { width:100%; }
+    .hse-card:hover { transform:translateY(-4px); border-color:rgba(193,159,93,0.4); box-shadow:0 12px 36px rgba(0,0,0,0.35); }
+    
+    /* ── Footer topline ── */
+    .footer-topline { height:3px; background:linear-gradient(to right,transparent,#c19f5d 20%,#c19f5d 80%,transparent); }
+    
+    /* ── Footer nav link ── */
+    .fnav-link { transition:color .2s,padding-left .2s; display:flex; align-items:center; gap:0; }
+    .fnav-link::before { content:''; width:0; height:1px; background:#c19f5d; display:inline-block; transition:width .2s,margin-right .2s; }
+    .fnav-link:hover { color:#fff !important; padding-left:4px; }
+    .fnav-link:hover::before { width:14px; margin-right:6px; }
+    
+    /* ── Input focus ── */
+    input:focus,textarea:focus { outline:none; border-color:#c19f5d !important; background:rgba(193,159,93,.05) !important; }
+    
+    /* ── Responsive ── */
+    @media(max-width:768px) {
+      .hamburger { display:flex; }
+      .nav-desktop { display:none !important; }
+    }
+    @media(min-width:769px) { .nav-drawer { display:none !important; } }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1e243c; }
+    ::-webkit-scrollbar-thumb { background: #c19f5d; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #d4b170; }
+    
+    /* ── PDF accordion toggle ── */
+    .pdf-toggle { display:inline-flex; align-items:center; gap:8px; cursor:pointer; background:transparent; }
+    .pdf-toggle .chevron { display:inline-block; transition:transform .35s ease; }
+    .pdf-toggle.active .chevron { transform:rotate(180deg); }
+    .pdf-panel { max-height:0; overflow:hidden; opacity:0; }
+    .pdf-panel iframe { width:100%; min-height:300px; height:400px; border:1px solid rgba(193,159,93,0.3); border-radius:4px; background:#fff; display:block; }
+    @media(min-width:640px) { .pdf-panel iframe { height:600px; } }
+  </style>
+</head>
+<body class="font-sans text-navy bg-white">
+
+<!-- ═══════════════════════════════ NAVBAR ═══════════════════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-[100] flex flex-col">
+  <!-- Top bar -->
+  <div id="topbar" class="bg-[rgba(15,19,35,0.95)] border-b border-[rgba(193,159,93,0.15)] flex items-center justify-between px-4 md:px-12 h-9">
+    <div class="flex items-center gap-3 md:gap-7">
+      <a href="tel:+213000000000" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
+        <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="hidden md:inline">+213 (0) 00 00 00 00</span>
+        <span class="md:hidden">Call</span>
+      </a>
+      <a href="mailto:contact@etbachouri.com" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
+        <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="hidden sm:inline">contact@etbachouri.com</span>
+        <span class="sm:hidden">Email</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="#" class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all" aria-label="Facebook">
+        <svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      </a>
+      <a href="#" class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all" aria-label="LinkedIn">
+        <svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main bar -->
+  <div id="mainbar" class="bg-navy flex items-center justify-between px-12 h-[110px] border-b-[3px] border-gold">
+    <a href="index.html" class="flex items-center no-underline">
+      <img src="assets/images/site-logo-dark.png" alt="ETB Achouri Toufik" class="logo-light" style="height:84px;">
+    </a>
+
+    <div class="flex items-center gap-9">
+      <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
+        <li><a href="index.html"       class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a></li>
+        <li><a href="about.html"       class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a></li>
+        <li><a href="services.html"    class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a></li>
+        <li><a href="projects.html"    class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a></li>
+        <li><a href="quality-hse.html" class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Quality & HSE</a></li>
+        <li><a href="contact.html"     class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a></li>
+      </ul>
+      
+      <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="quality-hse.html">Quality & HSE</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section id="quality-hero" class="relative min-h-[520px] bg-navy pt-[160px] pb-32 flex items-center overflow-hidden border-b-[3px] border-gold">
+  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+     style="background-image:url('assets/images/iso.jpg'); opacity:0.18;">
+  </div>
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+  
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12 text-center">
+    <div id="hero-eyebrow" class="inline-flex items-center gap-3 mb-6">
+      <span class="w-10 h-[1px] bg-gold inline-block"></span>
+      <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Operational Excellence &amp; Responsibility</span>
+      <span class="w-10 h-[1px] bg-gold inline-block"></span>
+    </div>
+    
+    <h1 id="hero-title" class="font-condensed text-[clamp(40px,6vw,64px)] font-extrabold text-white leading-[1.1] mb-6">
+      Quality &amp; <span class="text-gold">HSE Policy</span>
+    </h1>
+    
+    <p id="hero-subtext" class="text-[15px] text-white/65 max-w-[620px] mx-auto mb-8 leading-[1.75]">
+      Delivering engineering and construction excellence with an uncompromising commitment to quality control, site health and safety, and environmental stewardship across all operations.
+    </p>
+    
+    <div id="hero-breadcrumb" class="font-condensed text-[12px] font-bold tracking-[1.5px] uppercase text-white/35 flex justify-center items-center gap-2">
+      <a href="index.html" class="hover:text-gold transition-colors no-underline">Home</a>
+      <span class="text-gold">/</span>
+      <span class="text-white">Quality &amp; HSE Policy</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 1: QUALITY POLICY ═══════════════════════════════ -->
+<section id="quality-policy" class="bg-light-bg py-24 px-12">
+  <div class="max-w-[1200px] mx-auto">
+    <!-- Section Header -->
+    <div id="quality-header" class="text-center max-w-[760px] mx-auto mb-16">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Pillar 01</span>
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+      </div>
+      <h2 class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-6">
+        Quality <span class="text-gold">Policy</span>
+      </h2>
+      <p class="text-[15px] text-muted leading-[1.8]">
+        At EURL ETB Achouri Toufik, quality is an integral part of our corporate identity. We actively structure our operational processes and quality management system around international standards.
+      </p>
+    </div>
+
+    <!-- ISO 9001 Alignment Commitment Banner -->
+    <div id="iso-banner" class="bg-white border border-[rgba(193,159,93,0.3)] rounded-[4px] p-8 md:p-10 mb-16 shadow-[0_4px_24px_rgba(30,36,60,0.05)] relative overflow-hidden">
+      <div class="absolute top-0 left-0 bottom-0 w-[5px] bg-gold"></div>
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div class="max-w-[800px]">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-[rgba(193,159,93,0.12)] border border-[rgba(193,159,93,0.25)] rounded-[3px] mb-3">
+            <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+            <span class="font-condensed text-[11px] font-bold tracking-[1.5px] uppercase text-navy">Active Strategic Initiative</span>
+          </div>
+          <h3 class="font-condensed text-[24px] font-extrabold text-navy mb-3">
+            Pursuing ISO 9001:2015 Quality Management Alignment
+          </h3>
+          <p class="text-[14px] text-muted leading-[1.75]">
+            We are actively implementing comprehensive Quality Management System (QMS) frameworks designed to align directly with the ISO 9001:2015 standard. This ongoing journey reflects our structured commitment to systematic operational control, continuous improvement, and standardized execution across all building construction, public works, and hydraulics projects.
+          </p>
+        </div>
+        <div class="flex-shrink-0 bg-navy text-white px-6 py-5 rounded-[4px] border border-[rgba(193,159,93,0.25)] text-center min-w-[200px]">
+          <span class="block font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">Standard Target</span>
+          <span class="block font-condensed text-[22px] font-extrabold text-white">ISO 9001:2015</span>
+          <span class="block text-[11px] text-white/50 mt-1 uppercase tracking-[0.5px]">Alignment In Progress</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quality Commitments Grid -->
+    <div id="quality-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- 01: Reliability in BTPH -->
+      <div class="policy-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/>
+            <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/>
+            <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/>
+            <path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">Core Sector Reliability</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Guaranteeing flawless execution, technical precision, and structural durability across building construction, public works, and hydraulics (BTPH).
+        </p>
+      </div>
+
+      <!-- 02: Legal & Contractual Compliance -->
+      <div class="policy-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <path d="m9 15 2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">Rigorous Compliance</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Strict adherence to client specifications, regulatory legal frameworks, national technical codes, and contractual standards on every project.
+        </p>
+      </div>
+
+      <!-- 03: Operational Control on Worksites -->
+      <div class="policy-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+            <path d="m9 10 2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">Operational Jobsite Control</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Enforcing standardized quality checks, material sampling, and phase-by-phase site supervision to eliminate defects before handover.
+        </p>
+      </div>
+
+      <!-- 04: Staff Competency Development -->
+      <div class="policy-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">Staff Competency Development</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Continuous professional development and skill elevation for our engineers, site supervisors, and field technicians to maintain technical excellence.
+        </p>
+      </div>
+
+      <!-- 05: Continuous QMS Improvement -->
+      <div class="policy-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6"/>
+            <path d="M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">Continuous QMS Improvement</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Regularly auditing and refining our quality workflows to enhance operational productivity, lower risks, and elevate client satisfaction.
+        </p>
+      </div>
+
+      <!-- 06: Durable Partnerships -->
+      <div class="policy-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <polyline points="16 11 18 13 22 9"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">Durable Relationships</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Establishing transparent, long-term relationships with clients, suppliers, and partners based on trust, mutual accountability, and value.
+        </p>
+      </div>
+
+      <!-- 07: Risk & Opportunity Approach (Full Width or 3rd column item) -->
+      <div class="policy-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)] lg:col-span-3">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+          <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center flex-shrink-0">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-barlow text-[18px] font-semibold text-navy mb-2">Risk &amp; Opportunity Management</h3>
+            <p class="text-[13.5px] text-muted leading-[1.7]">
+              Integrating proactive risk assessment and opportunity analysis across all operational decision-making. By identifying potential project constraints early and capitalizing on technical innovations, we safeguard project budgets, timelines, and quality benchmarks.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- View Signed Policy Document - Quality -->
+    <div class="text-center mt-16">
+      <button onclick="togglePDF('quality-pdf', this)" class="pdf-toggle font-condensed text-[12px] font-bold tracking-[2px] uppercase text-gold border border-gold px-8 py-4 rounded-[3px] hover:bg-gold hover:text-navy transition-all no-underline bg-transparent cursor-pointer">
+        <svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        View Signed Policy Document
+      </button>
+    </div>
+    <div id="quality-pdf" class="pdf-panel max-w-[1000px] mx-auto mt-6">
+      <iframe src="assets/docs/politique-qualite.pdf" title="Quality Policy Document" loading="lazy"></iframe>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 2: HSE POLICY ═══════════════════════════════ -->
+<section id="hse-policy" class="bg-navy relative py-24 px-12 text-white border-y-[3px] border-gold overflow-hidden">
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none opacity-40"></div>
+  
+  <div class="relative z-10 max-w-[1200px] mx-auto">
+    <!-- Section Header -->
+    <div id="hse-header" class="text-center max-w-[780px] mx-auto mb-16">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Pillar 02</span>
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+      </div>
+      <h2 class="font-condensed text-[clamp(22px,4vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-6 whitespace-nowrap">HSE Policy <span class="text-gold">(Health, Safety &amp; Environment)</span></h2>
+      <p class="text-[15px] text-white/65 leading-[1.8]">
+        We are dedicated to establishing and maintaining safe, healthy, and environmentally responsible worksites for all personnel, subcontractors, clients, and site visitors across every job location.
+      </p>
+    </div>
+
+    <!-- HSE Pillars Grid -->
+    <div id="hse-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      
+      <!-- 01: Legal HSE Compliance -->
+      <div class="hse-card bg-navy-card border border-[rgba(193,159,93,0.18)] rounded-[4px] p-8 flex flex-col">
+        <div class="w-14 h-14 bg-[rgba(193,159,93,0.1)] border border-[rgba(193,159,93,0.3)] rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-white mb-3">Legal HSE Compliance</h3>
+        <p class="text-[13.5px] text-white/60 leading-[1.7]">
+          Strict compliance with national health, safety, and environmental legislation, regulatory guidelines, and applicable construction codes.
+        </p>
+      </div>
+
+      <!-- 02: Risk Identification & Control -->
+      <div class="hse-card bg-navy-card border border-[rgba(193,159,93,0.18)] rounded-[4px] p-8 flex flex-col">
+        <div class="w-14 h-14 bg-[rgba(193,159,93,0.1)] border border-[rgba(193,159,93,0.3)] rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-white mb-3">Risk Identification &amp; Control</h3>
+        <p class="text-[13.5px] text-white/60 leading-[1.7]">
+          Systematic hazard evaluation, site risk assessments, and implementation of control measures before work commences on any site.
+        </p>
+      </div>
+
+      <!-- 03: Accident & Incident Prevention -->
+      <div class="hse-card bg-navy-card border border-[rgba(193,159,93,0.18)] rounded-[4px] p-8 flex flex-col">
+        <div class="w-14 h-14 bg-[rgba(193,159,93,0.1)] border border-[rgba(193,159,93,0.3)] rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-white mb-3">Accident &amp; Incident Prevention</h3>
+        <p class="text-[13.5px] text-white/60 leading-[1.7]">
+          Relentless pursuit of a zero-incident environment through rigorous safety protocols, proactive hazard reporting, and rapid corrective action.
+        </p>
+      </div>
+
+      <!-- 04: Health & Safety Protection -->
+      <div class="hse-card bg-navy-card border border-[rgba(193,159,93,0.18)] rounded-[4px] p-8 flex flex-col">
+        <div class="w-14 h-14 bg-[rgba(193,159,93,0.1)] border border-[rgba(193,159,93,0.3)] rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-white mb-3">Health &amp; Workplace Protection</h3>
+        <p class="text-[13.5px] text-white/60 leading-[1.7]">
+          Protecting physical health and ergonomics for workers, subcontractors, visitors, and clients through complete PPE mandates and medical safeguards.
+        </p>
+      </div>
+
+      <!-- 05: Environmental Impact Reduction -->
+      <div class="hse-card bg-navy-card border border-[rgba(193,159,93,0.18)] rounded-[4px] p-8 flex flex-col">
+        <div class="w-14 h-14 bg-[rgba(193,159,93,0.1)] border border-[rgba(193,159,93,0.3)] rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-white mb-3">Environmental Impact Reduction</h3>
+        <p class="text-[13.5px] text-white/60 leading-[1.7]">
+          Minimizing ecological footprint through pollution prevention, responsible site waste management, efficient resource utilization, and eco-friendly construction.
+        </p>
+      </div>
+
+      <!-- 06: HSE Training Culture -->
+      <div class="hse-card bg-navy-card border border-[rgba(193,159,93,0.18)] rounded-[4px] p-8 flex flex-col">
+        <div class="w-14 h-14 bg-[rgba(193,159,93,0.1)] border border-[rgba(193,159,93,0.3)] rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-white mb-3">Staff HSE Training Culture</h3>
+        <p class="text-[13.5px] text-white/60 leading-[1.7]">
+          Fostering continuous safety awareness through site inductions, mandatory toolbox talks, emergency response drills, and active employee engagement.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- View Signed Policy Document - HSE -->
+    <div class="text-center mt-16">
+      <button onclick="togglePDF('hse-pdf', this)" class="pdf-toggle font-condensed text-[12px] font-bold tracking-[2px] uppercase text-gold border border-gold px-8 py-4 rounded-[3px] hover:text-white hover:border-white transition-all no-underline bg-transparent cursor-pointer">
+        <svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        View Signed Policy Document
+      </button>
+    </div>
+    <div id="hse-pdf" class="pdf-panel max-w-[1000px] mx-auto mt-6">
+      <iframe src="assets/docs/politique-hse.pdf" title="HSE Policy Document" loading="lazy"></iframe>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CLOSING STATEMENT ═══════════════════════════════ -->
+<section id="policy-closing" class="bg-white py-20 px-12 relative overflow-hidden">
+  <div class="max-w-[1000px] mx-auto text-center relative z-10">
+    <div class="w-12 h-12 bg-navy rounded-full flex items-center justify-center mx-auto mb-8 border border-[rgba(193,159,93,0.4)]">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#c19f5d"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+    </div>
+
+    <blockquote class="font-condensed text-[clamp(22px,3.5vw,34px)] font-bold text-navy leading-[1.35] mb-8 max-w-[880px] mx-auto">
+      &ldquo;This commitment guides every project EURL ETB undertakes, upheld by our leadership team since April 2026.&rdquo;
+    </blockquote>
+
+    <div class="inline-flex items-center gap-4 pt-4 border-t border-[rgba(193,159,93,0.3)]">
+      <span class="font-barlow text-[13px] font-bold tracking-[2px] uppercase text-gold">EURL ETB Achouri Toufik</span>
+      <span class="w-1.5 h-1.5 rounded-full bg-navy/30"></span>
+      <span class="text-[13px] text-muted font-medium">Executive Leadership</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CTA SECTION ═══════════════════════════════ -->
+<section id="quality-cta" class="relative bg-navy py-20 px-12 text-center overflow-hidden border-t border-[rgba(193,159,93,0.2)]">
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none opacity-30"></div>
+  <div class="relative z-10 max-w-[800px] mx-auto">
+    <h3 class="font-condensed text-[clamp(28px,4vw,42px)] font-extrabold text-white mb-4 leading-[1.2]">
+      Partner With a Quality &amp; Safety Focused Team
+    </h3>
+    <p class="text-[14.5px] text-white/60 mb-8 max-w-[600px] mx-auto leading-[1.7]">
+      Learn more about our quality management framework and site safety standards for your upcoming construction or civil engineering requirements.
+    </p>
+    <div class="flex items-center justify-center gap-4 flex-wrap">
+      <a href="contact.html" class="bg-gold font-condensed text-[12px] font-bold tracking-[2px] uppercase text-navy px-8 py-4 rounded-[3px] hover:bg-white transition-all no-underline shadow-lg">Contact Our Team</a>
+      <a href="projects.html" class="border border-white/30 text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 rounded-[3px] hover:border-gold hover:text-gold transition-all no-underline">View Worksites</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer class="bg-[rgb(15,19,35)] relative overflow-hidden">
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+  <div class="footer-topline relative z-10"></div>
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12 pt-16 pb-12 grid grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
+    <div>
+      <a href="index.html" class="flex items-center no-underline mb-5">
+        <img src="assets/images/site-logo-dark.png" alt="ETB Achouri Toufik" style="height:88px;">
+      </a>
+      <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7">Building tomorrow's landmarks with precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Navigation</div>
+      <ul class="list-none flex flex-col gap-[10px]">
+        <li><a href="index.html"       class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
+        <li><a href="about.html"       class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
+        <li><a href="services.html"    class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
+        <li><a href="projects.html"    class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
+        <li><a href="quality-hse.html" class="fnav-link text-[13px] text-gold no-underline">Quality &amp; HSE</a></li>
+        <li><a href="contact.html"     class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Core Services</div>
+      <ul class="list-none flex flex-col gap-[10px]">
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Residential Construction</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Commercial Buildings</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Industrial Works</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Civil Engineering &amp; BTPH</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Project Management</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Let's Talk</div>
+      <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.18)] rounded-[4px] p-7">
+        <p class="text-[12.5px] text-white/55 leading-[1.6] mb-5">Have a project in mind? We'd love to hear about it.</p>
+        <a href="contact.html" class="inline-block font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Contact Us &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12"><hr class="border-none border-t border-[rgba(193,159,93,0.15)]"/></div>
+
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12 py-5 flex items-center justify-between gap-5 flex-wrap">
+    <p class="text-[11.5px] text-white/35">&copy; 2026 <a href="#" class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri Toufik</a>. All rights reserved.</p>
+    <div class="flex items-center gap-[10px]">
+      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="Facebook"><svg class="w-[13px] h-[13px] fill-white/50 hover:fill-gold" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="LinkedIn"><svg class="w-[13px] h-[13px] fill-white/50" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+window.addEventListener('load', () => {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ═══════════ HERO ANIMATION ═══════════
+  const heroTl = gsap.timeline({ delay: 0.1 });
+  heroTl
+    .from('#hero-eyebrow',   { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' })
+    .from('#hero-title',     { opacity: 0, y: 30, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+    .from('#hero-subtext',   { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+    .from('#hero-breadcrumb', { opacity: 0, scale: 0.95, duration: 0.4, ease: 'power2.out' }, '-=0.2');
+
+  // ═══════════ QUALITY POLICY ANIMATIONS ═══════════
+  gsap.from('#quality-header > *', {
+    scrollTrigger: {
+      trigger: '#quality-policy',
+      start: 'top 80%',
+      once: true
+    },
+    y: 30,
+    opacity: 0,
+    stagger: 0.1,
+    duration: 0.6,
+    ease: 'power2.out'
+  });
+
+  gsap.from('#iso-banner', {
+    scrollTrigger: {
+      trigger: '#iso-banner',
+      start: 'top 82%',
+      once: true
+    },
+    y: 40,
+    opacity: 0,
+    duration: 0.7,
+    ease: 'power2.out'
+  });
+
+  gsap.from('.policy-card', {
+    scrollTrigger: {
+      trigger: '#quality-grid',
+      start: 'top 82%',
+      once: true
+    },
+    y: 45,
+    opacity: 0,
+    stagger: 0.1,
+    duration: 0.65,
+    ease: 'power2.out'
+  });
+
+  // ═══════════ HSE POLICY ANIMATIONS ═══════════
+  gsap.from('#hse-header > *', {
+    scrollTrigger: {
+      trigger: '#hse-policy',
+      start: 'top 80%',
+      once: true
+    },
+    y: 30,
+    opacity: 0,
+    stagger: 0.1,
+    duration: 0.6,
+    ease: 'power2.out'
+  });
+
+  gsap.from('.hse-card', {
+    scrollTrigger: {
+      trigger: '#hse-grid',
+      start: 'top 82%',
+      once: true
+    },
+    y: 45,
+    opacity: 0,
+    stagger: 0.1,
+    duration: 0.65,
+    ease: 'power2.out'
+  });
+
+  // ═══════════ CLOSING STATEMENT ANIMATION ═══════════
+  gsap.from('#policy-closing > div > *', {
+    scrollTrigger: {
+      trigger: '#policy-closing',
+      start: 'top 82%',
+      once: true
+    },
+    y: 30,
+    opacity: 0,
+    stagger: 0.12,
+    duration: 0.7,
+    ease: 'power2.out'
+  });
+
+  // ═══════════ HAMBURGER TOGGLE ═══════════
+  const hamburger = document.getElementById('hamburger');
+  const drawer    = document.getElementById('nav-drawer');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    drawer.classList.toggle('open');
+  });
+
+      // ── Active mobile-drawer link ──
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      drawer.querySelectorAll('a').forEach(a => {
+        if (a.getAttribute('href') === currentPage) {
+          a.classList.add('active');
+        }
+      });
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    drawer.classList.remove('open');
+  }));
+
+  // ═══════════ PDF ACCORDION TOGGLE ═══════════
+  window.togglePDF = function(id, btn) {
+    const panel = document.getElementById(id);
+    const isOpen = panel.classList.contains('open');
+
+    if (isOpen) {
+      gsap.to(panel, {
+        maxHeight: 0,
+        opacity: 0,
+        duration: 0.35,
+        ease: 'power2.in',
+        onComplete: () => panel.classList.remove('open')
+      });
+      btn.classList.remove('active');
+    } else {
+      panel.classList.add('open');
+      gsap.fromTo(panel,
+        { maxHeight: 0, opacity: 0 },
+        { maxHeight: 650, opacity: 1, duration: 0.45, ease: 'power2.out' }
+      );
+      btn.classList.add('active');
+    }
+  };
+});
+</script>
+</body>
+</html>
