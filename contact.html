@@ -76,6 +76,7 @@
     @media(max-width:768px) {
       .hamburger { display:flex; }
       .nav-desktop { display:none !important; }
+      .corner-accent { display:none !important; }
     }
     @media(min-width:769px) { .nav-drawer { display:none !important; } }
 
@@ -149,15 +150,15 @@
        style="background-image:url('assets/images/contact-hero.jpeg'); opacity:0.18;"></div>
   <div class="page-hero-grid absolute inset-0 z-0"></div>
   <!-- Corner accents -->
-  <div class="absolute top-[104px] left-12 w-16 h-16 border-t-2 border-l-2 border-gold/40 z-10"></div>
-  <div class="absolute bottom-6 right-12 w-16 h-16 border-b-2 border-r-2 border-gold/40 z-10"></div>
+  <div class="corner-accent absolute top-[104px] left-12 w-16 h-16 border-t-2 border-l-2 border-gold/40 z-10"></div>
+  <div class="corner-accent absolute bottom-6 right-12 w-16 h-16 border-b-2 border-r-2 border-gold/40 z-10"></div>
 
-  <div id="page-hero-content" class="relative z-10 max-w-[1200px] mx-auto px-12 w-full">
+  <div id="page-hero-content" class="relative z-10 max-w-[1200px] mx-auto px-4 md:px-12 w-full">
     <div class="flex items-center gap-3 mb-4">
       <span class="w-10 h-[1px] bg-gold inline-block"></span>
       <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Get In Touch</span>
     </div>
-    <h1 class="font-condensed text-[clamp(40px,6vw,72px)] font-extrabold text-white leading-[1.05] tracking-[-1px] mb-4">
+    <h1 class="font-condensed text-[clamp(32px,6vw,72px)] font-extrabold text-white leading-[1.05] tracking-[-1px] mb-4">
       Let's Build Something<br><span class="text-gold">Great Together</span>
     </h1>
     <p class="text-[15px] text-white/55 leading-[1.8] max-w-[520px]">
@@ -174,9 +175,9 @@
 
 
 <!-- ═══════════════════════════════ CONTACT INFO CARDS ═══════════════════════════════ -->
-<section class="bg-light-bg py-16 px-12">
+<section class="bg-light-bg py-16 px-4 md:px-12">
   <div class="max-w-[1200px] mx-auto">
-    <div id="info-cards" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+    <div id="info-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
       <!-- Location -->
       <div class="info-card" style="background:#fff; border:1px solid rgba(30,36,60,0.07); border-radius:3px; padding:32px; display:flex; align-items:center; gap:20px; box-shadow:0 2px 16px rgba(30,36,60,0.06);">
@@ -207,7 +208,7 @@
         </div>
         <div>
           <h3 style="font-family:'Barlow',sans-serif; font-size:15px; font-weight:600; color:#1e243c; margin:0 0 4px 0;">Email Address</h3>
-          <p style="font-family:'Lato',sans-serif; font-size:13px; color:#5a5f72; line-height:1.7; margin:0;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c6a5a9a8b2a7a5b286a3b2a4eba7a5aea9b3b4afe8a2bc">[email&#160;protected]</a><br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4a23242c250a2f3e28672b2922253f3823642e30">[email&#160;protected]</a></p>
+          <p style="font-family:'Lato',sans-serif; font-size:13px; color:#5a5f72; line-height:1.7; margin:0;">contact@etbachouri.com<br>info@etbachouri.com</p>
         </div>
       </div>
 
@@ -217,7 +218,7 @@
 
 
 <!-- ═══════════════════════════════ FORM + MAP ═══════════════════════════════ -->
-<section class="bg-navy py-20 px-12 relative overflow-hidden">
+<section class="bg-navy py-20 px-4 md:px-12 relative overflow-hidden">
   <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
   <div class="max-w-[1200px] mx-auto relative z-10 grid grid-cols-2 gap-16 items-start max-lg:grid-cols-1 max-lg:gap-12">
 
@@ -250,8 +251,8 @@
         <select class="bg-white/5 border border-white/10 rounded-[3px] px-4 py-3 font-sans text-[13.5px] text-white/70 transition-all appearance-none cursor-pointer">
           <option value="" disabled selected class="text-navy">Select a service...</option>
           <option class="text-navy">Residential Construction</option>
-          <option class="text-navy">Commercial &amp; Industrial</option>
-          <option class="text-navy">Renovation &amp; Remodeling</option>
+          <option class="text-navy">Commercial & Industrial</option>
+          <option class="text-navy">Renovation & Remodeling</option>
           <option class="text-navy">General Contracting</option>
           <option class="text-navy">Heavy Machinery</option>
           <option class="text-navy">Maintenance Services</option>
