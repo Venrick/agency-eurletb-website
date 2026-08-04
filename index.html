@@ -489,11 +489,11 @@
     <!-- Video 1 -->
     <video id="hero-vid-1" class="absolute inset-0 w-full h-full object-cover z-0" muted playsinline
       poster="https://images.pexels.com/photos/159358/construction-site-build-architect-159358.jpeg?auto=compress&cs=tinysrgb&w=1600">
-      <source src="https://player.vimeo.com/external/494247587.sd.mp4?s=bc63f33b1e39a3f29533b66472d46e9df935c158&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
+      <source src="https://videos.pexels.com/video-files/14055246/14055246-hd_1920_1080_25fps.mp4" type="video/mp4" />
     </video>
     <!-- Video 2 (starts hidden) -->
     <video id="hero-vid-2" class="absolute inset-0 w-full h-full object-cover z-0" muted playsinline style="opacity:0;">
-      <source src="https://player.vimeo.com/external/494248566.sd.mp4?s=d0100d33ab1dff6e1d904c1075306d67f539ecb0&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
+      <source src="https://videos.pexels.com/video-files/12201829/12201829-hd_1920_1080_30fps.mp4" type="video/mp4" />
     </video>
 
     <!-- Dark gradient overlay — keeps text legible -->
@@ -1386,20 +1386,28 @@
         scrollTrigger: { trigger: '#services', start: 'top 78%', once: true },
         y: 40, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
       });
-      gsap.from('.service-card', {
-        scrollTrigger: { trigger: '#svc-grid', start: 'top 82%', once: true },
-        y: 55, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
-      });
+      gsap.fromTo('.service-card',
+        { y: 55, opacity: 0 },
+        {
+          scrollTrigger: { trigger: '#svc-grid', start: 'top 82%', once: true },
+          y: 0, opacity: 1, stagger: 0.1, duration: 0.65, ease: 'power2.out',
+          clearProps: 'all'
+        }
+      );
 
       // COMPANIES
       gsap.from('#companies-header > *', {
         scrollTrigger: { trigger: '#companies', start: 'top 78%', once: true },
         y: 30, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
       });
-      gsap.from('.company-preview-card', {
-        scrollTrigger: { trigger: '#companies-grid', start: 'top 82%', once: true },
-        y: 45, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out'
-      });
+      gsap.fromTo('.company-preview-card',
+        { y: 45, opacity: 0 },
+        {
+          scrollTrigger: { trigger: '#companies-grid', start: 'top 82%', once: true },
+          y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out',
+          clearProps: 'all'
+        }
+      );
       // ═══════════ PROJECTS ═══════════
       gsap.from('#proj-header-left > *', {
         scrollTrigger: { trigger: '#projects', start: 'top 78%', once: true },
@@ -1409,10 +1417,14 @@
         scrollTrigger: { trigger: '#projects', start: 'top 78%', once: true },
         x: 40, opacity: 0, duration: 0.7, ease: 'power2.out'
       });
-      gsap.from('.project-card', {
-        scrollTrigger: { trigger: '#proj-grid', start: 'top 82%', once: true },
-        scale: 0.88, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
-      });
+      gsap.fromTo('.project-card',
+        { scale: 0.88, opacity: 0 },
+        {
+          scrollTrigger: { trigger: '#proj-grid', start: 'top 82%', once: true },
+          scale: 1, opacity: 1, stagger: 0.1, duration: 0.65, ease: 'power2.out',
+          clearProps: 'all'
+        }
+      );
 
       // ═══════════ CONTACT ═══════════
       gsap.from('#contact-left > *', {
@@ -1477,12 +1489,29 @@
           const filter = btn.dataset.filter;
           document.querySelectorAll('.project-card').forEach(card => {
             const show = filter === 'all' || card.dataset.category === filter;
-            card.style.display = show ? '' : 'none';
+            if (show) {
+              card.style.display = '';
+              gsap.set(card, { clearProps: 'opacity,transform' });
+            } else {
+              card.style.display = 'none';
+            }
           });
         });
       });
 
-      ScrollTrigger.refresh();
+      const heroVideo = document.getElementById('hero-vid-1');
+      let stRefreshed = false;
+      function refreshScrollTriggers() {
+        if (stRefreshed) return;
+        stRefreshed = true;
+        ScrollTrigger.refresh();
+      }
+      if (heroVideo && heroVideo.readyState >= 2) {
+        refreshScrollTriggers();
+      } else {
+        if (heroVideo) heroVideo.addEventListener('loadeddata', refreshScrollTriggers, { once: true });
+        setTimeout(refreshScrollTriggers, 3000);
+      }
 
       // ═══════════ FORM LOGIC ═══════════
       const contactForm = document.getElementById('contact-form');
