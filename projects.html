@@ -682,6 +682,15 @@
 
     window.addEventListener('load', () => {
       gsap.registerPlugin(ScrollTrigger);
+
+      // ═══════════ HERO — on load ═══════════
+      const heroTl = gsap.timeline({ delay: 0.15 });
+      heroTl
+        .from('#hero-eyebrow', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' })
+        .from('#hero-title', { opacity: 0, y: 36, duration: 0.65, ease: 'power2.out' }, '-=0.25')
+        .from('#hero-subtext', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=0.35')
+        .from('#hero-breadcrumb', { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' }, '-=0.2');
+
       const grid = document.getElementById('project-grid');
       Object.keys(projectData).forEach(id => {
         const p = projectData[id];
@@ -694,9 +703,59 @@
         card.addEventListener('click', () => openModal(id));
       });
 
+      // ═══════════ SECTION HEADERS — scroll entrance ═══════════
+      gsap.from('#map-header > *', {
+        scrollTrigger: { trigger: '#map-section', start: 'top 78%', once: true },
+        y: 30, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
+      });
+      gsap.from('#cards-header > *', {
+        scrollTrigger: { trigger: '#all-projects', start: 'top 78%', once: true },
+        y: 40, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
+      });
+      gsap.from('#filters', {
+        scrollTrigger: { trigger: '#all-projects', start: 'top 78%', once: true },
+        y: 40, opacity: 0, duration: 0.65, ease: 'power2.out'
+      });
+
+      // ═══════════ PROJECT CARDS — scroll entrance ═══════════
+      gsap.fromTo('.project-card',
+        { scale: 0.88, opacity: 0 },
+        {
+          scrollTrigger: { trigger: '#project-grid', start: 'top 82%', once: true },
+          scale: 1, opacity: 1, stagger: 0.1, duration: 0.65, ease: 'power2.out',
+          clearProps: 'all'
+        }
+      );
+
+      // ═══════════ REFRESH AFTER CONTENT SETTLES ═══════════
+      const cardImgs = Array.from(grid.querySelectorAll('img'));
+      let stRefreshed = false;
+      function refreshScrollTriggers() {
+        if (stRefreshed) return;
+        stRefreshed = true;
+        ScrollTrigger.refresh();
+      }
+      const pendingImgs = cardImgs.filter(img => !img.complete);
+      if (pendingImgs.length === 0) {
+        refreshScrollTriggers();
+      } else {
+        let remaining = pendingImgs.length;
+        pendingImgs.forEach(img => {
+          img.addEventListener('load', () => { if (--remaining <= 0) refreshScrollTriggers(); }, { once: true });
+          img.addEventListener('error', () => { if (--remaining <= 0) refreshScrollTriggers(); }, { once: true });
+        });
+        setTimeout(refreshScrollTriggers, 3000);
+      }
+
       function applyPortfolioFilter(filter) {
         document.querySelectorAll('.project-card').forEach(c => {
-          c.style.display = (filter === 'all' || c.dataset.category === filter) ? 'block' : 'none';
+          const show = (filter === 'all' || c.dataset.category === filter);
+          if (show) {
+            c.style.display = 'block';
+            gsap.set(c, { clearProps: 'opacity,transform' });
+          } else {
+            c.style.display = 'none';
+          }
         });
         document.querySelectorAll('.map-pin').forEach(pin => {
           const cat = pin.dataset.category;
