@@ -333,6 +333,16 @@
       color: #1e243c !important;
     }
 
+    /* Easier-to-tap close button for the map info panel */
+    #map-panel-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+    }
+
     @media(max-width:768px) {
       .hamburger {
         display: flex;
@@ -344,6 +354,19 @@
 
       #project-map {
         height: 340px;
+      }
+
+      #map-left-col {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        min-height: 480px;
+      }
+
+      /* Enlarge pin tap target on mobile without moving the icon */
+      .map-pin::after {
+        content: '';
+        position: absolute;
+        inset: -14px;
       }
 
       #map-info-panel {
