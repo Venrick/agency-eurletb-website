@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Commercial Buildings | EURL ETB Achouri Toufik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#1e243c',
+            'navy-dark': 'rgb(15,19,35)',
+            'navy-card': '#1a2036',
+            gold:  '#c19f5d',
+            'light-bg': '#f4f4f2',
+            muted: '#5a5f72',
+          },
+          fontFamily: {
+            sans:      ['Lato', 'sans-serif'],
+            barlow:    ['Barlow', 'sans-serif'],
+            condensed: ['Barlow Condensed', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ── Blueprint grid ── */
+    .blueprint-subtle { background-image: linear-gradient(rgba(193,159,93,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(193,159,93,.04) 1px,transparent 1px); background-size:48px 48px; }
+    
+    /* ── Nav active underline ── */
+    .nav-link { position:relative; padding-bottom:4px; }
+    .nav-link.active { color:#fff !important; }
+    .nav-link.active::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:2px; background:#c19f5d; }
+    
+    /* ── Hamburger ── */
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { width:24px; height:2px; background:#fff; display:block; transition:all .3s; transform-origin:center; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    
+    /* ── Mobile drawer ── */
+    .nav-drawer { max-height:0; overflow:hidden; transition:max-height .35s ease; background:#1e243c; }
+    .nav-drawer.open { max-height:400px; }
+    .nav-drawer a { display:block; padding:12px 24px; color:rgba(255,255,255,.75); text-decoration:none; font-size:14px; font-weight:500; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid rgba(193,159,93,.1); transition:color .2s; }
+    .nav-drawer a:hover,.nav-drawer a.active { color:#c19f5d; }
+
+    /* ── Footer topline ── */
+    .footer-topline { height:3px; background:linear-gradient(to right,transparent,#c19f5d 20%,#c19f5d 80%,transparent); }
+    
+    /* ── Footer nav link ── */
+    .fnav-link { transition:color .2s,padding-left .2s; display:flex; align-items:center; gap:0; }
+    .fnav-link::before { content:''; width:0; height:1px; background:#c19f5d; display:inline-block; transition:width .2s,margin-right .2s; }
+    .fnav-link:hover { color:#fff !important; padding-left:4px; }
+    .fnav-link:hover::before { width:14px; margin-right:6px; }
+    
+    /* ── Hero radial fade (from index.html) ── */
+    .hero-radial::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 40% 50%, transparent 40%, #1e243c 100%);
+    }
+
+    /* ── Geometric accent corners (from index.html) ── */
+    .corner-tl {
+      position: absolute;
+      top: 150px;
+      left: 48px;
+      width: 120px;
+      height: 120px;
+      border-top: 2px solid #c19f5d;
+      border-left: 2px solid #c19f5d;
+      z-index: 1;
+    }
+    .corner-br {
+      position: absolute;
+      bottom: 60px;
+      right: 48px;
+      width: 120px;
+      height: 120px;
+      border-bottom: 2px solid #c19f5d;
+      border-right: 2px solid #c19f5d;
+      z-index: 1;
+    }
+
+    /* ── Steps connector line ── */
+    .step-connector { position:relative; }
+    .step-connector:not(:last-child)::after {
+      content:'';
+      position:absolute;
+      top:48px;
+      left:24px;
+      bottom:-24px;
+      width:1px;
+      background:linear-gradient(to bottom,#c19f5d,transparent);
+    }
+
+    /* ─── Service feature card ─── */
+    .feature-card { transition:transform .25s,box-shadow .25s; position:relative; }
+    .feature-card::before { content:''; position:absolute; top:0; left:0; height:3px; width:0; background:#c19f5d; transition:width 0.4s ease; }
+    .feature-card:hover::before { width:100%; }
+    .feature-card:hover { transform:translateY(-4px); box-shadow:0 8px 32px rgba(30,36,60,.12); }
+
+    @media(max-width:768px) {
+      .hamburger { display:flex; }
+      .nav-desktop { display:none !important; }
+    }
+    @media(min-width:769px) { .nav-drawer { display:none !important; } }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1e243c; }
+    ::-webkit-scrollbar-thumb { background: #c19f5d; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #d4b170; }
+  </style>
+</head>
+<body class="font-sans text-navy bg-white">
+
+<!-- ═══════════════════════════════ NAVBAR (canonical copy from quality-hse.html) ═══════════════════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-[100] flex flex-col">
+  <!-- Top bar -->
+  <div id="topbar" class="bg-[rgba(15,19,35,0.95)] border-b border-[rgba(193,159,93,0.15)] flex items-center justify-between px-12 h-9">
+    <div class="flex items-center gap-7">
+      <a href="tel:+213000000000" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
+        <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        +213 (0) 00 00 00 00
+      </a>
+      <a href="mailto:contact@etbachouri.com" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
+        <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        contact@etbachouri.com
+      </a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="#" class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all" aria-label="Facebook">
+        <svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      </a>
+      <a href="#" class="w-[26px] h-[26px] border border-[rgba(193,159,93,0.3)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.1)] transition-all" aria-label="LinkedIn">
+        <svg class="w-3 h-3 fill-white/55" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main bar -->
+  <div id="mainbar" class="bg-navy flex items-center justify-between px-12 h-[110px] border-b-[3px] border-gold">
+    <a href="index.html" class="flex items-center no-underline">
+      <img src="assets/images/site-logo-dark.png" alt="ETB Achouri Toufik" class="logo-light" style="height:84px;">
+    </a>
+
+    <div class="flex items-center gap-9">
+      <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
+        <li><a href="index.html"       class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a></li>
+        <li><a href="about.html"       class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a></li>
+        <li><a href="services.html"    class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a></li>
+        <li><a href="projects.html"    class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a></li>
+        <li><a href="quality-hse.html" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Quality & HSE</a></li>
+        <li><a href="contact.html"     class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a></li>
+      </ul>
+      
+      <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="quality-hse.html">Quality & HSE</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ HERO SECTION (1) ═══════════════════════════════ -->
+<section id="service-hero" class="relative min-h-[480px] bg-navy pt-[160px] pb-28 flex items-center overflow-hidden border-b-[3px] border-gold">
+  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+       style="background-image:url('assets/images/services-hero.jpeg'); opacity:0.16;">
+  </div>
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+  <!-- Hero radial fade overlay (from index.html pattern) -->
+  <div class="hero-radial absolute inset-0 pointer-events-none"></div>
+  <!-- Geometric accent corners (from index.html pattern) -->
+  <div class="corner-tl hidden lg:block"></div>
+  <div class="corner-br hidden lg:block"></div>
+
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12 text-center">
+    <div id="hero-eyebrow" class="inline-flex items-center gap-3 mb-6">
+      <span class="w-10 h-[1px] bg-gold inline-block"></span>
+      <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Commercial</span>
+      <span class="w-10 h-[1px] bg-gold inline-block"></span>
+    </div>
+
+    <h1 id="hero-title" class="font-condensed text-[clamp(40px,6vw,64px)] font-extrabold text-white leading-[1.1] mb-6">
+      Commercial Buildings
+    </h1>
+
+    <p id="hero-subtext" class="text-[15px] text-white/65 max-w-[620px] mx-auto mb-8 leading-[1.75]">
+      Office complexes, retail centres, and commercial facilities engineered for performance, efficiency, and longevity.
+    </p>
+
+    <div id="hero-breadcrumb" class="font-condensed text-[12px] font-bold tracking-[1.5px] uppercase text-white/35 flex justify-center items-center gap-2">
+      <a href="index.html" class="hover:text-gold transition-colors no-underline">Home</a>
+      <span class="text-gold">/</span>
+      <a href="services.html" class="hover:text-gold transition-colors no-underline">Services</a>
+      <span class="text-gold">/</span>
+      <span class="text-white">Commercial Buildings</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ BACK LINK ═══════════════════════════════ -->
+<div class="bg-light-bg px-12 py-3 border-b border-[rgba(30,36,60,0.06)]">
+  <div class="max-w-[1200px] mx-auto">
+    <a href="services.html" class="font-condensed text-[12px] font-bold tracking-[1.5px] uppercase text-gold hover:text-navy transition-colors no-underline inline-flex items-center gap-2">
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="19 12 5 12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to All Services
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 2: OVERVIEW ═══════════════════════════════ -->
+<section id="service-overview" class="bg-white py-24 px-12">
+  <div class="max-w-[1000px] mx-auto">
+    <div id="overview-header" class="text-center max-w-[760px] mx-auto mb-12">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Commercial</span>
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+      </div>
+      <h2 class="font-condensed text-[clamp(28px,4vw,42px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px]">
+        Commercial Buildings Built for Business
+      </h2>
+    </div>
+
+    <div id="overview-body" class="text-center max-w-[800px] mx-auto">
+      <p class="text-[15px] text-muted leading-[1.9] mb-6">
+        We deliver office buildings, retail centres, and mixed-use commercial facilities designed around how businesses actually operate — flexible floor plates, efficient circulation, and high-quality building systems. Every project is engineered for maximum operational efficiency and long-term durability.
+      </p>
+      <p class="text-[15px] text-muted leading-[1.9]">
+        From site preparation through structural works, facade, and fit-out, we coordinate all disciplines in-house and manage the programme tightly so your building is ready when your business needs it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 3: WHAT'S INCLUDED ═══════════════════════════════ -->
+<section id="service-included" class="bg-light-bg py-24 px-12">
+  <div class="max-w-[1200px] mx-auto">
+    <!-- Section Header -->
+    <div id="included-header" class="text-center max-w-[700px] mx-auto mb-16">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">What's Included</span>
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+      </div>
+      <h2 class="font-condensed text-[clamp(26px,3.5vw,38px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-4">
+        Every Commercial Project Includes
+      </h2>
+      <p class="text-[14px] text-muted leading-[1.8]">
+        A complete commercial building scope, from the structure to the systems that make it work.
+      </p>
+    </div>
+
+    <div id="included-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Feature 01 -->
+      <div class="feature-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M2 12h20"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">
+          Office Complexes & Towers
+        </h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Multi-storey office buildings with flexible, efficient floor plans and premium common areas.
+        </p>
+      </div>
+
+      <!-- Feature 02 -->
+      <div class="feature-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">
+          Retail & Shopping Centres
+        </h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Retail spaces designed for customer flow, visibility, and adaptable unit layouts.
+        </p>
+      </div>
+
+      <!-- Feature 03 -->
+      <div class="feature-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/><rect x="2" y="6" width="20" height="12" rx="2"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">
+          Facade & Cladding Systems
+        </h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          High-performance facades, curtain walls, and cladding that define the building identity and efficiency.
+        </p>
+      </div>
+
+      <!-- Feature 04 -->
+      <div class="feature-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">
+          Building Systems Integration
+        </h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Electrical, HVAC, plumbing, and fire-safety systems integrated and commissioned to code.
+        </p>
+      </div>
+
+      <!-- Feature 05 (optional — remove if only 4 needed) -->
+      <div class="feature-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">
+          Fit-Out & Tenant Improvements
+        </h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Interior fit-out and fit-to-purpose works delivered around your occupation schedule.
+        </p>
+      </div>
+
+      <!-- Feature 06 (optional — remove if only 4 needed) -->
+      <div class="feature-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 flex flex-col shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
+        <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6 flex-shrink-0">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3 class="font-barlow text-[18px] font-semibold text-navy mb-3">
+          Structural Works & Foundations
+        </h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">
+          Reinforced concrete and steel structures engineered for commercial loads and spans.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 4: OUR PROCESS ═══════════════════════════════ -->
+<section id="service-process" class="bg-white py-24 px-12">
+  <div class="max-w-[1000px] mx-auto">
+    <!-- Section Header -->
+    <div id="process-header" class="text-center max-w-[700px] mx-auto mb-16">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Our Process</span>
+        <span class="w-8 h-[1px] bg-gold inline-block"></span>
+      </div>
+      <h2 class="font-condensed text-[clamp(26px,3.5vw,38px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-4">
+        How We Deliver Commercial Projects
+      </h2>
+      <p class="text-[14px] text-muted leading-[1.8]">
+        A disciplined approach from concept through commissioning and occupation.
+      </p>
+    </div>
+
+    <div id="process-steps" class="space-y-12 max-w-[800px] mx-auto">
+
+      <!-- Step 01 -->
+      <div class="step-connector flex items-start gap-8">
+        <div class="flex-shrink-0 w-12 h-12 bg-navy rounded-full flex items-center justify-center border-2 border-gold">
+          <span class="font-condensed text-[16px] font-extrabold text-gold">01</span>
+        </div>
+        <div class="pt-1">
+          <h3 class="font-barlow text-[18px] font-semibold text-navy mb-2">
+            Consultation & Brief
+          </h3>
+          <p class="text-[14px] text-muted leading-[1.8]">
+            We translate your business requirements into a building brief, feasibility study, and budget.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 02 -->
+      <div class="step-connector flex items-start gap-8">
+        <div class="flex-shrink-0 w-12 h-12 bg-navy rounded-full flex items-center justify-center border-2 border-gold">
+          <span class="font-condensed text-[16px] font-extrabold text-gold">02</span>
+        </div>
+        <div class="pt-1">
+          <h3 class="font-barlow text-[18px] font-semibold text-navy mb-2">
+            Design Development
+          </h3>
+          <p class="text-[14px] text-muted leading-[1.8]">
+            Architectural and engineering design is developed and coordinated with full documentation.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 03 -->
+      <div class="step-connector flex items-start gap-8">
+        <div class="flex-shrink-0 w-12 h-12 bg-navy rounded-full flex items-center justify-center border-2 border-gold">
+          <span class="font-condensed text-[16px] font-extrabold text-gold">03</span>
+        </div>
+        <div class="pt-1">
+          <h3 class="font-barlow text-[18px] font-semibold text-navy mb-2">
+            Construction & Fit-Out
+          </h3>
+          <p class="text-[14px] text-muted leading-[1.8]">
+            Structured construction phases with rigorous quality control and programme management.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 04 (optional — remove if only 3 steps) -->
+      <div class="flex items-start gap-8">
+        <div class="flex-shrink-0 w-12 h-12 bg-navy rounded-full flex items-center justify-center border-2 border-gold">
+          <span class="font-condensed text-[16px] font-extrabold text-gold">04</span>
+        </div>
+        <div class="pt-1">
+          <h3 class="font-barlow text-[18px] font-semibold text-navy mb-2">
+            Commissioning & Handover
+          </h3>
+          <p class="text-[14px] text-muted leading-[1.8]">
+            Systems are commissioned, documentation is delivered, and your team is trained before occupation.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 5: CTA ═══════════════════════════════ -->
+<section id="service-cta" class="relative bg-navy py-20 px-12 text-center overflow-hidden border-t border-[rgba(193,159,93,0.2)]">
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none opacity-30"></div>
+  <div class="relative z-10 max-w-[800px] mx-auto">
+    <h3 class="font-condensed text-[clamp(28px,4vw,42px)] font-extrabold text-white mb-4 leading-[1.2]">
+      Ready to Build Your Commercial Space?
+    </h3>
+    <p class="text-[14.5px] text-white/60 mb-8 max-w-[600px] mx-auto leading-[1.7]">
+      Contact our team for a consultation and quote on your commercial building project.
+    </p>
+    <div class="flex items-center justify-center gap-4 flex-wrap">
+      <a href="contact.html" class="bg-gold font-condensed text-[12px] font-bold tracking-[2px] uppercase text-navy px-8 py-4 rounded-[3px] hover:bg-white transition-all no-underline shadow-lg">Contact Our Team</a>
+      <a href="projects.html" class="border border-white/30 text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 rounded-[3px] hover:border-gold hover:text-gold transition-all no-underline">View Related Projects</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER (canonical copy from quality-hse.html) ═══════════════════════════════ -->
+<footer class="bg-[rgb(15,19,35)] relative overflow-hidden">
+  <div class="blueprint-subtle absolute inset-0 pointer-events-none"></div>
+  <div class="footer-topline relative z-10"></div>
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12 pt-16 pb-12 grid grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
+    <div>
+      <a href="index.html" class="flex items-center no-underline mb-5">
+        <img src="assets/images/site-logo-dark.png" alt="ETB Achouri Toufik" style="height:88px;">
+      </a>
+      <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7">Building tomorrow's landmarks with precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Navigation</div>
+      <ul class="list-none flex flex-col gap-[10px]">
+        <li><a href="index.html"       class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
+        <li><a href="about.html"       class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
+        <li><a href="services.html"    class="fnav-link text-[13px] text-gold no-underline">Services</a></li>
+        <li><a href="projects.html"    class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
+        <li><a href="quality-hse.html" class="fnav-link text-[13px] text-white/55 no-underline">Quality & HSE</a></li>
+        <li><a href="contact.html"     class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Core Services</div>
+      <ul class="list-none flex flex-col gap-[10px]">
+        <li><a href="service-residential-construction.html" class="fnav-link text-[13px] text-white/55 no-underline">Residential Construction</a></li>
+        <li><a href="service-commercial-buildings.html" class="fnav-link text-[13px] text-white/55 no-underline">Commercial Buildings</a></li>
+        <li><a href="service-industrial-works.html" class="fnav-link text-[13px] text-white/55 no-underline">Industrial Works</a></li>
+        <li><a href="services.html" class="fnav-link text-[13px] text-white/55 no-underline">Civil Engineering & BTPH</a></li>
+        <li><a href="service-project-management.html" class="fnav-link text-[13px] text-white/55 no-underline">Project Management</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Let's Talk</div>
+      <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.18)] rounded-[4px] p-7">
+        <p class="text-[12.5px] text-white/55 leading-[1.6] mb-5">Have a project in mind? We'd love to hear about it.</p>
+        <a href="contact.html" class="inline-block font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Contact Us &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12"><hr class="border-none border-t border-[rgba(193,159,93,0.15)]"/></div>
+
+  <div class="relative z-10 max-w-[1200px] mx-auto px-12 py-5 flex items-center justify-between gap-5 flex-wrap">
+    <p class="text-[11.5px] text-white/35">&copy; 2026 <a href="#" class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri Toufik</a>. All rights reserved.</p>
+    <div class="flex items-center gap-[10px]">
+      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="Facebook"><svg class="w-[13px] h-[13px] fill-white/50 hover:fill-gold" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="LinkedIn"><svg class="w-[13px] h-[13px] fill-white/50" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+window.addEventListener('load', () => {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ═══════════ HERO ANIMATION ═══════════
+  const heroTl = gsap.timeline({ delay: 0.1 });
+  heroTl
+    .from('#hero-eyebrow',   { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' })
+    .from('#hero-title',     { opacity: 0, y: 30, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+    .from('#hero-subtext',   { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+    .from('#hero-breadcrumb', { opacity: 0, scale: 0.95, duration: 0.4, ease: 'power2.out' }, '-=0.2');
+
+  // ═══════════ OVERVIEW ANIMATION ═══════════
+  gsap.from('#overview-header > *', {
+    scrollTrigger: { trigger: '#service-overview', start: 'top 80%', once: true },
+    y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out'
+  });
+  gsap.from('#overview-body', {
+    scrollTrigger: { trigger: '#overview-body', start: 'top 85%', once: true },
+    y: 30, opacity: 0, duration: 0.6, ease: 'power2.out'
+  });
+
+  // ═══════════ WHAT'S INCLUDED ANIMATION ═══════════
+  gsap.from('#included-header > *', {
+    scrollTrigger: { trigger: '#service-included', start: 'top 80%', once: true },
+    y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out'
+  });
+  gsap.from('.feature-card', {
+    scrollTrigger: { trigger: '#included-grid', start: 'top 82%', once: true },
+    y: 45, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
+  });
+
+  // ═══════════ PROCESS ANIMATION ═══════════
+  gsap.from('#process-header > *', {
+    scrollTrigger: { trigger: '#service-process', start: 'top 80%', once: true },
+    y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out'
+  });
+  gsap.from('#process-steps > div', {
+    scrollTrigger: { trigger: '#process-steps', start: 'top 82%', once: true },
+    x: -30, opacity: 0, stagger: 0.15, duration: 0.55, ease: 'power2.out'
+  });
+
+  // ═══════════ CTA ANIMATION ═══════════
+  gsap.from('#service-cta > div > *', {
+    scrollTrigger: { trigger: '#service-cta', start: 'top 82%', once: true },
+    y: 30, opacity: 0, stagger: 0.12, duration: 0.7, ease: 'power2.out'
+  });
+
+  // ═══════════ HAMBURGER TOGGLE ═══════════
+  const hamburger = document.getElementById('hamburger');
+  const drawer    = document.getElementById('nav-drawer');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    drawer.classList.toggle('open');
+  });
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    drawer.classList.remove('open');
+  }));
+});
+</script>
+</body>
+</html>
