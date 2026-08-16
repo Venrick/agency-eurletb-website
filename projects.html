@@ -19,6 +19,9 @@
     href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap"
     rel="stylesheet" />
 
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -196,17 +199,17 @@
       position: relative;
       flex-shrink: 0;
       width: 65%;
-      aspect-ratio: 16 / 9;
+      height: 560px;
       background: #0a0f1e;
-      background-image:
-        linear-gradient(rgba(193, 159, 93, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(193, 159, 93, 0.04) 1px, transparent 1px);
-      background-size: 80px 80px;
     }
 
-    #map-left-col > img {
-      display: block;
-      object-position: center bottom;
+    #map {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0f1e;
+      isolation: isolate;
     }
 
     #map-right-col {
@@ -269,62 +272,58 @@
       width: 0%;
     }
 
-    .map-city-dot {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(193, 159, 93, 0.25);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
+    /* Leaflet marker pins — gold teardrop, matches the brand pin style */
+    .map-marker {
+      background: transparent !important;
+      border: none !important;
+    }
+    .map-marker svg {
+      display: block;
+      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+      transition: filter 0.2s ease;
+    }
+    .map-marker.map-pin--active svg {
+      filter: drop-shadow(0 0 8px rgba(193, 159, 93, 0.85));
+      transform: scale(1.12);
+      transform-origin: 50% 100%;
     }
 
-    .map-pin {
-      position: absolute;
-      transform: translate(-50%, -100%);
-      cursor: pointer;
-      z-index: 10;
-      background: none;
-      border: none;
-      padding: 0;
-      transition: transform 0.2s, opacity 0.25s ease;
+    /* Leaflet dark-theme overrides to match the navy/gold site theme */
+    .leaflet-container {
+      background: #0a0f1e;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
     }
-    .map-pin svg {
-      width: 26.4px;
-      height: 26.4px;
-      display: block;
-    }
-    .map-pin.map-pin--filter-dim {
-      opacity: 0.32;
-      z-index: 8;
-    }
-    .map-pin:hover { transform: translate(-50%, -100%) scale(1.15); }
-    .map-pin-label {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      font-family: 'Barlow Condensed', sans-serif;
+    .leaflet-control-attribution {
+      background: rgba(15, 19, 35, 0.88) !important;
+      color: rgba(255, 255, 255, 0.55) !important;
       font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #c19f5d;
-      pointer-events: none;
-      bottom: -18px;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.2s ease, visibility 0.2s ease;
-      z-index: 12;
+      line-height: 1.5;
+      padding: 2px 6px;
     }
-    .map-pin-label--above {
-      bottom: 100%;
-      margin-bottom: 2px;
+    .leaflet-control-attribution a {
+      color: rgba(193, 159, 93, 0.85) !important;
     }
-    .map-pin:hover .map-pin-label,
-    .map-pin:focus-visible .map-pin-label,
-    .map-pin.map-pin--active .map-pin-label {
-      opacity: 1;
-      visibility: visible;
+    .leaflet-control-attribution a:hover {
+      color: #c19f5d !important;
+      text-decoration: none;
+    }
+    .leaflet-bar {
+      border: 1px solid rgba(193, 159, 93, 0.25) !important;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4) !important;
+    }
+    .leaflet-bar a {
+      background: #1a2036 !important;
+      color: #c19f5d !important;
+      border-bottom: 1px solid rgba(193, 159, 93, 0.15) !important;
+    }
+    .leaflet-bar a:hover {
+      background: #1e243c !important;
+      color: #e6c98a !important;
+    }
+    .leaflet-bar a.leaflet-disabled {
+      background: #161a2c !important;
+      color: rgba(193, 159, 93, 0.3) !important;
     }
 
     .filter-btn-active {
@@ -341,6 +340,17 @@
       width: 40px;
       height: 40px;
       padding: 0;
+      border: 1px solid rgba(193, 159, 93, 0.35);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.8);
+      z-index: 30;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    #map-panel-close:hover {
+      background: rgba(193, 159, 93, 0.15);
+      border-color: #c19f5d;
+      color: #c19f5d;
     }
 
     @media(max-width:768px) {
@@ -352,27 +362,77 @@
         display: none !important;
       }
 
-      #project-map {
-        height: 340px;
-      }
-
       #map-left-col {
         width: 100%;
+        height: auto;
         aspect-ratio: 4 / 5;
         min-height: 480px;
       }
 
-      /* Enlarge pin tap target on mobile without moving the icon */
-      .map-pin::after {
-        content: '';
-        position: absolute;
-        inset: -14px;
+      /* Mobile: right column stacks full-width below the map (placeholder + panel states) */
+      #map-right-col {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid rgba(193, 159, 93, 0.15);
+        min-height: 0;
       }
 
+      /* Mobile: placeholder collapses to a compact hint strip (not a tall empty block) */
+      #map-placeholder {
+        position: relative;
+        height: auto;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        column-gap: 12px;
+        align-items: center;
+        text-align: left;
+        padding: 14px 20px;
+      }
+      #map-placeholder svg {
+        grid-row: 1 / 3;
+        width: 30px;
+        height: 30px;
+        margin-bottom: 0;
+      }
+      #map-placeholder span {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      #map-placeholder p {
+        grid-column: 2;
+        grid-row: 2;
+        margin-top: 2px;
+        max-width: none;
+      }
+
+      /* Enlarge Leaflet marker tap target on touch without moving the icon */
+      .map-marker::after {
+        content: '';
+        position: absolute;
+        inset: -16px;
+      }
+
+      /* Mobile: info panel becomes a full-screen overlay on top of the map */
       #map-info-panel {
-        width: calc(100% - 32px);
-        top: auto;
-        bottom: 16px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        padding: 28px 20px;
+        z-index: 210;
+      }
+
+      #map-info-panel .mt-auto {
+        margin-top: 24px;
+      }
+
+      #map-panel-close {
+        position: fixed;
+        top: 16px;
         right: 16px;
       }
     }
@@ -489,61 +549,7 @@
 
       <div id="map-frame" class="flex flex-col md:flex-row relative">
         <div id="map-left-col" class="w-full md:w-[65%] relative">
-          <img src="assets/images/dz-05.svg" alt="Map" class="w-full h-full object-cover opacity-60">
-
-          <!-- Pin: Oran — mockup: label above -->
-          <button type="button" class="map-pin" style="left:15%; top:calc(38% + 3px);" data-project="oran-warehouse" data-category="industrial" aria-label="Oran">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label map-pin-label--above">Oran</span>
-          </button>
-
-          <!-- Pin: Chlef — mockup: label above -->
-          <button type="button" class="map-pin" style="left:30.5%; top:calc(25% + 3px);" data-project="chlef-hub" data-category="industrial" aria-label="Chlef">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label map-pin-label--above">Chlef</span>
-          </button>
-
-          <!-- Pin: Ain Defla — mockup: label above -->
-          <button type="button" class="map-pin" style="left:37.5%; top:28%;" data-project="ain-defla-works" data-category="industrial" aria-label="Ain Defla">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label map-pin-label--above">Ain Defla</span>
-          </button>
-
-          <!-- Pin: Khemis Miliana — mockup: label below -->
-          <button type="button" class="map-pin" style="left:42%; top:29%;" data-project="khemis-campus" data-category="commercial" aria-label="Khemis Miliana">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label">Khemis Miliana</span>
-          </button>
-
-          <!-- Pin: Blida — mockup: label below -->
-          <button type="button" class="map-pin" style="left:46.5%; top:calc(21% + 3px);" data-project="blida-complex" data-category="residential" aria-label="Blida">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label">Blida</span>
-          </button>
-
-          <!-- Pin: Algiers — mockup: label above -->
-          <button type="button" class="map-pin" style="left:49%; top:calc(16% + 3px);" data-project="algiers-tower" data-category="commercial" aria-label="Algiers">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label map-pin-label--above">Algiers</span>
-          </button>
-
-          <!-- Pin: Setif — mockup: label below -->
-          <button type="button" class="map-pin" style="left:71%; top:28%;" data-project="setif-factory" data-category="industrial" aria-label="Setif">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label">Setif</span>
-          </button>
-
-          <!-- Pin: Constantine — mockup: label below -->
-          <button type="button" class="map-pin" style="left:81.5%; top:24%;" data-project="constantine-mall" data-category="commercial" aria-label="Constantine">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label">Constantine</span>
-          </button>
-
-          <!-- Pin: Djelfa — mockup: label below -->
-          <button type="button" class="map-pin" style="left:54%; top:66%;" data-project="djelfa-hub" data-category="industrial" aria-label="Djelfa">
-            <svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>
-            <span class="map-pin-label">Djelfa</span>
-          </button>
+          <div id="map" class="absolute inset-0"></div>
         </div>
 
         <div id="map-right-col" class="w-full md:w-[35%] overflow-hidden relative min-h-[440px]">
@@ -553,7 +559,7 @@
             <p class="text-xs text-white/30 mt-2 max-w-[200px]">Interact with the map marker to view site-specific data.</p>
           </div>
           
-          <div id="map-info-panel" class="absolute inset-0 bg-navy-card p-8 flex flex-col">
+          <div id="map-info-panel" class="absolute inset-0 bg-navy-card p-8 flex flex-col" style="transform: translateX(100%);">
             <button id="map-panel-close" class="absolute top-4 right-4 text-white/40 hover:text-gold text-xl">✕</button>
             <span id="panel-category" class="font-condensed text-[11px] tracking-[2px] uppercase text-gold">Commercial</span>
             <h3 id="panel-name" class="font-condensed text-2xl font-bold text-white mt-1">Algiers Tower</h3>
@@ -689,6 +695,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
   <script>
     const projectData = {
       "algiers-tower": { name: "Algiers Business Tower", city: "Algiers", category: "commercial", year: "2023", area: "12,400 m²", status: "Completed", completion: 100, description: "A 14-floor commercial tower in the heart of Algiers featuring modern façade engineering and smart building systems.", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" },
@@ -704,6 +711,20 @@
       "setif-factory": { name: "Sétif Production Facility", city: "Setif", category: "industrial", year: "2024", area: "22,000 m²", status: "In Progress", completion: 61, description: "Full-scale agri-food production and cold storage facility serving central Algeria's distribution network.", image: "https://images.unsplash.com/photo-1565034946487-077786996e27?w=800&q=80" },
       "medea-villas": { name: "Médéa Villa Compound", city: "Medea", category: "residential", year: "2023", area: "3,800 m²", status: "Completed", completion: 100, description: "Gated community of 12 premium villas with private gardens, built with natural stone and timber elements.", image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" }
     };
+
+    /* Leaflet marker coordinates for the 9 locations shown on the project map */
+    const markerCoords = {
+      "oran-warehouse": [35.6969, -0.6331],
+      "chlef-hub": [36.1650, 1.3347],
+      "ain-defla-works": [36.2639, 1.9673],
+      "khemis-campus": [36.2637, 2.2306],
+      "blida-complex": [36.4700, 2.8300],
+      "algiers-tower": [36.7538, 3.0588],
+      "setif-factory": [36.1898, 5.4108],
+      "constantine-mall": [36.3650, 6.6147],
+      "djelfa-hub": [34.6667, 3.2500]
+    };
+    const markers = {};
 
     window.addEventListener('load', () => {
       gsap.registerPlugin(ScrollTrigger);
@@ -727,6 +748,41 @@
         grid.appendChild(card);
         card.addEventListener('click', () => openModal(id));
       });
+
+      // ═══════════ INTERACTIVE MAP — Leaflet + CartoDB Dark Matter ═══════════
+      if (window.L) {
+        const map = L.map('map', {
+          center: [35.7, 3.0],
+          zoom: 6,
+          dragging: true,
+          touchZoom: true,
+          scrollWheelZoom: true,
+          doubleClickZoom: true,
+          zoomControl: true,
+          attributionControl: true
+        });
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          subdomains: 'abcd',
+          maxZoom: 20
+        }).addTo(map);
+
+        const pinIcon = L.divIcon({
+          className: 'map-marker',
+          html: '<svg viewBox="0 0 24 24" fill="#c19f5d"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>',
+          iconSize: [26.4, 26.4],
+          iconAnchor: [13.2, 26.4]
+        });
+
+        Object.keys(markerCoords).forEach(id => {
+          markers[id] = L.marker(markerCoords[id], { icon: pinIcon, title: projectData[id].name }).addTo(map);
+        });
+
+        // Fit all 9 project markers on screen (≈ zoom 6 desktop, ≈ zoom 5 mobile), centered on Algeria
+        map.fitBounds(L.latLngBounds(Object.values(markerCoords)), { padding: [24, 24], maxZoom: 6 });
+        setTimeout(() => map.invalidateSize(), 300);
+      }
 
       // ═══════════ SECTION HEADERS — scroll entrance ═══════════
       gsap.from('#map-header > *', {
@@ -782,10 +838,10 @@
             c.style.display = 'none';
           }
         });
-        document.querySelectorAll('.map-pin').forEach(pin => {
-          const cat = pin.dataset.category;
+        Object.keys(markerCoords).forEach(id => {
+          const cat = projectData[id].category;
           const match = filter === 'all' || cat === filter;
-          pin.classList.toggle('map-pin--filter-dim', filter !== 'all' && !match);
+          markers[id].setOpacity(filter !== 'all' && !match ? 0.35 : 1);
         });
       }
       applyPortfolioFilter('all');
@@ -813,14 +869,17 @@
       const panelBar = document.getElementById('panel-bar');
       const allMapPins = () => document.querySelectorAll('.map-pin');
       function clearMapPinActive() {
-        allMapPins().forEach(p => p.classList.remove('map-pin--active'));
+        Object.values(markers).forEach(m => {
+          const el = m.getElement();
+          if (el) el.classList.remove('map-pin--active');
+        });
       }
       gsap.set(infoPanel, { x: '100%' });
-      document.querySelectorAll('.map-pin').forEach(pin => {
-        pin.addEventListener('click', () => {
-          const d = projectData[pin.dataset.project]; if (!d) return;
+      Object.keys(markerCoords).forEach(id => {
+        markers[id].on('click', () => {
+          const d = projectData[id]; if (!d) return;
           clearMapPinActive();
-          pin.classList.add('map-pin--active');
+          markers[id].getElement().classList.add('map-pin--active');
           document.getElementById('panel-category').textContent = d.category;
           document.getElementById('panel-name').textContent = d.name;
           document.getElementById('panel-city').textContent = d.city;
