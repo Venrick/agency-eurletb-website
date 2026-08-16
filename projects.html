@@ -145,12 +145,59 @@
       opacity: 1;
     }
 
-    .project-card img {
-      transition: transform .45s ease, filter .45s;
+    /* Project card slideshow: crossfading slides + dot navigation */
+    .project-slideshow {
+      background: #1a2036;
+    }
+    .ss-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .ss-slide.ss-active {
+      opacity: 1;
+    }
+    .ss-dots {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      z-index: 20;
+    }
+    .ss-dot {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .ss-dot::after {
+      content: '';
+      position: absolute;
+      inset: -10px;
+    }
+    .ss-dot.ss-active {
+      background: #c19f5d;
+      transform: scale(1.25);
+    }
+
+    .project-card .ss-slide {
+      transition: opacity 0.8s ease, transform .45s ease, filter .45s;
       filter: brightness(.88);
     }
 
-    .project-card:hover img {
+    .project-card:hover .ss-slide {
       transform: scale(1.06);
       filter: brightness(.6);
     }
@@ -712,6 +759,130 @@
       "medea-villas": { name: "Médéa Villa Compound", city: "Medea", category: "residential", year: "2023", area: "3,800 m²", status: "Completed", completion: 100, description: "Gated community of 12 premium villas with private gardens, built with natural stone and timber elements.", image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" }
     };
 
+    /* Shared slideshow photos: slide 1 is each project's own image; slides 2-3 are these category photos */
+    const slideshowPhotos = {
+      industrial: [
+        'https://images.pexels.com/photos/4832564/pexels-photo-4832564.jpeg?auto=compress&cs=tinysrgb&w=800',
+        'https://images.pexels.com/photos/12381213/pexels-photo-12381213.jpeg?auto=compress&cs=tinysrgb&w=800'
+      ],
+      commercial: [
+        'https://images.pexels.com/photos/33719782/pexels-photo-33719782.jpeg?auto=compress&cs=tinysrgb&w=800',
+        'https://images.pexels.com/photos/946310/pexels-photo-946310.jpeg?auto=compress&cs=tinysrgb&w=800'
+      ],
+      residential: [
+        'https://images.pexels.com/photos/14846410/pexels-photo-14846410.jpeg?auto=compress&cs=tinysrgb&w=800',
+        'https://images.pexels.com/photos/129494/pexels-photo-129494.jpeg?auto=compress&cs=tinysrgb&w=800'
+      ]
+    };
+
+    /* Shared slideshow helper (used by project cards and the map info panel):
+       crossfading slides + dot nav, autoplay only while on screen, hover-pause on
+       hover-capable devices, and per-slide lazy loading (slide 1 loads immediately,
+       later slides only when they become active). */
+    function createSlideshow(container, slides, opts = {}) {
+      const {
+        interval = 4000,
+        dots = true,
+        hoverPause = true,
+        alt = ''
+      } = opts;
+
+      const slideEls = [];
+      const dotEls = [];
+      let index = 0;
+      let timer = null;
+      let hovering = false;
+      let disabled = false;
+
+      slides.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.className = 'ss-slide';
+        img.alt = i === 0 ? alt : '';
+        img.loading = 'lazy';
+        if (i === 0) { img.setAttribute('src', src); img.classList.add('ss-active'); }
+        else { img.setAttribute('data-src', src); }
+        container.appendChild(img);
+        slideEls.push(img);
+      });
+
+      if (dots) {
+        const wrap = document.createElement('div');
+        wrap.className = 'ss-dots';
+        slides.forEach((_, i) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ss-dot' + (i === 0 ? ' ss-active' : '');
+          b.setAttribute('aria-label', 'Slide ' + (i + 1));
+          b.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            show(i);
+            stop();
+            start();
+          });
+          wrap.appendChild(b);
+          dotEls.push(b);
+        });
+        container.appendChild(wrap);
+      }
+
+      function ensureLoaded(i) {
+        const el = slideEls[i];
+        if (el && el.hasAttribute('data-src')) {
+          el.setAttribute('src', el.getAttribute('data-src'));
+          el.removeAttribute('data-src');
+        }
+      }
+      function show(i) {
+        index = ((i % slides.length) + slides.length) % slides.length;
+        slideEls.forEach((el, j) => el.classList.toggle('ss-active', j === index));
+        dotEls.forEach((d, j) => d.classList.toggle('ss-active', j === index));
+        ensureLoaded(index);
+        ensureLoaded((index + 1) % slides.length);
+      }
+      function start() {
+        if (timer || disabled || hovering) return;
+        timer = setInterval(() => show(index + 1), interval);
+      }
+      function stop() {
+        if (timer) { clearInterval(timer); timer = null; }
+      }
+
+      const hoverCapable = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+      if (hoverPause && hoverCapable) {
+        // Listen on the wrapper (card/panel) so hovering the whole slide area pauses,
+        // including where the info overlay sits above the slides.
+        const hoverTarget = container.parentElement || container;
+        hoverTarget.addEventListener('pointerenter', () => { hovering = true; stop(); });
+        hoverTarget.addEventListener('pointerleave', () => { hovering = false; if (!disabled) start(); });
+      }
+
+      // Autoplay only while the slideshow is on screen; reset to slide 1 when it enters view
+      let io = null;
+      if (window.IntersectionObserver) {
+        io = new IntersectionObserver((entries) => {
+          entries.forEach(en => {
+            if (en.isIntersecting) { show(0); if (!disabled) start(); }
+            else { stop(); }
+          });
+        }, { threshold: 0.2 });
+        io.observe(container);
+      }
+
+      show(0);
+      if (!io && !disabled) start();
+
+      return {
+        show,
+        next: () => show(index + 1),
+        start,
+        stop,
+        enable: () => { disabled = false; if (!hovering) start(); },
+        disable: () => { disabled = true; stop(); },
+        destroy: () => { stop(); if (io) io.disconnect(); container.innerHTML = ''; }
+      };
+    }
+
     /* Leaflet marker coordinates for the 9 locations shown on the project map */
     const markerCoords = {
       "oran-warehouse": [35.6969, -0.6331],
@@ -744,9 +915,13 @@
         card.className = `project-card relative overflow-hidden rounded-[3px] aspect-[4/3] cursor-pointer`;
         card.setAttribute('data-category', p.category);
         card.setAttribute('data-id', id);
-        card.innerHTML = `<img src="${p.image}" class="w-full h-full object-cover"><div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.95)] to-transparent flex flex-col justify-end p-6"><span class="font-condensed text-[9px] tracking-[2px] uppercase text-gold mb-1">${p.category}</span><h3 class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-1">${p.name}</h3><p class="text-[12px] text-white/60 mb-3">${p.city}, ${p.year}</p><div class="w-full h-[3px] bg-white/20 rounded mb-1"><div class="h-full bg-gold" style="width: ${p.completion}%"></div></div><div class="flex justify-between items-center"><span class="text-[10px] text-gold font-bold tracking-[1px] uppercase">${p.status} (${p.completion}%)</span><span class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold flex items-center gap-1">View Details <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"/></svg></span></div></div>`;
+        card.innerHTML = `<div class="project-slideshow absolute inset-0"></div><div class="project-overlay absolute inset-0 bg-gradient-to-t from-[rgba(30,36,60,0.95)] to-transparent flex flex-col justify-end p-6 pb-12"><span class="font-condensed text-[9px] tracking-[2px] uppercase text-gold mb-1">${p.category}</span><h3 class="font-condensed text-[20px] font-bold text-white leading-[1.2] mb-1">${p.name}</h3><p class="text-[12px] text-white/60 mb-3">${p.city}, ${p.year}</p><div class="w-full h-[3px] bg-white/20 rounded mb-1"><div class="h-full bg-gold" style="width: ${p.completion}%"></div></div><div class="flex justify-between items-center"><span class="text-[10px] text-gold font-bold tracking-[1px] uppercase">${p.status} (${p.completion}%)</span><span class="font-condensed text-[10px] font-bold tracking-[1.8px] uppercase text-gold flex items-center gap-1">View Details <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"/></svg></span></div></div>`;
         grid.appendChild(card);
         card.addEventListener('click', () => openModal(id));
+
+        // Slideshow: the project's existing image as slide 1 + the 2 category photos as slides 2-3
+        const slides = [p.image].concat(slideshowPhotos[p.category] || []);
+        createSlideshow(card.querySelector('.project-slideshow'), slides, { alt: p.name, interval: 4000 });
       });
 
       // ═══════════ INTERACTIVE MAP — Leaflet + CartoDB Dark Matter ═══════════
