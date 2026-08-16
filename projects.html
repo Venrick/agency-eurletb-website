@@ -608,8 +608,9 @@
           
           <div id="map-info-panel" class="absolute inset-0 bg-navy-card p-8 flex flex-col" style="transform: translateX(100%);">
             <button id="map-panel-close" class="absolute top-4 right-4 text-white/40 hover:text-gold text-xl">✕</button>
-            <span id="panel-category" class="font-condensed text-[11px] tracking-[2px] uppercase text-gold">Commercial</span>
-            <h3 id="panel-name" class="font-condensed text-2xl font-bold text-white mt-1">Algiers Tower</h3>
+            <div id="panel-slideshow" class="relative flex-shrink-0 overflow-hidden rounded-[4px] mb-5" style="height:140px;"></div>
+            <span id="panel-category" class="font-condensed text-[11px] tracking-[2px] uppercase text-gold pr-12">Commercial</span>
+            <h3 id="panel-name" class="font-condensed text-2xl font-bold text-white mt-1 pr-12">Algiers Tower</h3>
             <p id="panel-city" class="text-sm text-white/40 mb-6">Algiers, Algeria</p>
             
             <div class="grid grid-cols-2 gap-4 mb-8">
@@ -1042,7 +1043,8 @@
 
       const infoPanel = document.getElementById('map-info-panel');
       const panelBar = document.getElementById('panel-bar');
-      const allMapPins = () => document.querySelectorAll('.map-pin');
+      const panelSlideshowEl = document.getElementById('panel-slideshow');
+      let panelSlideshow = null;
       function clearMapPinActive() {
         Object.values(markers).forEach(m => {
           const el = m.getElement();
@@ -1063,6 +1065,13 @@
           document.getElementById('panel-status').textContent = d.status;
           document.getElementById('panel-pct').textContent = d.completion + '%';
           document.getElementById('panel-desc').textContent = d.description;
+
+          // (Re)build the panel slideshow for this project: its image + 2 category photos.
+          // Autoplay starts when the panel becomes visible (IntersectionObserver) and
+          // stops when it closes (disable() on close + observer exit).
+          if (panelSlideshow) { panelSlideshow.destroy(); panelSlideshow = null; }
+          panelSlideshow = createSlideshow(panelSlideshowEl, [d.image].concat(slideshowPhotos[d.category] || []), { alt: d.name, interval: 4000 });
+
           gsap.set(panelBar, { width: 0 });
           gsap.to(infoPanel, { x: 0, duration: 0.5 });
           gsap.to(panelBar, { width: d.completion + '%', duration: 1, delay: 0.3 });
@@ -1070,6 +1079,7 @@
       });
       document.getElementById('map-panel-close').addEventListener('click', () => {
         clearMapPinActive();
+        if (panelSlideshow) panelSlideshow.disable();   // stop the timer for the hidden panel
         gsap.to(infoPanel, { x: '100%', duration: 0.4 });
       });
 
