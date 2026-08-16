@@ -410,7 +410,7 @@
         <li><a href="about.html"       class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
         <li><a href="services.html"    class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
         <li><a href="projects.html"    class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
-        <li><a href="quality-hse.html" class="fnav-link text-[13px] text-gold no-underline">Quality &amp; HSE</a></li>
+        <li><a href="quality-hse.html" class="fnav-link text-[13px] text-white/55 no-underline">Quality &amp; HSE</a></li>
         <li><a href="contact.html"     class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
       </ul>
     </div>
@@ -522,6 +522,23 @@ window.addEventListener('load', () => {
     }
   });
 });
+</script>
+<script>
+  // Active footer navigation link (matches the current page; Services for service-*.html)
+  (function () {
+    var currentPage = window.location.pathname.split("/").pop() || "index.html";
+    var isServicePage = /^service-.*\.html$/.test(currentPage);
+    document.querySelectorAll("footer div").forEach(function (d) {
+      if (d.textContent.trim() === "Navigation") {
+        d.parentElement.querySelectorAll("a.fnav-link").forEach(function (a) {
+          var href = a.getAttribute("href");
+          var active = href === currentPage || (isServicePage && href === "services.html");
+          a.classList.toggle("text-gold", active);
+          a.classList.toggle("text-white/55", !active);
+        });
+      }
+    });
+  })();
 </script>
 </body>
 </html>
