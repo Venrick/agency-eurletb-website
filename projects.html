@@ -494,20 +494,21 @@
 
 <body class="font-sans text-navy bg-white">
 
-  <!-- ═══════════════════════════════ NAVBAR ═══════════════════════════════ -->
+  <!-- NAVBAR -->
   <nav class="fixed top-0 left-0 right-0 z-[100] flex flex-col">
+
     <!-- Top bar -->
     <div id="topbar" class="bg-[rgba(15,19,35,0.95)] border-b border-[rgba(193,159,93,0.15)] flex items-center justify-between px-4 md:px-12 h-9">
       <div class="flex items-center gap-3 md:gap-7">
         <a href="tel:+213000000000" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
           <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="hidden md:inline">+213 (0) 00 00 00 00</span>
-          <span class="md:hidden">Call</span>
+          <span class="md:hidden" data-i18n="topbar.call">Call</span>
         </a>
         <a href="mailto:contact@etbachouri.com" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
           <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="hidden sm:inline">contact@etbachouri.com</span>
-          <span class="sm:hidden">Email</span>
+          <span class="sm:hidden" data-i18n="topbar.email">Email</span>
         </a>
       </div>
       <div class="flex items-center gap-4">
@@ -529,15 +530,29 @@
 
       <div class="flex items-center gap-9">
         <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
-          <li><a href="index.html"       class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a></li>
-          <li><a href="about.html"       class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a></li>
-          <li><a href="services.html"    class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a></li>
-          <li><a href="index.html#companies" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Companies</a></li>
-          <li><a href="projects.html"    class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a></li>
-          <li><a href="quality-hse.html" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Quality & HSE</a></li>
-          <li><a href="contact.html"     class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a></li>
+          <li><a href="index.html" data-i18n="nav.home" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a></li>
+          <li><a href="about.html" data-i18n="nav.about" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a></li>
+          <li><a href="services.html" data-i18n="nav.services" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a></li>
+          <li><a href="index.html#companies" data-i18n="nav.companies" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Companies</a></li>
+          <li><a href="projects.html" data-i18n="nav.projects" class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Projects</a></li>
+          <li><a href="quality-hse.html" data-i18n="nav.quality" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Quality and HSE</a></li>
+          <li><a href="contact.html" data-i18n="nav.contact" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Contact</a></li>
         </ul>
-
+        <!-- Desktop 3-button language switcher (hidden on mobile) -->
+        <div class="hidden md:flex items-center border border-[rgba(193,159,93,0.25)] rounded-[3px] overflow-hidden">
+          <button type="button" class="lang-btn" data-lang="en" aria-label="English">EN</button>
+          <button type="button" class="lang-btn" data-lang="fr" aria-label="Francais">FR</button>
+          <button type="button" class="lang-btn" data-lang="ar" aria-label="Arabic">AR</button>
+        </div>
+        <!-- Mobile compact language button (<=767px) -->
+        <div class="lang-compact relative md:hidden">
+          <button type="button" class="lang-compact-btn" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
+            <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+            <span class="lang-current">EN</span>
+            <svg class="lang-caret" viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+          </button>
+          <div class="lang-menu" role="menu" aria-label="Language options" hidden></div>
+        </div>
         <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
           <span></span><span></span><span></span>
         </button>
@@ -546,13 +561,23 @@
 
     <!-- Mobile drawer -->
     <div class="nav-drawer" id="nav-drawer">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="services.html">Services</a>
-      <a href="index.html#companies">Companies</a>
-      <a href="projects.html">Projects</a>
-      <a href="quality-hse.html">Quality & HSE</a>
-      <a href="contact.html">Contact</a>
+      <div class="px-6 pt-4 pb-2">
+        <div class="lang-compact relative">
+          <button type="button" class="lang-compact-btn" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
+            <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+            <span class="lang-current">EN</span>
+            <svg class="lang-caret" viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+          </button>
+          <div class="lang-menu" role="menu" aria-label="Language options" hidden></div>
+        </div>
+      </div>
+      <a href="index.html" data-i18n="nav.home">Home</a>
+      <a href="about.html" data-i18n="nav.about">About</a>
+      <a href="services.html" data-i18n="nav.services">Services</a>
+      <a href="index.html#companies" data-i18n="nav.companies">Companies</a>
+      <a href="projects.html" data-i18n="nav.projects" class="active">Projects</a>
+      <a href="quality-hse.html" data-i18n="nav.quality">Quality & HSE</a>
+      <a href="contact.html" data-i18n="nav.contact">Contact</a>
     </div>
   </nav>
 
@@ -677,35 +702,41 @@
       <a href="index.html" class="flex items-center no-underline mb-5">
         <img src="assets/images/Logo-Dark.svg" alt="EURL ETB Achouri Toufik" style="height:88px;">
       </a>
-      <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7">Building tomorrow's landmarks with precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
-    </div>
-    <div>
-      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Navigation</div>
-      <ul class="list-none flex flex-col gap-[10px]">
-        <li><a href="index.html"       class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
-        <li><a href="about.html"       class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
-        <li><a href="services.html"    class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
-        <li><a href="projects.html"    class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
-        <li><a href="quality-hse.html" class="fnav-link text-[13px] text-white/55 no-underline">Quality &amp; HSE</a></li>
-        <li><a href="contact.html"     class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
+      <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7" data-i18n="footer.tagline">Building tomorrow's landmarks with precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
+      <ul class="list-none p-0 m-0 flex flex-col gap-3">
+        <li class="flex items-start gap-[10px]">
+          <svg class="w-3 h-3 mt-[3px] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="text-[12px] text-white/40" data-i18n="footer.address">Zone Industrielle, Blida, Algeria</span>
+        </li>
       </ul>
     </div>
     <div>
-      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Core Services</div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]" data-i18n="footer.nav_title">Navigation</div>
       <ul class="list-none flex flex-col gap-[10px]">
-        <li><a href="service-residential-construction.html" class="fnav-link text-[13px] text-white/55 no-underline">Residential Construction</a></li>
-        <li><a href="service-commercial-buildings.html" class="fnav-link text-[13px] text-white/55 no-underline">Commercial Buildings</a></li>
-        <li><a href="service-industrial-works.html" class="fnav-link text-[13px] text-white/55 no-underline">Industrial Works</a></li>
-        <li><a href="service-renovation-retrofit.html" class="fnav-link text-[13px] text-white/55 no-underline">Renovation &amp; Retrofit</a></li>
-        <li><a href="service-project-management.html" class="fnav-link text-[13px] text-white/55 no-underline">Project Management</a></li>
-        <li><a href="service-architectural-design.html" class="fnav-link text-[13px] text-white/55 no-underline">Architectural Design</a></li>
+        <li><a href="index.html"       data-i18n="footer.nav_home"     class="fnav-link text-[13px] text-white/55 no-underline">Home</a></li>
+        <li><a href="about.html"       data-i18n="footer.nav_about"    class="fnav-link text-[13px] text-white/55 no-underline">About Us</a></li>
+        <li><a href="services.html"    data-i18n="footer.nav_services" class="fnav-link text-[13px] text-white/55 no-underline">Services</a></li>
+        <li><a href="projects.html"    data-i18n="footer.nav_projects" class="fnav-link text-[13px] text-white/55 no-underline">Projects</a></li>
+        <li><a href="quality-hse.html" data-i18n="footer.nav_quality"  class="fnav-link text-[13px] text-white/55 no-underline">Quality & HSE</a></li>
+        <li><a href="contact.html"     data-i18n="footer.nav_contact"  class="fnav-link text-[13px] text-white/55 no-underline">Contact</a></li>
       </ul>
     </div>
     <div>
-      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]">Let's Talk</div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]" data-i18n="footer.services_title">Core Services</div>
+      <ul class="list-none flex flex-col gap-[10px]">
+        <li><a href="service-residential-construction.html" data-i18n="footer.svc_residential" class="fnav-link text-[13px] text-white/55 no-underline">Residential Construction</a></li>
+        <li><a href="service-commercial-buildings.html"    data-i18n="footer.svc_commercial"  class="fnav-link text-[13px] text-white/55 no-underline">Commercial Buildings</a></li>
+        <li><a href="service-industrial-works.html"        data-i18n="footer.svc_industrial"  class="fnav-link text-[13px] text-white/55 no-underline">Industrial Works</a></li>
+        <li><a href="service-renovation-retrofit.html"     data-i18n="footer.svc_renovation"  class="fnav-link text-[13px] text-white/55 no-underline">Renovation & Retrofit</a></li>
+        <li><a href="service-project-management.html"      data-i18n="footer.svc_pm"          class="fnav-link text-[13px] text-white/55 no-underline">Project Management</a></li>
+        <li><a href="service-architectural-design.html"    data-i18n="footer.svc_arch"        class="fnav-link text-[13px] text-white/55 no-underline">Architectural Design</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-condensed text-[13px] font-bold tracking-[2.5px] uppercase text-gold mb-5 pb-[10px] border-b border-[rgba(193,159,93,0.2)]" data-i18n="footer.talk_title">Let's Talk</div>
       <div class="bg-[rgba(193,159,93,0.07)] border border-[rgba(193,159,93,0.18)] rounded-[4px] p-7">
-        <p class="text-[12.5px] text-white/55 leading-[1.6] mb-5">Have a project in mind? We'd love to hear about it.</p>
-        <a href="contact.html" class="inline-block font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Contact Us &rarr;</a>
+        <p class="text-[12.5px] text-white/55 leading-[1.6] mb-5" data-i18n="footer.talk_desc">Have a project in mind? We'd love to hear about it.</p>
+        <a href="contact.html" data-i18n="footer.talk_btn" class="inline-block font-barlow text-[11px] font-bold tracking-[1.5px] uppercase text-gold border border-gold px-[22px] py-[9px] hover:bg-gold hover:text-navy transition-all no-underline">Contact Us &rarr;</a>
       </div>
     </div>
   </div>
@@ -713,7 +744,7 @@
   <div class="relative z-10 max-w-[1200px] mx-auto px-4 md:px-12"><hr class="border-none border-t border-[rgba(193,159,93,0.15)]"/></div>
 
   <div class="relative z-10 max-w-[1200px] mx-auto px-4 md:px-12 py-5 flex items-center justify-between gap-5 flex-wrap">
-    <p class="text-[11.5px] text-white/35">&copy; 2026 <a href="#" class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri Toufik</a>. All rights reserved.</p>
+    <p class="text-[11.5px] text-white/35">&copy; <span id="copyright-year">2026</span> <a href="#" class="text-[rgba(193,159,93,0.7)] hover:text-gold transition-colors no-underline">EURL ETB Achouri Toufik</a>. <span data-i18n="footer.rights">All rights reserved.</span></p>
     <div class="flex items-center gap-[10px]">
       <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="Facebook"><svg class="w-[13px] h-[13px] fill-white/50 hover:fill-gold" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
       <a href="#" class="w-8 h-8 border border-[rgba(193,159,93,0.25)] rounded-[3px] flex items-center justify-center hover:border-gold hover:bg-[rgba(193,159,93,0.12)] transition-all" aria-label="LinkedIn"><svg class="w-[13px] h-[13px] fill-white/50" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
@@ -1113,22 +1144,12 @@
       if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     });
   </script>
+<script src="assets/js/i18n.js"></script>
 <script>
-  // Active footer navigation link (matches the current page; Services for service-*.html)
-  (function () {
-    var currentPage = window.location.pathname.split("/").pop() || "index.html";
-    var isServicePage = /^service-.*\.html$/.test(currentPage);
-    document.querySelectorAll("footer div").forEach(function (d) {
-      if (d.textContent.trim() === "Navigation") {
-        d.parentElement.querySelectorAll("a.fnav-link").forEach(function (a) {
-          var href = a.getAttribute("href");
-          var active = href === currentPage || (isServicePage && href === "services.html");
-          a.classList.toggle("text-gold", active);
-          a.classList.toggle("text-white/55", !active);
-        });
-      }
-    });
-  })();
+(function(){
+  var y = document.getElementById('copyright-year');
+  if(y) y.textContent = new Date().getFullYear();
+})();
 </script>
 </body>
 </html>

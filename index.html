@@ -405,64 +405,6 @@
       }
     }
 
-    /* ── Language switcher ── */
-    .lang-btn {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: 1.5px;
-      line-height: 1;
-      padding: 4px 10px;
-      border: none;
-      border-radius: 2px;
-      background: transparent;
-      color: rgba(255, 255, 255, .6);
-      cursor: pointer;
-      transition: color .2s ease, background-color .2s ease;
-    }
-    .lang-btn:hover { color: #fff; }
-    .lang-btn.active { background: #c19f5d; color: #1e243c; }
-
-    /* Overflow guard: in RTL, negative-left transforms (GSAP pre-scroll) become
-       scrollable overflow; clip both axes so the pilot never scrolls sideways. */
-    html, body { overflow-x: hidden; }
-
-    /* ── RTL mirroring (pilot: navbar / hero / footer) ── */
-    html[dir="rtl"] #hero-content {
-      margin-left: 0 !important;
-      margin-right: 0;
-    }
-    @media(min-width:768px) {
-      html[dir="rtl"] #hero-content { margin-right: 48px !important; }
-    }
-    @media(min-width:1024px) {
-      html[dir="rtl"] #hero-content { margin-right: 96px !important; }
-    }
-    html[dir="rtl"] #hero-overlay {
-      background: linear-gradient(-105deg, rgba(15,19,35,0.88) 45%, rgba(15,19,35,0.55) 100%) !important;
-    }
-    html[dir="rtl"] .corner-tl {
-      left: auto !important;
-      right: 48px !important;
-      border-right: 2px solid #c19f5d;
-      border-left: none;
-    }
-    html[dir="rtl"] .corner-br {
-      right: auto !important;
-      left: 48px !important;
-      border-left: 2px solid #c19f5d;
-      border-right: none;
-    }
-    html[dir="rtl"] .hero-vline { right: auto !important; left: 38%; }
-    html[dir="rtl"] .hero-circle { right: auto !important; left: 15%; }
-    html[dir="rtl"] .hero-dots { right: auto !important; left: 10%; }
-    html[dir="rtl"] .font-condensed,
-    html[dir="rtl"] .nav-link,
-    html[dir="rtl"] .nav-drawer a,
-    html[dir="rtl"] .fnav-link {
-      letter-spacing: 0 !important;
-    }
-
     /* ── Desktop nav breathing room for the switcher (769–1023px) ── */
     @media(max-width:1023px) and (min-width:769px) {
       .nav-desktop { gap: 12px !important; }
@@ -518,10 +460,19 @@
         </ul>
 
         <!-- Language switcher -->
-        <div class="lang-switch flex items-center gap-1 border border-[rgba(193,159,93,0.3)] rounded-[3px] px-1 py-[3px]" role="group" aria-label="Language switcher">
+        <div class="lang-switch hidden md:flex items-center gap-1 border border-[rgba(193,159,93,0.3)] rounded-[3px] px-1 py-[3px]" role="group" aria-label="Language switcher">
           <button type="button" class="lang-btn active" data-lang="en" aria-label="English">EN</button>
           <button type="button" class="lang-btn" data-lang="fr" aria-label="Français">FR</button>
           <button type="button" class="lang-btn" data-lang="ar" aria-label="العربية">AR</button>
+        </div>
+        <!-- Mobile compact language button + dropdown (≤767px; desktop keeps the 3-button switcher) -->
+        <div class="lang-compact relative md:hidden">
+          <button type="button" class="lang-compact-btn" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
+            <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+            <span class="lang-current">EN</span>
+            <svg class="lang-caret" viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+          </button>
+          <div class="lang-menu" role="menu" aria-label="Language options" hidden></div>
         </div>
         <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
           <span></span><span></span><span></span>
@@ -532,10 +483,13 @@
     <!-- Mobile drawer -->
     <div class="nav-drawer" id="nav-drawer">
       <div class="px-6 pt-4 pb-2">
-        <div class="inline-flex items-center gap-1 border border-[rgba(193,159,93,0.3)] rounded-[3px] px-1 py-[3px]">
-          <button type="button" class="lang-btn active" data-lang="en" aria-label="English">EN</button>
-          <button type="button" class="lang-btn" data-lang="fr" aria-label="Français">FR</button>
-          <button type="button" class="lang-btn" data-lang="ar" aria-label="العربية">AR</button>
+        <div class="lang-compact relative">
+          <button type="button" class="lang-compact-btn" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
+            <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+            <span class="lang-current">EN</span>
+            <svg class="lang-caret" viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+          </button>
+          <div class="lang-menu" role="menu" aria-label="Language options" hidden></div>
         </div>
       </div>
       <a href="index.html" data-i18n="nav.home">Home</a>
@@ -1478,66 +1432,7 @@
       }
     }); // end window load
   </script>
-<script>
-  // Active footer navigation link (matches the current page; Services for service-*.html)
-  (function () {
-    var currentPage = window.location.pathname.split("/").pop() || "index.html";
-    var isServicePage = /^service-.*\.html$/.test(currentPage);
-    document.querySelectorAll("footer div").forEach(function (d) {
-      if (d.textContent.trim() === "Navigation") {
-        d.parentElement.querySelectorAll("a.fnav-link").forEach(function (a) {
-          var href = a.getAttribute("href");
-          var active = href === currentPage || (isServicePage && href === "services.html");
-          a.classList.toggle("text-gold", active);
-          a.classList.toggle("text-white/55", !active);
-        });
-      }
-    });
-  })();
-</script>
-<script>
-  // ══════════ LANGUAGE SWITCHER — pilot (navbar / hero / footer) ══════════
-  (function () {
-    var I18N = {"en":{"nav.home":"Home","nav.about":"About","nav.services":"Services","nav.companies":"Companies","nav.projects":"Projects","nav.quality":"Quality & HSE","nav.contact":"Contact","topbar.call":"Call","topbar.email":"Email","hero.eyebrow":"Excellence in Construction","hero.headline":"Building the <span class=\"text-gold\">Future</span><br>With Precision<br>&amp; Integrity","hero.sub":"EURL ETB Achouri Toufik delivers world-class construction solutions, merging architectural innovation with industrial strength.","hero.btn_projects":"View Our Projects →","hero.btn_quote":"Get a Quote","footer.tagline":"Building tomorrow's landmarks with precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.","footer.address":"Zone Industrielle, Blida, Algeria","footer.nav_title":"Navigation","footer.nav_home":"Home","footer.nav_about":"About Us","footer.nav_services":"Services","footer.nav_projects":"Projects","footer.nav_quality":"Quality & HSE","footer.nav_contact":"Contact","footer.services_title":"Core Services","footer.svc_residential":"Residential Construction","footer.svc_commercial":"Commercial Buildings","footer.svc_industrial":"Industrial Works","footer.svc_renovation":"Renovation & Retrofit","footer.svc_pm":"Project Management","footer.svc_arch":"Architectural Design","footer.talk_title":"Let's Talk","footer.talk_desc":"Have a project in mind? We'd love to hear about it.","footer.talk_btn":"Contact Us →","footer.rights":"All rights reserved."},"fr":{"nav.home":"Accueil","nav.about":"À propos","nav.services":"Services","nav.companies":"Entreprises","nav.projects":"Projets","nav.quality":"Qualité & HSE","nav.contact":"Contact","topbar.call":"Appeler","topbar.email":"E-mail","hero.eyebrow":"Excellence dans la Construction","hero.headline":"Construire l’<span class=\"text-gold\">Avenir</span><br>Avec Précision<br>&amp; Intégrité","hero.sub":"EURL ETB Achouri Toufik livre des solutions de construction de classe mondiale, alliant innovation architecturale et solidité industrielle.","hero.btn_projects":"Voir Nos Projets →","hero.btn_quote":"Obtenir un Devis","footer.tagline":"Bâtir les repères de demain avec précision, intégrité et un engagement sans faille pour un savoir-faire de qualité depuis 2009.","footer.address":"Zone Industrielle, Blida, Algérie","footer.nav_title":"Navigation","footer.nav_home":"Accueil","footer.nav_about":"À propos","footer.nav_services":"Services","footer.nav_projects":"Projets","footer.nav_quality":"Qualité & HSE","footer.nav_contact":"Contact","footer.services_title":"Services Principaux","footer.svc_residential":"Construction Résidentielle","footer.svc_commercial":"Bâtiments Commerciaux","footer.svc_industrial":"Travaux Industriels","footer.svc_renovation":"Rénovation & Modernisation","footer.svc_pm":"Gestion de Projets","footer.svc_arch":"Conception Architecturale","footer.talk_title":"Parlons-en","footer.talk_desc":"Un projet en tête ? Nous serions ravis d’en entendre parler.","footer.talk_btn":"Contactez-Nous →","footer.rights":"Tous droits réservés."},"ar":{"nav.home":"الرئيسية","nav.about":"من نحن","nav.services":"خدماتنا","nav.companies":"شركاتنا","nav.projects":"مشاريعنا","nav.quality":"الجودة والسلامة","nav.contact":"اتصل بنا","topbar.call":"اتصل","topbar.email":"بريد","hero.eyebrow":"نتميّز في البناء","hero.headline":"نبني <span class=\"text-gold\">المستقبل</span><br>بإتقان<br>وأمانة","hero.sub":"مؤسسة عاشوري توفيق تقدم حلولاً إنشائية عالمية المستوى، تجمع بين الإبداع في التصميم والمتانة في التنفيذ.","hero.btn_projects":"شاهد أعمالنا ←","hero.btn_quote":"احصل على عرض سعر","footer.tagline":"نبني معالم الغد بدقة ونزاهة والتزام راسخ بالجودة الحرفية منذ عام 2009.","footer.address":"المنطقة الصناعية، البليدة، الجزائر","footer.nav_title":"التنقل","footer.nav_home":"الرئيسية","footer.nav_about":"من نحن","footer.nav_services":"خدماتنا","footer.nav_projects":"مشاريعنا","footer.nav_quality":"الجودة والسلامة","footer.nav_contact":"اتصل بنا","footer.services_title":"خدماتنا الأساسية","footer.svc_residential":"البناء السكني","footer.svc_commercial":"المباني التجارية","footer.svc_industrial":"الأشغال الصناعية","footer.svc_renovation":"التجديد والتأهيل","footer.svc_pm":"إدارة المشاريع","footer.svc_arch":"التصميم المعماري","footer.talk_title":"دعنا نتحدث","footer.talk_desc":"هل لديك مشروع في ذهنك؟ يسعدنا سماع فكرتك.","footer.talk_btn":"اتصل بنا ←","footer.rights":"جميع الحقوق محفوظة."}};
-    var STORAGE_KEY = 'site-lang';
-
-    function applyI18n(lang) {
-      var t = I18N[lang] || I18N.en;
-      document.documentElement.setAttribute('lang', lang);
-      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-      document.querySelectorAll('[data-i18n]').forEach(function (el) {
-        var key = el.getAttribute('data-i18n');
-        if (Object.prototype.hasOwnProperty.call(t, key)) el.textContent = t[key];
-      });
-      document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-        var key = el.getAttribute('data-i18n-html');
-        if (Object.prototype.hasOwnProperty.call(t, key)) el.innerHTML = t[key];
-      });
-      document.querySelectorAll('.lang-btn').forEach(function (btn) {
-        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-      });
-      try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
-      if (window.ScrollTrigger) window.ScrollTrigger.refresh();
-    }
-
-    function currentLang() {
-      try {
-        var saved = localStorage.getItem(STORAGE_KEY);
-        if (I18N[saved]) return saved;
-      } catch (e) {}
-      return 'en';
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      applyI18n(currentLang());
-      document.querySelectorAll('.lang-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          applyI18n(btn.getAttribute('data-lang'));
-        });
-      });
-    });
-  })();
-</script>
+<script src="assets/js/i18n.js"></script>
 </body>
 
 </html>
