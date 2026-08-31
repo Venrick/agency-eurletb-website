@@ -1,0 +1,135 @@
+const puppeteer = require('puppeteer-core');
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+
+const EDGE_PATH = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
+const ROOT_DIR = path.resolve(__dirname, '..');
+const PAGES = ['index.html', 'about.html', 'services.html', 'projects.html', 'quality-hse.html', 'contact.html', 'service-residential-construction.html', 'service-commercial-buildings.html', 'service-industrial-works.html', 'service-renovation-retrofit.html', 'service-project-management.html', 'service-architectural-design.html', 'service-template.html'];
+const LANGS = ['en', 'fr', 'ar'];
+const VIEWPORTS = [{ w: 1440, h: 900, name: 'desktop' }, { w: 375, h: 667, name: 'mobile' }];
+const PORT = 8123;
+const BASE_URL = `http://127.0.0.1:${PORT}/`;
+
+const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' };
+
+function createServer() {
+  return http.createServer((req, res) => {
+    let fp = path.join(ROOT_DIR, new URL(req.url, BASE_URL).pathname);
+    if (fp.endsWith('/') || (fs.existsSync(fp) && fs.statSync(fp).isDirectory())) fp = path.join(fp, 'index.html');
+    fs.readFile(fp, (err, content) => {
+      if (err) { res.writeHead(404); res.end(); }
+      else { res.writeHead(200, { 'Content-Type': MIME[path.extname(fp).toLowerCase()] || 'application/octet-stream' }); res.end(content); }
+    });
+  });
+}
+
+async function run() {
+  const server = createServer();
+  await new Promise(r => server.listen(PORT, r));
+  const browser = await puppeteer.launch({ executablePath: EDGE_PATH, headless: true, args: ['--no-sandbox'] });
+
+  let total = 0, passed = 0, failed = [];
+
+  for (const pFile of PAGES) {
+    for (const lang of LANGS) {
+      for (const vp of VIEWPORTS) {
+        total++;
+        const page = await browser.newPage();
+        await page.setViewport({ width: vp.w, height: vp.h });
+        try {
+          await page.goto(BASE_URL + pFile + '?lang=' + lang, { waitUntil: 'networkidle0', timeout: 30000 });
+          await page.waitForFunction(() => document.documentElement.getAttribute('lang') !== null, { timeout: 5000 });
+          const res = await page.evaluate(checkPage, vp.name, lang);
+          if (res.length === 0) passed++;
+          else failed.push({ page: pFile, lang, vp: vp.name, issues: res });
+        } catch (e) {
+          failed.push({ page: pFile, lang, vp: vp.name, issues: [e.message] });
+        } finally {
+          await page.close();
+        }
+      }
+    }
+  }
+
+  await browser.close();
+  server.close();
+
+  console.log(`\n=== SUMMARY ===\nTotal: ${total}, Passed: ${passed}, Failed: ${failed.length}`);
+  if (failed.length) failed.forEach(f => console.log(`  FAIL: ${f.page} ${f.lang} ${f.vp} -> ${f.issues.join('; ')}`));
+  else console.log('ALL CHECKS PASSED');
+}
+
+function checkPage(vpName, lang) {
+  const issues = [];
+  const htmlLang = document.documentElement.getAttribute('lang');
+  const htmlDir = document.documentElement.getAttribute('dir');
+  if (htmlLang !== lang) issues.push('lang attr: ' + htmlLang + ' !== ' + lang);
+  if (lang === 'ar' && htmlDir !== 'rtl') issues.push('AR missing rtl');
+  if (lang !== 'ar' && htmlDir !== 'ltr') issues.push('non-AR missing ltr');
+  
+  const mainbar = document.getElementById('mainbar');
+  if (!mainbar) issues.push('mainbar missing');
+  
+  if (vpName === 'desktop') {
+    const langBtns = document.querySelectorAll('.lang-btn');
+    if (langBtns.length !== 3) issues.push('desktop: expected 3 lang-btns, got ' + langBtns.length);
+    const activeBtn = document.querySelector('.lang-btn.active');
+    if (!activeBtn) issues.push('desktop: no active lang-btn');
+    else if (activeBtn.getAttribute('data-lang') !== lang) issues.push('desktop: active lang=' + activeBtn.getAttribute('data-lang') + ' !== ' + lang);
+  }
+  
+  if (vpName === 'mobile') {
+    const compact = document.querySelector('.lang-compact');
+    if (!compact) issues.push('mobile: lang-compact missing');
+    const btn = document.querySelector('.lang-compact-btn');
+    if (btn) {
+      const current = btn.querySelector('.lang-current');
+      if (current && current.textContent.trim().toLowerCase() !== lang) issues.push('mobile: compact shows ' + current.textContent + ' not ' + lang);
+    }
+    const logo = mainbar && mainbar.querySelector('a[href="index.html"]');
+    const hamburger = document.getElementById('hamburger');
+    if (logo && hamburger && compact) {
+      const mainbarRect = mainbar.getBoundingClientRect();
+      const logoRect = logo.getBoundingClientRect();
+      const hambRect = hamburger.getBoundingClientRect();
+      const compactRect = compact.getBoundingClientRect();
+      
+      const centerY = mainbarRect.top + mainbarRect.height / 2;
+      if (Math.abs(logoRect.top + logoRect.height/2 - centerY) > 5) issues.push('mobile: logo not vertically centered');
+      if (Math.abs(hambRect.top + hambRect.height/2 - centerY) > 5) issues.push('mobile: hamburger not vertically centered');
+      if (Math.abs(compactRect.top + compactRect.height/2 - centerY) > 5) issues.push('mobile: compact not vertically centered');
+      
+      const isRTL = lang === 'ar';
+      if (!isRTL) {
+        if (compactRect.right > logoRect.left) issues.push('mobile LTR: compact should be left of logo');
+        if (hambRect.left < logoRect.right) issues.push('mobile LTR: hamburger should be right of logo');
+      } else {
+        if (compactRect.left < logoRect.right) issues.push('mobile RTL: compact should be right of logo');
+        if (hambRect.right > logoRect.left) issues.push('mobile RTL: hamburger should be left of logo');
+      }
+      
+      if (hambRect.width < 44 || hambRect.height < 44) issues.push('mobile: hamburger tap target < 44px');
+      if (compactRect.height < 44) issues.push('mobile: compact btn height < 44px');
+    }
+  }
+  
+  const footerNavTitle = document.querySelector('[data-i18n="footer.nav_title"]');
+  if (!footerNavTitle) issues.push('footer.nav_title missing');
+  
+  if (document.body.scrollWidth > window.innerWidth + 1) {
+    issues.push('horizontal overflow: body ' + document.body.scrollWidth + ' > viewport ' + window.innerWidth);
+  }
+  // Check page-unique body content is untranslated (no data-i18n on main page body)
+  const pageFile = window.location.pathname.split('/').pop() || 'index.html';
+  if (pageFile !== 'index.html') {
+    const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
+    if (untranslatedElements.length > 0) {
+      issues.push('Found unexpected data-i18n attributes on unique body content: ' + untranslatedElements.length);
+    }
+  }
+  
+  return issues;
+}
+
+run().catch(e => { console.error(e); process.exit(1); });

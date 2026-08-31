@@ -1,0 +1,17 @@
+{
+  "name": "agency-eurletb-website",
+  "version": "1.0.0",
+  "description": "EURL ETB Achouri Toufik corporate website - static multi-language site (EN/FR/AR) with shared i18n module.",
+  "private": true,
+  "scripts": {
+    "test": "node _check/verify-all.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Venrick/agency-eurletb-website.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "puppeteer-core": "^23.11.1"
+  }
+}
