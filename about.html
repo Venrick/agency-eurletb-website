@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About Us — EURL ETB Achouri Toufik</title>
+  <title data-i18n="about.title">About Us — EURL ETB Achouri Toufik</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -121,7 +121,7 @@
 
       <div class="flex items-center gap-9">
         <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
-          <li><a href="index.html" data-i18n="nav.home" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a></li>
+          <li><a href="index.html" data-i18n="nav.home" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline" data-i18n="about.breadcrumb_home">Home</a></li>
           <li><a href="about.html" data-i18n="nav.about" class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a></li>
           <li><a href="services.html" data-i18n="nav.services" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Services</a></li>
           <li><a href="index.html#companies" data-i18n="nav.companies" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Companies</a></li>
@@ -187,18 +187,18 @@
   <div id="hero-content" class="relative z-10 max-w-[1200px] mx-auto px-4 md:px-12 w-full">
     <div class="flex items-center gap-3 mb-4">
       <span class="w-10 h-[1px] bg-gold inline-block"></span>
-      <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Who We Are</span>
+      <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold" data-i18n="about.hero_eyebrow">Who We Are</span>
     </div>
-    <h1 class="font-condensed text-[clamp(40px,6vw,76px)] font-extrabold text-white leading-[1.0] tracking-[-1px] mb-5">
+    <h1 class="font-condensed text-[clamp(40px,6vw,76px)] font-extrabold text-white leading-[1.0] tracking-[-1px] mb-5" data-i18n-html="about.hero_headline">
       Built on Trust.<br><span class="text-gold">Driven by Excellence.</span>
     </h1>
-    <p class="text-[15px] text-white/55 leading-[1.8] max-w-[560px] mb-8">
+    <p class="text-[15px] text-white/55 leading-[1.8] max-w-[560px] mb-8" data-i18n="about.hero_sub">
       For over 15 years, EURL ETB Achouri Toufik has delivered construction projects that stand the test of time — from residential homes to large-scale industrial facilities across Algeria.
     </p>
     <div class="flex items-center gap-2 text-[11px] font-condensed font-bold tracking-[2px] uppercase">
       <a href="index.html" class="text-white/40 hover:text-gold transition-colors no-underline">Home</a>
       <span class="text-gold/40">—</span>
-      <span class="text-gold">About Us</span>
+      <span class="text-gold" data-i18n="about.breadcrumb_current">About Us</span>
     </div>
   </div>
 </section>
@@ -211,11 +211,11 @@
     <!-- Left: Image stack -->
     <div id="story-images" class="relative">
       <img class="w-full h-[460px] object-cover rounded-lg shadow-[0_16px_64px_rgba(30,36,60,0.14)]"
-        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" alt="Construction site"/>
+        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" alt="Construction site" data-i18n-alt="about.story_alt_site"/>
       <!-- Floating accent image (hidden on mobile to prevent overflow) -->
       <div class="hidden sm:block absolute -bottom-8 -right-8 w-[220px] h-[160px] rounded-lg overflow-hidden shadow-[0_8px_32px_rgba(30,36,60,0.18)] border-4 border-white">
         <img class="w-full h-full object-cover"
-          src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&q=80" alt="Blueprint planning"/>
+          src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&q=80" alt="Blueprint planning" data-i18n-alt="about.story_alt_plan"/>
       </div>
       <!-- Gold accent block -->
       <div class="absolute -top-4 -left-4 w-24 h-24 bg-gold/10 border-2 border-gold/30 rounded-lg z-[-1]"></div>
@@ -225,32 +225,32 @@
     <div id="story-text">
       <div class="flex items-center gap-3 mb-4">
         <span class="w-10 h-[1px] bg-gold inline-block"></span>
-        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Our Story</span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold" data-i18n="about.story_eyebrow">Our Story</span>
       </div>
-      <h2 class="font-condensed text-[clamp(28px,4vw,48px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-5">
+      <h2 class="font-condensed text-[clamp(28px,4vw,48px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-5" data-i18n-html="about.story_headline">
         15 Years of Building<br>Algeria's <span class="text-gold">Infrastructure</span>
       </h2>
-      <p class="text-[14px] text-muted leading-[1.85] mb-8">
+      <p class="text-[14px] text-muted leading-[1.85] mb-8" data-i18n="about.story_lead">
         Founded in 2009 by Toufik Achouri, our company began as a small contracting firm with a clear mission — to deliver construction projects that prioritize quality, safety, and client satisfaction above all else. Over the years, we have grown into a fully integrated construction group trusted by both private clients and public institutions across Algeria.
       </p>
 
       <!-- Timeline -->
       <div class="flex flex-col gap-6">
         <div class="timeline-item">
-          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">2009 — Founded</div>
-          <p class="text-[13px] text-muted leading-[1.7]">EURL ETB Achouri Toufik established in Blida, Algeria, with a focus on residential construction.</p>
+          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1" data-i18n="about.timeline_2009_label">2009 — Founded</div>
+          <p class="text-[13px] text-muted leading-[1.7]">EURL ETB Achouri Toufik established in Blida, Algeria, with a focus on residential construction.</p data-i18n="about.timeline_2009_text">
         </div>
         <div class="timeline-item">
-          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">2013 — Expansion</div>
-          <p class="text-[13px] text-muted leading-[1.7]">Expanded into commercial and industrial projects, growing the team to over 30 engineers and technicians.</p>
+          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1" data-i18n="about.timeline_2013_label">2013 — Expansion</div>
+          <p class="text-[13px] text-muted leading-[1.7]">Expanded into commercial and industrial projects, growing the team to over 30 engineers and technicians.</p data-i18n="about.timeline_2013_text">
         </div>
         <div class="timeline-item">
-          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">2018 — Certification</div>
-          <p class="text-[13px] text-muted leading-[1.7]">Achieved ISO 9001 quality management certification and launched our heavy machinery division.</p>
+          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1" data-i18n="about.timeline_2018_label">2018 — Certification</div>
+          <p class="text-[13px] text-muted leading-[1.7]">Achieved ISO 9001 quality management certification and launched our heavy machinery division.</p data-i18n="about.timeline_2018_text">
         </div>
         <div class="timeline-item">
-          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1">2024 — Today</div>
-          <p class="text-[13px] text-muted leading-[1.7]">240+ projects completed, 50+ expert engineers, and a reputation for delivering on time, every time.</p>
+          <div class="font-condensed text-[11px] font-bold tracking-[2px] uppercase text-gold mb-1" data-i18n="about.timeline_2024_label">2024 — Today</div>
+          <p class="text-[13px] text-muted leading-[1.7]">240+ projects completed, 50+ expert engineers, and a reputation for delivering on time, every time.</p data-i18n="about.timeline_2024_text">
         </div>
       </div>
     </div>
@@ -267,10 +267,10 @@
     <div class="text-center mb-14" id="mission-header">
       <div class="flex items-center justify-center gap-3 mb-4">
         <span class="w-10 h-[1px] bg-gold inline-block"></span>
-        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">What Drives Us</span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold" data-i18n="about.mission_eyebrow">What Drives Us</span>
         <span class="w-10 h-[1px] bg-gold inline-block"></span>
       </div>
-      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px]">Mission &amp; Vision</h2>
+      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px]" data-i18n="about.mission_heading">Mission &amp; Vision</h2>
     </div>
 
     <div class="grid grid-cols-2 gap-8 max-md:grid-cols-1" id="mission-cards">
@@ -282,8 +282,8 @@
             <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
           </svg>
         </div>
-        <h3 class="font-condensed text-[26px] font-bold text-white mb-4 tracking-[-0.3px]">Our Mission</h3>
-        <p class="text-[14px] text-white/60 leading-[1.85]">
+        <h3 class="font-condensed text-[26px] font-bold text-white mb-4 tracking-[-0.3px]" data-i18n="about.mission_title">Our Mission</h3>
+        <p class="text-[14px] text-white/60 leading-[1.85]" data-i18n="about.mission_body">
           To deliver construction projects of the highest quality — on time and within budget — while maintaining the safety of our workforce and the trust of our clients. We are committed to building structures that last generations and relationships that endure.
         </p>
       </div>
@@ -295,8 +295,8 @@
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
           </svg>
         </div>
-        <h3 class="font-condensed text-[26px] font-bold text-white mb-4 tracking-[-0.3px]">Our Vision</h3>
-        <p class="text-[14px] text-white/60 leading-[1.85]">
+        <h3 class="font-condensed text-[26px] font-bold text-white mb-4 tracking-[-0.3px]" data-i18n="about.vision_title">Our Vision</h3>
+        <p class="text-[14px] text-white/60 leading-[1.85]" data-i18n="about.vision_body">
           To become Algeria's most trusted construction group — recognized not only for the scale of our projects but for the integrity with which we execute them. We envision a future where every community we build in is stronger because of our presence.
         </p>
       </div>
@@ -313,10 +313,10 @@
     <div class="text-center mb-14" id="values-header">
       <div class="flex items-center justify-center gap-3 mb-4">
         <span class="w-10 h-[1px] bg-gold/60 inline-block"></span>
-        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">What We Stand For</span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold" data-i18n="about.values_eyebrow">What We Stand For</span>
         <span class="w-10 h-[1px] bg-gold/60 inline-block"></span>
       </div>
-      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px]">Our Core Values</h2>
+      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px]" data-i18n="about.values_heading">Our Core Values</h2>
     </div>
 
     <div class="grid grid-cols-3 gap-6 max-md:grid-cols-2 max-sm:grid-cols-1" id="values-grid">
@@ -325,48 +325,48 @@
         <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
         </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Integrity</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7]">We operate with full transparency in every project. Our clients always know exactly what to expect — no surprises, no shortcuts.</p>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3" data-i18n="about.val_integrity_title">Integrity</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">We operate with full transparency in every project. Our clients always know exactly what to expect — no surprises, no shortcuts.</p data-i18n="about.val_integrity_body">
       </div>
 
       <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
         <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M6 20V10M10 20V4M14 20V10M18 20V4"/></svg>
         </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Excellence</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7]">We hold ourselves to the highest standards — from the materials we source to the precision of our execution on every project.</p>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3" data-i18n="about.val_excellence_title">Excellence</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">We hold ourselves to the highest standards — from the materials we source to the precision of our execution on every project.</p data-i18n="about.val_excellence_body">
       </div>
 
       <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
         <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
         </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Teamwork</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7]">Our strength lies in our people. Every engineer, technician, and site worker is a valued member of a team that moves as one.</p>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3" data-i18n="about.val_teamwork_title">Teamwork</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">Our strength lies in our people. Every engineer, technician, and site worker is a valued member of a team that moves as one.</p data-i18n="about.val_teamwork_body">
       </div>
 
       <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
         <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
         </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Client Focus</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7]">Our clients are at the center of every decision we make. Their vision drives our work, and their satisfaction defines our success.</p>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3" data-i18n="about.val_client_title">Client Focus</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">Our clients are at the center of every decision we make. Their vision drives our work, and their satisfaction defines our success.</p data-i18n="about.val_client_body">
       </div>
 
       <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
         <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Reliability</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7]">Deadlines are commitments. We plan meticulously and execute with discipline so that every project is delivered on schedule.</p>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3" data-i18n="about.val_reliability_title">Reliability</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">Deadlines are commitments. We plan meticulously and execute with discipline so that every project is delivered on schedule.</p data-i18n="about.val_reliability_body">
       </div>
 
       <div class="value-card bg-white border border-[rgba(30,36,60,0.07)] rounded-[3px] p-8 shadow-[0_2px_16px_rgba(30,36,60,0.06)]">
         <div class="w-14 h-14 bg-navy rounded-[4px] flex items-center justify-center mb-6">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 6v6l4 2"/></svg>
         </div>
-        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3">Safety First</h3>
-        <p class="text-[13.5px] text-muted leading-[1.7]">The wellbeing of our workforce is non-negotiable. We maintain rigorous safety protocols on every site, every day, without exception.</p>
+        <h3 class="font-barlow text-[17px] font-semibold text-navy mb-3" data-i18n="about.val_safety_title">Safety First</h3>
+        <p class="text-[13.5px] text-muted leading-[1.7]">The wellbeing of our workforce is non-negotiable. We maintain rigorous safety protocols on every site, every day, without exception.</p data-i18n="about.val_safety_body">
       </div>
 
     </div>
@@ -378,19 +378,19 @@
 <div id="stats" class="grid grid-cols-4 bg-navy border-b-[3px] border-gold max-sm:grid-cols-2">
   <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
     <div class="font-condensed text-[48px] font-extrabold text-gold leading-none mb-2 stat-num" data-target="15" data-suffix="+">15+</div>
-    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Years Experience</div>
+    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50" data-i18n="about.stat_years">Years Experience</div>
   </div>
   <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
     <div class="font-condensed text-[48px] font-extrabold text-gold leading-none mb-2 stat-num" data-target="240" data-suffix="+">240+</div>
-    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Projects Completed</div>
+    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50" data-i18n="about.stat_projects">Projects Completed</div>
   </div>
   <div class="stat-item flex flex-col items-center justify-center py-10 px-4 border-r border-[rgba(193,159,93,0.15)]">
     <div class="font-condensed text-[48px] font-extrabold text-gold leading-none mb-2 stat-num" data-target="50" data-suffix="+">50+</div>
-    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Expert Engineers</div>
+    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50" data-i18n="about.stat_engineers">Expert Engineers</div>
   </div>
   <div class="stat-item flex flex-col items-center justify-center py-10 px-4">
     <div class="font-condensed text-[48px] font-extrabold text-gold leading-none mb-2 stat-num" data-target="12" data-suffix="">12</div>
-    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50">Awards Won</div>
+    <div class="font-condensed text-[10px] font-bold tracking-[2px] uppercase text-white/50" data-i18n="about.stat_awards">Awards Won</div>
   </div>
 </div>
 
@@ -402,11 +402,11 @@
     <div class="text-center mb-14" id="certs-header">
       <div class="flex items-center justify-center gap-3 mb-4">
         <span class="w-10 h-[1px] bg-gold/60 inline-block"></span>
-        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold">Recognition</span>
+        <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold" data-i18n="about.certs_eyebrow">Recognition</span>
         <span class="w-10 h-[1px] bg-gold/60 inline-block"></span>
       </div>
-      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px]">Certifications &amp; Awards</h2>
-      <p class="text-[14px] text-muted leading-[1.7] max-w-[520px] mx-auto mt-4">Our work has been recognized by leading industry bodies — a testament to our unwavering commitment to quality and safety.</p>
+      <h2 class="font-condensed text-[clamp(28px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px]" data-i18n="about.certs_heading">Certifications &amp; Awards</h2>
+      <p class="text-[14px] text-muted leading-[1.7] max-w-[520px] mx-auto mt-4" data-i18n="about.certs_subtitle">Our work has been recognized by leading industry bodies — a testament to our unwavering commitment to quality and safety.</p>
     </div>
 
     <div class="grid grid-cols-4 gap-6 max-md:grid-cols-2" id="certs-grid">
@@ -415,32 +415,32 @@
         <div class="w-16 h-16 bg-navy rounded-full flex items-center justify-center mb-5">
           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
         </div>
-        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">ISO 9001</h4>
-        <p class="text-[12px] text-muted leading-[1.6]">Quality Management Systems Certified</p>
+        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1" data-i18n="about.cert_iso_title">ISO 9001</h4>
+        <p class="text-[12px] text-muted leading-[1.6]" data-i18n="about.cert_iso_sub">Quality Management Systems Certified</p>
       </div>
 
       <div class="cert-card bg-light-bg border border-[rgba(30,36,60,0.07)] rounded-[3px] p-7 flex flex-col items-center text-center shadow-[0_2px_16px_rgba(30,36,60,0.05)]">
         <div class="w-16 h-16 bg-navy rounded-full flex items-center justify-center mb-5">
           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
-        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">OHSAS 18001</h4>
-        <p class="text-[12px] text-muted leading-[1.6]">Occupational Health &amp; Safety Standard</p>
+        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1" data-i18n="about.cert_ohsas_title">OHSAS 18001</h4>
+        <p class="text-[12px] text-muted leading-[1.6]" data-i18n="about.cert_ohsas_sub">Occupational Health &amp; Safety Standard</p>
       </div>
 
       <div class="cert-card bg-light-bg border border-[rgba(30,36,60,0.07)] rounded-[3px] p-7 flex flex-col items-center text-center shadow-[0_2px_16px_rgba(30,36,60,0.05)]">
         <div class="w-16 h-16 bg-navy rounded-full flex items-center justify-center mb-5">
           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11.562 3.266a.5.5 0 01.876 0L15.39 8.87l6.187.893a.5.5 0 01.277.853l-4.477 4.363 1.057 6.158a.5.5 0 01-.726.528L12 18.845l-5.708 3.02a.5.5 0 01-.726-.527l1.057-6.16L2.146 10.61a.5.5 0 01.277-.853l6.187-.893 2.952-5.597z"/></svg>
         </div>
-        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Best Contractor</h4>
-        <p class="text-[12px] text-muted leading-[1.6]">Algeria Construction Awards 2022</p>
+        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1" data-i18n="about.cert_award_title">Best Contractor</h4>
+        <p class="text-[12px] text-muted leading-[1.6]" data-i18n="about.cert_award_sub">Algeria Construction Awards 2022</p>
       </div>
 
       <div class="cert-card bg-light-bg border border-[rgba(30,36,60,0.07)] rounded-[3px] p-7 flex flex-col items-center text-center shadow-[0_2px_16px_rgba(30,36,60,0.05)]">
         <div class="w-16 h-16 bg-navy rounded-full flex items-center justify-center mb-5">
           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
         </div>
-        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1">Licensed &amp; Bonded</h4>
-        <p class="text-[12px] text-muted leading-[1.6]">Ministry of Construction Algeria</p>
+        <h4 class="font-barlow text-[14px] font-semibold text-navy mb-1" data-i18n="about.cert_license_title">Licensed &amp; Bonded</h4>
+        <p class="text-[12px] text-muted leading-[1.6]" data-i18n="about.cert_license_sub">Ministry of Construction Algeria</p>
       </div>
 
     </div>
@@ -455,14 +455,14 @@
   <div class="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-[rgba(193,159,93,0.08)] z-[1]"></div>
   <div class="max-w-[1200px] mx-auto relative z-10 flex items-center justify-between gap-10 flex-wrap">
     <div>
-      <h2 class="font-condensed text-[clamp(28px,4vw,48px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-3">
+      <h2 class="font-condensed text-[clamp(28px,4vw,48px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-3" data-i18n-html="about.cta_heading">
         Ready to Start Your <span class="text-gold">Next Project?</span>
       </h2>
-      <p class="text-[14px] text-white/55 leading-[1.7] max-w-[480px]">Let's talk about what you're building. Our team is ready to bring your vision to life with precision and expertise.</p>
+      <p class="text-[14px] text-white/55 leading-[1.7] max-w-[480px]" data-i18n="about.cta_sub">Let's talk about what you're building. Our team is ready to bring your vision to life with precision and expertise.</p>
     </div>
     <div class="flex gap-4 flex-wrap">
-      <a href="contact.html" class="bg-gold text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:opacity-90 transition-opacity no-underline">Get a Free Quote &rarr;</a>
-      <a href="projects.html" class="border border-white/30 text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:border-gold hover:text-gold transition-all no-underline">View Our Work</a>
+      <a href="contact.html" class="bg-gold text-navy font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:opacity-90 transition-opacity no-underline" data-i18n="about.cta_btn_quote">Get a Free Quote &rarr;</a>
+      <a href="projects.html" class="border border-white/30 text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:border-gold hover:text-gold transition-all no-underline" data-i18n="about.cta_btn_work">View Our Work</a>
     </div>
   </div>
 </section>

@@ -120,13 +120,22 @@ function checkPage(vpName, lang) {
   if (document.body.scrollWidth > window.innerWidth + 1) {
     issues.push('horizontal overflow: body ' + document.body.scrollWidth + ' > viewport ' + window.innerWidth);
   }
-  // Check page-unique body content is untranslated (no data-i18n on main page body)
+  // Check page-unique body content is untranslated (except for pages with translated content: index.html, about.html)
   const pageFile = window.location.pathname.split('/').pop() || 'index.html';
-  if (pageFile !== 'index.html') {
+  if (pageFile !== 'index.html' && pageFile !== 'about.html') {
     const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
     if (untranslatedElements.length > 0) {
       issues.push('Found unexpected data-i18n attributes on unique body content: ' + untranslatedElements.length);
     }
+  } else if (pageFile === 'about.html') {
+    const heroEyebrow = document.querySelector('[data-i18n="about.hero_eyebrow"]');
+    if (!heroEyebrow) issues.push('about.hero_eyebrow missing');
+    const heroHeadline = document.querySelector('[data-i18n-html="about.hero_headline"]');
+    if (!heroHeadline || !heroHeadline.querySelector('.text-gold')) issues.push('about.hero_headline missing gold span');
+    const storyHeadline = document.querySelector('[data-i18n-html="about.story_headline"]');
+    if (!storyHeadline || !storyHeadline.querySelector('.text-gold')) issues.push('about.story_headline missing gold span');
+    const ctaHeading = document.querySelector('[data-i18n-html="about.cta_heading"]');
+    if (!ctaHeading || !ctaHeading.querySelector('.text-gold')) issues.push('about.cta_heading missing gold span');
   }
   
   return issues;
