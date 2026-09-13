@@ -120,9 +120,10 @@ function checkPage(vpName, lang) {
   if (document.body.scrollWidth > window.innerWidth + 1) {
     issues.push('horizontal overflow: body ' + document.body.scrollWidth + ' > viewport ' + window.innerWidth);
   }
-  // Check page-unique body content is untranslated (except for pages with translated content: index.html, about.html)
+  // Check page-unique body content is untranslated
+  // (except for pages with translated content: index.html, about.html, services.html)
   const pageFile = window.location.pathname.split('/').pop() || 'index.html';
-  if (pageFile !== 'index.html' && pageFile !== 'about.html') {
+  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html') {
     const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
     if (untranslatedElements.length > 0) {
       issues.push('Found unexpected data-i18n attributes on unique body content: ' + untranslatedElements.length);
@@ -136,6 +137,25 @@ function checkPage(vpName, lang) {
     if (!storyHeadline || !storyHeadline.querySelector('.text-gold')) issues.push('about.story_headline missing gold span');
     const ctaHeading = document.querySelector('[data-i18n-html="about.cta_heading"]');
     if (!ctaHeading || !ctaHeading.querySelector('.text-gold')) issues.push('about.cta_heading missing gold span');
+  } else if (pageFile === 'services.html') {
+    const heroEyebrow = document.querySelector('[data-i18n="services.hero_eyebrow"]');
+    if (!heroEyebrow) issues.push('services.hero_eyebrow missing');
+    const heroHeadline = document.querySelector('[data-i18n-html="services.hero_headline"]');
+    if (!heroHeadline || !heroHeadline.querySelector('.text-gold')) issues.push('services.hero_headline missing gold span');
+    const gridHeadline = document.querySelector('[data-i18n-html="services.grid_headline"]');
+    if (!gridHeadline || !gridHeadline.querySelector('.text-gold')) issues.push('services.grid_headline missing gold span');
+    const ctaHeading = document.querySelector('[data-i18n="services.cta_heading"]');
+    if (!ctaHeading) issues.push('services.cta_heading missing');
+    const learnMore = document.querySelectorAll('[data-i18n="services.card_learn_more"]');
+    if (learnMore.length !== 6) issues.push('services: expected 6 shared Learn More spans, got ' + learnMore.length);
+    const learnMoreArrows = document.querySelectorAll('#services-grid a[href^="service-"] svg');
+    if (learnMoreArrows.length !== 6) issues.push('services: expected 6 arrow svgs in Learn More links, got ' + learnMoreArrows.length);
+    const svcTitles = document.querySelectorAll('#services-grid h3[data-i18n^="footer.svc_"]');
+    if (svcTitles.length !== 6) issues.push('services: expected 6 footer.svc_* card titles, got ' + svcTitles.length);
+    const processSteps = document.querySelectorAll('#process-steps .process-step');
+    if (processSteps.length !== 4) issues.push('services: expected 4 process steps, got ' + processSteps.length);
+    const stepBodies = document.querySelectorAll('[data-i18n^="services.process_step"]');
+    if (stepBodies.length !== 8) issues.push('services: expected 8 process step title/body elements, got ' + stepBodies.length);
   }
   
   return issues;
