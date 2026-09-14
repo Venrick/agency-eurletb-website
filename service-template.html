@@ -101,6 +101,13 @@
     .feature-card:hover::before { width:100%; }
     .feature-card:hover { transform:translateY(-4px); box-shadow:0 8px 32px rgba(30,36,60,.12); }
 
+    /* ── Footer ── */
+    .fnav-link { transition:color .2s,padding-left .2s; display:flex; align-items:center; }
+    .fnav-link::before { content:''; width:0; height:1px; background:#c19f5d; display:inline-block; transition:width .2s,margin-right .2s; }
+    .fnav-link:hover { color:#fff !important; padding-left:4px; }
+    .fnav-link:hover::before { width:14px; margin-right:6px; }
+    .footer-topline { height:3px; background:linear-gradient(to right,transparent,#c19f5d 20%,#c19f5d 80%,transparent); }
+
     @media(max-width:768px) {
       .hamburger { display:flex; }
       .nav-desktop { display:none !important; }
