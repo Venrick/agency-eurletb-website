@@ -188,7 +188,35 @@
       "contact.aria_facebook":"Facebook",
       "contact.aria_linkedin":"LinkedIn",
       "contact.aria_instagram":"Instagram",
-      "contact.aria_youtube":"YouTube"
+      "contact.aria_youtube":"YouTube",
+      "projects.title":"Our Projects — EURL ETB Achouri Toufik",
+      "projects.hero_eyebrow":"Our Portfolio",
+      "projects.hero_headline":"Our <span class=\"text-gold\">Project</span> Portfolio",
+      "projects.hero_sub":"240+ completed projects across Algeria — residential, commercial, and industrial.",
+      "projects.breadcrumb_current":"Projects",
+      "projects.map_eyebrow":"Nationwide Presence",
+      "projects.map_heading":"Project Locations",
+      "projects.map_sub":"Click any marker to view project details across our regional network.",
+      "projects.map_placeholder_title":"Select a Location",
+      "projects.map_placeholder_body":"Interact with the map marker to view site-specific data.",
+      "projects.label_year":"Year",
+      "projects.label_surface":"Surface",
+      "projects.label_status":"Status",
+      "projects.label_completion":"Completion",
+      "projects.cards_eyebrow":"Portfolio",
+      "projects.cards_heading":"Featured Projects",
+      "projects.filter_all":"All",
+      "projects.card_view_details":"View Details",
+      "projects.cta_heading":"Have a Project in Mind?",
+      "projects.cta_sub":"Let's discuss your next build. Our team is ready to bring your vision to life.",
+      "projects.cta_btn_contact":"Contact Us →",
+      "projects.cta_btn_services":"Our Services",
+      "projects.cta_modal":"Discuss This Project →",
+      "projects.cat_commercial":"Commercial",
+      "projects.cat_residential":"Residential",
+      "projects.cat_industrial":"Industrial",
+      "projects.status_completed":"Completed",
+      "projects.status_in_progress":"In Progress"
     },
     fr: {
       "nav.home":"Accueil","nav.about":"\u00C0 propos","nav.services":"Services",
@@ -332,7 +360,35 @@
       "contact.aria_facebook":"Facebook",
       "contact.aria_linkedin":"LinkedIn",
       "contact.aria_instagram":"Instagram",
-      "contact.aria_youtube":"YouTube"
+      "contact.aria_youtube":"YouTube",
+      "projects.title":"Nos Projets — EURL ETB Achouri Toufik",
+      "projects.hero_eyebrow":"Notre Portfolio",
+      "projects.hero_headline":"Notre Portfolio de <span class=\"text-gold\">Projets</span>",
+      "projects.hero_sub":"Plus de 240 projets réalisés à travers l'Algérie — résidentiels, commerciaux et industriels.",
+      "projects.breadcrumb_current":"Projets",
+      "projects.map_eyebrow":"Présence Nationale",
+      "projects.map_heading":"Emplacements des Projets",
+      "projects.map_sub":"Cliquez sur un repère pour consulter les détails du projet dans notre réseau régional.",
+      "projects.map_placeholder_title":"Sélectionnez un Emplacement",
+      "projects.map_placeholder_body":"Interagissez avec un repère sur la carte pour afficher les données du site.",
+      "projects.label_year":"Année",
+      "projects.label_surface":"Superficie",
+      "projects.label_status":"Statut",
+      "projects.label_completion":"Avancement",
+      "projects.cards_eyebrow":"Portfolio",
+      "projects.cards_heading":"Projets Phares",
+      "projects.filter_all":"Tout",
+      "projects.card_view_details":"Voir les Détails",
+      "projects.cta_heading":"Vous avez un projet en tête ?",
+      "projects.cta_sub":"Parlons de votre prochain projet. Notre équipe est prête à donner vie à votre vision.",
+      "projects.cta_btn_contact":"Contactez-nous →",
+      "projects.cta_btn_services":"Nos Services",
+      "projects.cta_modal":"Discuter de ce Projet →",
+      "projects.cat_commercial":"Commercial",
+      "projects.cat_residential":"Résidentiel",
+      "projects.cat_industrial":"Industriel",
+      "projects.status_completed":"Terminé",
+      "projects.status_in_progress":"En cours"
     },
     ar: {
       "nav.home":"\u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629","nav.about":"\u0645\u0646 \u0646\u062D\u0646",
@@ -485,7 +541,35 @@
       "contact.aria_facebook":"فيسبوك",
       "contact.aria_linkedin":"لينكد إن",
       "contact.aria_instagram":"إنستغرام",
-      "contact.aria_youtube":"يوتيوب"
+      "contact.aria_youtube":"يوتيوب",
+      "projects.title":"مشاريعنا — EURL ETB عاشوري توفيق",
+      "projects.hero_eyebrow":"أعمالنا",
+      "projects.hero_headline":"معرض <span class=\"text-gold\">مشاريعنا</span>",
+      "projects.hero_sub":"أكثر من 240 مشروعًا منجزًا عبر الجزائر — سكنية وتجارية وصناعية.",
+      "projects.breadcrumb_current":"المشاريع",
+      "projects.map_eyebrow":"حضور وطني",
+      "projects.map_heading":"مواقع المشاريع",
+      "projects.map_sub":"انقر على أي علامة لعرض تفاصيل المشروع عبر شبكتنا الجهوية.",
+      "projects.map_placeholder_title":"اختر موقعًا",
+      "projects.map_placeholder_body":"تفاعل مع علامة الخريطة لعرض بيانات الموقع.",
+      "projects.label_year":"السنة",
+      "projects.label_surface":"المساحة",
+      "projects.label_status":"الحالة",
+      "projects.label_completion":"نسبة الإنجاز",
+      "projects.cards_eyebrow":"أعمالنا",
+      "projects.cards_heading":"مشاريع مختارة",
+      "projects.filter_all":"الكل",
+      "projects.card_view_details":"عرض التفاصيل",
+      "projects.cta_heading":"هل لديك مشروع في ذهنك؟",
+      "projects.cta_sub":"لنتحدث عن مشروعكم القادم. فريقنا جاهز لتحويل رؤيتكم إلى واقع.",
+      "projects.cta_btn_contact":"تواصلوا معنا ←",
+      "projects.cta_btn_services":"خدماتنا",
+      "projects.cta_modal":"ناقش هذا المشروع ←",
+      "projects.cat_commercial":"تجاري",
+      "projects.cat_residential":"سكني",
+      "projects.cat_industrial":"صناعي",
+      "projects.status_completed":"مكتمل",
+      "projects.status_in_progress":"قيد الإنجاز"
     }
   };
   var STORAGE_KEY = "site-lang";
@@ -590,6 +674,15 @@
       });
     });
   }
+
+  /* Read-only accessor so page scripts can resolve the same dictionary keys the
+     DOM hooks use. Needed by projects.html, whose project text is rendered by JS
+     after DOMContentLoaded (so data-i18n cannot reach it). */
+  window.i18nText = function (key) {
+    var lang = document.documentElement.getAttribute("lang") || "en";
+    var t = I18N[lang] || I18N.en;
+    return Object.prototype.hasOwnProperty.call(t, key) ? t[key] : null;
+  };
 
   document.addEventListener("DOMContentLoaded", function () {
     applyI18n(currentLang());
