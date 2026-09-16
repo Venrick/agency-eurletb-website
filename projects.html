@@ -202,38 +202,6 @@
       filter: brightness(.6);
     }
 
-    /* Footer */
-    .fnav-link {
-      transition: color .2s, padding-left .2s;
-      display: flex;
-      align-items: center;
-      gap: 0;
-    }
-
-    .fnav-link::before {
-      content: '';
-      width: 0;
-      height: 1px;
-      background: #c19f5d;
-      display: inline-block;
-      transition: width .2s, margin-right .2s;
-    }
-
-    .fnav-link:hover {
-      color: #fff !important;
-      padding-left: 4px;
-    }
-
-    .fnav-link:hover::before {
-      width: 14px;
-      margin-right: 6px;
-    }
-
-    .footer-topline {
-      height: 3px;
-      background: linear-gradient(to right, transparent, #c19f5d 20%, #c19f5d 80%, transparent);
-    }
-
     /* ─── MAP STYLES ─── */
     #map-frame {
       border: 1px solid rgba(193, 159, 93, 0.25);

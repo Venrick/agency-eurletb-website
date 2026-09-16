@@ -36,7 +36,14 @@
     "html[dir=rtl] .hero-circle{right:auto !important;left:15%}" +
     "html[dir=rtl] .hero-dots{right:auto !important;left:10%}" +
     "html[dir=rtl] .timeline-item{padding-left:0 !important;padding-right:32px !important}html[dir=rtl] .timeline-item::before{left:auto !important;right:0 !important}html[dir=rtl] .timeline-item::after{left:auto !important;right:4px !important}html[dir=rtl] .value-card::before{left:auto;right:0}" +
-    "html[dir=rtl] .font-condensed,html[dir=rtl] .nav-link,html[dir=rtl] .nav-drawer a,html[dir=rtl] .fnav-link,html[dir=rtl] .lang-opt,html[dir=rtl] .lang-compact-btn{letter-spacing:0 !important}";
+    "html[dir=rtl] .font-condensed,html[dir=rtl] .nav-link,html[dir=rtl] .nav-drawer a,html[dir=rtl] .fnav-link,html[dir=rtl] .lang-opt,html[dir=rtl] .lang-compact-btn{letter-spacing:0 !important}"+
+
+    "/* footer (shared, single source of truth) */"+
+    ".fnav-link{transition:color .2s,padding-left .2s;display:flex;align-items:center;gap:0}"+
+    ".fnav-link::before{content:'';width:0;height:1px;background:#c19f5d;display:inline-block;transition:width .2s,margin-right .2s}"+
+    ".fnav-link:hover{color:#fff !important;padding-left:4px}"+
+    ".fnav-link:hover::before{width:14px;margin-right:6px}"+
+    ".footer-topline{height:3px;background:linear-gradient(to right,transparent,#c19f5d 20%,#c19f5d 80%,transparent)}";
   document.head.appendChild(style);
   var I18N = {
     en: {
