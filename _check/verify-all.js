@@ -121,9 +121,9 @@ function checkPage(vpName, lang) {
     issues.push('horizontal overflow: body ' + document.body.scrollWidth + ' > viewport ' + window.innerWidth);
   }
   // Check page-unique body content is untranslated
-  // (except for pages with translated content: index.html, about.html, services.html)
+  // (except for pages with translated content: index.html, about.html, services.html, contact.html)
   const pageFile = window.location.pathname.split('/').pop() || 'index.html';
-  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html') {
+  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html') {
     const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
     if (untranslatedElements.length > 0) {
       issues.push('Found unexpected data-i18n attributes on unique body content: ' + untranslatedElements.length);
@@ -156,6 +156,27 @@ function checkPage(vpName, lang) {
     if (processSteps.length !== 4) issues.push('services: expected 4 process steps, got ' + processSteps.length);
     const stepBodies = document.querySelectorAll('[data-i18n^="services.process_step"]');
     if (stepBodies.length !== 8) issues.push('services: expected 8 process step title/body elements, got ' + stepBodies.length);
+  } else if (pageFile === 'contact.html') {
+    const heroEyebrow = document.querySelector('[data-i18n="contact.hero_eyebrow"]');
+    if (!heroEyebrow) issues.push('contact.hero_eyebrow missing');
+    const heroHeadline = document.querySelector('[data-i18n-html="contact.hero_headline"]');
+    if (!heroHeadline || !heroHeadline.querySelector('.text-gold')) issues.push('contact.hero_headline missing gold span');
+    if (heroHeadline && !heroHeadline.querySelector('br')) issues.push('contact.hero_headline missing <br>');
+    const locBody = document.querySelector('[data-i18n-html="contact.card_location_body"]');
+    if (!locBody || !locBody.querySelector('br')) issues.push('contact.card_location_body missing <br>');
+    const formHeading = document.querySelector('[data-i18n="contact.form_heading"]');
+    if (!formHeading) issues.push('contact.form_heading missing');
+    const svcOptions = document.querySelectorAll('select option[data-i18n^="footer.svc_"]');
+    if (svcOptions.length !== 6) issues.push('contact: expected 6 footer.svc_* options, got ' + svcOptions.length);
+    const phEls = document.querySelectorAll('[data-i18n-placeholder]');
+    if (phEls.length !== 4) issues.push('contact: expected 4 data-i18n-placeholder elements, got ' + phEls.length);
+    const alEls = document.querySelectorAll('[data-i18n-aria-label]');
+    if (alEls.length !== 4) issues.push('contact: expected 4 data-i18n-aria-label elements, got ' + alEls.length);
+    const sel = document.querySelector('select');
+    const selTxt = sel ? sel.textContent : '';
+    ['Commercial & Industrial', 'Renovation & Remodeling', 'General Contracting', 'Heavy Machinery', 'Maintenance Services'].forEach(function (stale) {
+      if (selTxt.indexOf(stale) >= 0) issues.push('contact: stale service option still present: ' + stale);
+    });
   }
   
   return issues;

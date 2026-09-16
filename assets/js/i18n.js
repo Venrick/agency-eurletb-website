@@ -153,7 +153,42 @@
       "services.cta_heading":"Ready to Start Your Next Project?",
       "services.cta_sub":"Our team is ready to deliver — from blueprint to final inspection. Contact us today for a free consultation and quote.",
       "services.cta_btn_quote":"Get a Free Quote →",
-      "services.cta_btn_projects":"View Our Projects"
+      "services.cta_btn_projects":"View Our Projects",
+      "contact.title":"Contact — EURL ETB Achouri Toufik",
+      "contact.hero_eyebrow":"Get In Touch",
+      "contact.hero_headline":"Let's Build Something<br><span class=\"text-gold\">Great Together</span>",
+      "contact.hero_sub":"Have a project in mind? Reach out and our team will get back to you within 24 hours.",
+      "contact.breadcrumb_current":"Contact",
+      "contact.card_location_title":"Our Location",
+      "contact.card_location_body":"123 Construction Ave<br>Algiers, Algeria",
+      "contact.card_phone_title":"Phone Number",
+      "contact.card_email_title":"Email Address",
+      "contact.form_eyebrow":"Send a Message",
+      "contact.form_heading":"Request a Free Quote",
+      "contact.form_label_name":"Full Name",
+      "contact.form_label_phone":"Phone",
+      "contact.form_label_email":"Email Address",
+      "contact.form_label_service":"Service Needed",
+      "contact.form_label_message":"Your Message",
+      "contact.form_ph_name":"John Doe",
+      "contact.form_ph_phone":"+213...",
+      "contact.form_ph_email":"john@example.com",
+      "contact.form_ph_message":"Tell us about your project, timeline, and budget...",
+      "contact.form_service_prompt":"Select a service...",
+      "contact.form_submit":"Send Message →",
+      "contact.map_eyebrow":"Find Us",
+      "contact.hours_heading":"Office Hours",
+      "contact.hours_mon_fri":"Monday – Friday",
+      "contact.hours_mon_fri_time":"8:00 AM – 6:00 PM",
+      "contact.hours_sat":"Saturday",
+      "contact.hours_sat_time":"9:00 AM – 1:00 PM",
+      "contact.hours_sun":"Sunday",
+      "contact.hours_sun_time":"Closed",
+      "contact.social_heading":"Follow Us",
+      "contact.aria_facebook":"Facebook",
+      "contact.aria_linkedin":"LinkedIn",
+      "contact.aria_instagram":"Instagram",
+      "contact.aria_youtube":"YouTube"
     },
     fr: {
       "nav.home":"Accueil","nav.about":"\u00C0 propos","nav.services":"Services",
@@ -262,7 +297,42 @@
       "services.cta_heading":"Prêt à démarrer votre prochain projet ?",
       "services.cta_sub":"Notre équipe est prête à livrer — du plan jusqu'à l'inspection finale. Contactez-nous dès aujourd'hui pour une consultation et un devis gratuits.",
       "services.cta_btn_quote":"Demander un devis gratuit →",
-      "services.cta_btn_projects":"Voir nos projets"
+      "services.cta_btn_projects":"Voir nos projets",
+      "contact.title":"Contact — EURL ETB Achouri Toufik",
+      "contact.hero_eyebrow":"Contactez-nous",
+      "contact.hero_headline":"Construisons quelque chose<br><span class=\"text-gold\">de grand, ensemble</span>",
+      "contact.hero_sub":"Vous avez un projet en tête ? Contactez-nous et notre équipe vous répondra sous 24 heures.",
+      "contact.breadcrumb_current":"Contact",
+      "contact.card_location_title":"Notre adresse",
+      "contact.card_location_body":"123 Construction Ave<br>Alger, Algérie",
+      "contact.card_phone_title":"Téléphone",
+      "contact.card_email_title":"Adresse e-mail",
+      "contact.form_eyebrow":"Envoyer un message",
+      "contact.form_heading":"Demander un devis gratuit",
+      "contact.form_label_name":"Nom complet",
+      "contact.form_label_phone":"Téléphone",
+      "contact.form_label_email":"Adresse e-mail",
+      "contact.form_label_service":"Service souhaité",
+      "contact.form_label_message":"Votre message",
+      "contact.form_ph_name":"Jean Dupont",
+      "contact.form_ph_phone":"+213...",
+      "contact.form_ph_email":"jean@exemple.com",
+      "contact.form_ph_message":"Parlez-nous de votre projet, du délai et du budget...",
+      "contact.form_service_prompt":"Sélectionnez un service...",
+      "contact.form_submit":"Envoyer le message →",
+      "contact.map_eyebrow":"Nous trouver",
+      "contact.hours_heading":"Horaires d'ouverture",
+      "contact.hours_mon_fri":"Lundi – Vendredi",
+      "contact.hours_mon_fri_time":"8h00 – 18h00",
+      "contact.hours_sat":"Samedi",
+      "contact.hours_sat_time":"9h00 – 13h00",
+      "contact.hours_sun":"Dimanche",
+      "contact.hours_sun_time":"Fermé",
+      "contact.social_heading":"Suivez-nous",
+      "contact.aria_facebook":"Facebook",
+      "contact.aria_linkedin":"LinkedIn",
+      "contact.aria_instagram":"Instagram",
+      "contact.aria_youtube":"YouTube"
     },
     ar: {
       "nav.home":"\u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629","nav.about":"\u0645\u0646 \u0646\u062D\u0646",
@@ -380,7 +450,42 @@
       "services.cta_heading":"هل أنت مستعد لبدء مشروعك القادم؟",
       "services.cta_sub":"فريقنا جاهز للتنفيذ — من المخطط إلى الفحص النهائي. تواصلوا معنا اليوم للحصول على استشارة وعرض سعر مجانيين.",
       "services.cta_btn_quote":"اطلب عرض سعر مجاني ←",
-      "services.cta_btn_projects":"شاهد مشاريعنا"
+      "services.cta_btn_projects":"شاهد مشاريعنا",
+      "contact.title":"اتصل بنا — EURL ETB عاشوري توفيق",
+      "contact.hero_eyebrow":"تواصل معنا",
+      "contact.hero_headline":"لنبني شيئًا<br><span class=\"text-gold\">عظيمًا معًا</span>",
+      "contact.hero_sub":"هل لديك مشروع في ذهنك؟ تواصل معنا وسيقوم فريقنا بالرد عليك خلال 24 ساعة.",
+      "contact.breadcrumb_current":"اتصل بنا",
+      "contact.card_location_title":"موقعنا",
+      "contact.card_location_body":"123 Construction Ave<br>الجزائر العاصمة، الجزائر",
+      "contact.card_phone_title":"رقم الهاتف",
+      "contact.card_email_title":"البريد الإلكتروني",
+      "contact.form_eyebrow":"أرسل رسالة",
+      "contact.form_heading":"اطلب عرض سعر مجاني",
+      "contact.form_label_name":"الاسم الكامل",
+      "contact.form_label_phone":"الهاتف",
+      "contact.form_label_email":"البريد الإلكتروني",
+      "contact.form_label_service":"الخدمة المطلوبة",
+      "contact.form_label_message":"رسالتك",
+      "contact.form_ph_name":"محمد أحمد",
+      "contact.form_ph_phone":"+213...",
+      "contact.form_ph_email":"example@email.com",
+      "contact.form_ph_message":"أخبرنا عن مشروعك، الجدول الزمني، والميزانية...",
+      "contact.form_service_prompt":"اختر خدمة...",
+      "contact.form_submit":"أرسل الرسالة ←",
+      "contact.map_eyebrow":"موقعنا",
+      "contact.hours_heading":"ساعات العمل",
+      "contact.hours_mon_fri":"الإثنين – الجمعة",
+      "contact.hours_mon_fri_time":"8:00 صباحًا – 6:00 مساءً",
+      "contact.hours_sat":"السبت",
+      "contact.hours_sat_time":"9:00 صباحًا – 1:00 ظهرًا",
+      "contact.hours_sun":"الأحد",
+      "contact.hours_sun_time":"مغلق",
+      "contact.social_heading":"تابعنا",
+      "contact.aria_facebook":"فيسبوك",
+      "contact.aria_linkedin":"لينكد إن",
+      "contact.aria_instagram":"إنستغرام",
+      "contact.aria_youtube":"يوتيوب"
     }
   };
   var STORAGE_KEY = "site-lang";
@@ -438,6 +543,14 @@
     document.querySelectorAll("[data-i18n-alt]").forEach(function (el) {
       var key = el.getAttribute("data-i18n-alt");
       if (Object.prototype.hasOwnProperty.call(t, key)) el.setAttribute("alt", t[key]);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n-placeholder");
+      if (Object.prototype.hasOwnProperty.call(t, key)) el.setAttribute("placeholder", t[key]);
+    });
+    document.querySelectorAll("[data-i18n-aria-label]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n-aria-label");
+      if (Object.prototype.hasOwnProperty.call(t, key)) el.setAttribute("aria-label", t[key]);
     });
     document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
       var key = el.getAttribute("data-i18n-html");
