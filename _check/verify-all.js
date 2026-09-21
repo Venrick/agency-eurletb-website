@@ -24,6 +24,42 @@ function createServer() {
   });
 }
 
+/* Copy that must never come back: OHSAS 18001 was withdrawn in 2018 (superseded by ISO 45001), and
+   ISO 9001 is an in-progress alignment (quality-hse.html) — never a held certificate. */
+const RETIRED_COPY = {
+  'about.html': ['OHSAS', '18001', 'Quality Management Systems Certified', 'Achieved ISO 9001 quality management certification'],
+  'assets/js/i18n.js': ['OHSAS', '18001', 'Quality Management Systems Certified', 'Certifié Système de management de la qualité', 'Obtention de la certification ISO 9001', 'معتمدة في نظام إدارة الجودة', 'حصلنا على شهادة']
+};
+
+/* Corrected ISO 9001 card copy, one entry per dictionary (EN source of truth + FR + AR). */
+const ISO_9001_SUBS = [
+  'Quality Management System — In Progress',
+  'Système de management de la qualité — en cours',
+  'نظام إدارة الجودة — قيد التنفيذ'
+];
+
+function staticSourceChecks() {
+  const issues = [];
+  const read = f => fs.readFileSync(path.join(ROOT_DIR, f), 'utf8');
+  Object.keys(RETIRED_COPY).forEach(function (file) {
+    const txt = read(file);
+    RETIRED_COPY[file].forEach(function (dead) {
+      if (txt.indexOf(dead) >= 0) issues.push(file + ': retired certification copy still present: "' + dead + '"');
+    });
+  });
+  const dicts = read('assets/js/i18n.js');
+  ISO_9001_SUBS.forEach(function (copy) {
+    if (dicts.indexOf(copy) === -1) issues.push('i18n.js: missing corrected ISO 9001 card copy ("' + copy + '")');
+  });
+  const about = read('about.html');
+  ['2009', '2013', '2018', '2024'].forEach(function (yr) {
+    if (about.indexOf('data-i18n="about.timeline_' + yr + '_text"') === -1) issues.push('about.html: timeline ' + yr + ' text hook missing');
+  });
+  const closingTagHooks = about.match(/<\/[a-z0-9]+[^>]*\sdata-i18n/gi) || [];
+  if (closingTagHooks.length) issues.push('about.html: ' + closingTagHooks.length + ' data-i18n hook(s) sit on a closing tag and are never applied');
+  return issues;
+}
+
 async function run() {
   const server = createServer();
   await new Promise(r => server.listen(PORT, r));
@@ -54,6 +90,17 @@ async function run() {
 
   await browser.close();
   server.close();
+
+  // Static scan of the EN source + FR/AR dictionaries: catches retired certification copy and
+  // data-i18n hooks parked on closing tags (the DOM sweep only sees those as missing text).
+  total++;
+  try {
+    const staticIssues = staticSourceChecks();
+    if (staticIssues.length === 0) passed++;
+    else failed.push({ page: 'source scan', lang: '-', vp: '-', issues: staticIssues });
+  } catch (e) {
+    failed.push({ page: 'source scan', lang: '-', vp: '-', issues: [e.message] });
+  }
 
   console.log(`\n=== SUMMARY ===\nTotal: ${total}, Passed: ${passed}, Failed: ${failed.length}`);
   if (failed.length) failed.forEach(f => console.log(`  FAIL: ${f.page} ${f.lang} ${f.vp} -> ${f.issues.join('; ')}`));
@@ -137,6 +184,37 @@ function checkPage(vpName, lang) {
     if (!storyHeadline || !storyHeadline.querySelector('.text-gold')) issues.push('about.story_headline missing gold span');
     const ctaHeading = document.querySelector('[data-i18n-html="about.cta_heading"]');
     if (!ctaHeading || !ctaHeading.querySelector('.text-gold')) issues.push('about.cta_heading missing gold span');
+    // Cert cards: exactly 4, none referencing a withdrawn standard, and no certification claim in
+    // any language — ISO 9001 is an in-progress alignment, per quality-hse.html.
+    const certGrid = document.getElementById('certs-grid');
+    if (!certGrid) issues.push('about: certs-grid missing');
+    else {
+      const certCards = certGrid.querySelectorAll('.cert-card');
+      if (certCards.length !== 4) issues.push('about: expected 4 cert cards, got ' + certCards.length);
+      const gridText = certGrid.textContent;
+      ['OHSAS', '18001'].forEach(function (dead) {
+        if (gridText.indexOf(dead) >= 0) issues.push('about: withdrawn standard "' + dead + '" still rendered in the cert grid');
+      });
+      const isoSubEl = document.querySelector('[data-i18n="about.cert_iso_sub"]');
+      const isoSub = isoSubEl ? isoSubEl.textContent.trim() : '';
+      if (!isoSub) issues.push('about: ISO 9001 card sub-text empty');
+      ['Certified', 'certifié', 'Certifié', 'معتمدة'].forEach(function (claim) {
+        if (isoSub.indexOf(claim) >= 0) issues.push('about: ISO 9001 card still claims certification ("' + isoSub + '")');
+      });
+      if (lang !== 'en' && isoSub === 'Quality Management System — In Progress') issues.push('about: ISO 9001 card sub not localised (' + isoSub + ')');
+      if (!document.querySelector('[data-i18n="about.cert_hse_title"]') || !document.querySelector('[data-i18n="about.cert_hse_sub"]')) issues.push('about: HSE commitment card hooks missing');
+    }
+    // Timeline hooks must sit on the element itself, otherwise the body text never localises
+    // (they sat on the closing tags before this fix, so FR/AR silently fell back to English).
+    const tlHooks = document.querySelectorAll('.timeline-item p[data-i18n^="about.timeline_"]');
+    if (tlHooks.length !== 4) issues.push('about: expected 4 timeline text hooks on elements, got ' + tlHooks.length);
+    const tl2018 = document.querySelector('[data-i18n="about.timeline_2018_text"]');
+    if (!tl2018) issues.push('about: timeline_2018_text hook missing');
+    else {
+      const tl2018Txt = tl2018.textContent.trim();
+      if (/certification|certificate/i.test(tl2018Txt)) issues.push('about: timeline still claims certification ("' + tl2018Txt + '")');
+      if (lang !== 'en' && tl2018Txt === 'Launched our heavy machinery division and began structuring our quality processes in preparation for ISO 9001 alignment.') issues.push('about: timeline 2018 text not localised (' + tl2018Txt + ')');
+    }
   } else if (pageFile === 'services.html') {
     const heroEyebrow = document.querySelector('[data-i18n="services.hero_eyebrow"]');
     if (!heroEyebrow) issues.push('services.hero_eyebrow missing');
