@@ -199,6 +199,23 @@ function checkPage(vpName, lang) {
     // A translated page must not fall back to the EN source names once localised.
     const firstName = cards.length ? cards[0].querySelector('h3').textContent.trim() : '';
     if (lang !== 'en' && firstName === 'Algiers Business Tower') issues.push('projects: card name not localised (' + firstName + ')');
+    // Map info panel INITIAL state (rendered, not source): it must never expose the old
+    // placeholder copy, and any project name it shows must be one of the real rendered projects.
+    const DEMO = ['Algiers Tower', 'Algiers, Algeria', '12k m', 'Detailed architectural engineering'];
+    const panelIds = ['panel-category', 'panel-name', 'panel-city', 'panel-year', 'panel-area', 'panel-status', 'panel-desc', 'panel-pct'];
+    const realNames = Array.prototype.map.call(cards, function (c) { return c.querySelector('h3').textContent.trim(); });
+    panelIds.forEach(function (id) {
+      const el = document.getElementById(id);
+      if (!el) { issues.push('projects: #' + id + ' missing from the map panel'); return; }
+      const v = el.textContent.trim();
+      DEMO.forEach(function (d) { if (v.indexOf(d) >= 0) issues.push('projects: map panel #' + id + ' shows placeholder copy "' + v + '"'); });
+    });
+    const panelNameEl = document.getElementById('panel-name');
+    if (panelNameEl) {
+      const pnv = panelNameEl.textContent.trim();
+      if (pnv && realNames.indexOf(pnv) === -1) issues.push('projects: map panel name "' + pnv + '" is not one of the rendered projects');
+      if (lang !== 'en' && pnv === 'Oran Industrial Warehouse') issues.push('projects: map panel name not localised (' + pnv + ')');
+    }
   }
   
   return issues;

@@ -603,21 +603,21 @@
           <div id="map-info-panel" class="absolute inset-0 bg-navy-card p-8 flex flex-col" style="transform: translateX(100%);">
             <button id="map-panel-close" class="absolute top-4 right-4 text-white/40 hover:text-gold text-xl">✕</button>
             <div id="panel-slideshow" class="relative flex-shrink-0 overflow-hidden rounded-[4px] mb-5" style="height:140px;"></div>
-            <span id="panel-category" class="font-condensed text-[11px] tracking-[2px] uppercase text-gold pr-12">Commercial</span>
-            <h3 id="panel-name" class="font-condensed text-2xl font-bold text-white mt-1 pr-12">Algiers Tower</h3>
-            <p id="panel-city" class="text-sm text-white/40 mb-6">Algiers, Algeria</p>
+            <span id="panel-category" class="font-condensed text-[11px] tracking-[2px] uppercase text-gold pr-12"></span>
+            <h3 id="panel-name" class="font-condensed text-2xl font-bold text-white mt-1 pr-12"></h3>
+            <p id="panel-city" class="text-sm text-white/40 mb-6"></p>
             
             <div class="grid grid-cols-2 gap-4 mb-8">
-              <div><span class="block text-[10px] text-white/30 uppercase" data-i18n="projects.label_year">Year</span><span id="panel-year" class="text-sm text-white">2023</span></div>
-              <div><span class="block text-[10px] text-white/30 uppercase" data-i18n="projects.label_surface">Surface</span><span id="panel-area" class="text-sm text-white">12k m²</span></div>
-              <div><span class="block text-[10px] text-white/30 uppercase" data-i18n="projects.label_status">Status</span><span id="panel-status" class="text-sm text-white font-bold">Completed</span></div>
+              <div><span class="block text-[10px] text-white/30 uppercase" data-i18n="projects.label_year">Year</span><span id="panel-year" class="text-sm text-white"></span></div>
+              <div><span class="block text-[10px] text-white/30 uppercase" data-i18n="projects.label_surface">Surface</span><span id="panel-area" class="text-sm text-white"></span></div>
+              <div><span class="block text-[10px] text-white/30 uppercase" data-i18n="projects.label_status">Status</span><span id="panel-status" class="text-sm text-white font-bold"></span></div>
             </div>
             
-            <p id="panel-desc" class="text-sm text-white/60 leading-relaxed line-clamp-4">Detailed architectural engineering and structural integrity analysis...</p>
+            <p id="panel-desc" class="text-sm text-white/60 leading-relaxed line-clamp-4"></p>
             
             <div class="mt-auto">
-              <div class="flex justify-between text-[10px] mb-2"><span class="text-white/40" data-i18n="projects.label_completion">COMPLETION</span><span id="panel-pct" class="text-gold">100%</span></div>
-              <div class="w-full h-[3px] bg-white/10 rounded-full overflow-hidden"><div id="panel-bar" class="h-full bg-gold w-full"></div></div>
+              <div class="flex justify-between text-[10px] mb-2"><span class="text-white/40" data-i18n="projects.label_completion">COMPLETION</span><span id="panel-pct" class="text-gold"></span></div>
+              <div class="w-full h-[3px] bg-white/10 rounded-full overflow-hidden"><div id="panel-bar" class="h-full bg-gold" style="width:0"></div></div>
             </div>
           </div>
         </div>
@@ -1135,6 +1135,16 @@
         });
       }
       gsap.set(infoPanel, { x: '100%' });
+      // Seed the panel from the first real project through the same data-driven path a marker
+      // click uses. Keeps the initial DOM free of placeholder copy, and means switching language
+      // before the first marker click still re-localises the panel. No synthetic data added —
+      // marker clicks overwrite this with the clicked project.
+      const seedPanelId = Object.keys(markerCoords)[0];
+      if (seedPanelId) {
+        panelId = seedPanelId;
+        populatePanelText(seedPanelId);
+        gsap.set(panelBar, { width: projectData[seedPanelId].completion + '%' });
+      }
       Object.keys(markerCoords).forEach(id => {
         markers[id].on('click', () => {
           const base = projectData[id]; if (!base) return;
