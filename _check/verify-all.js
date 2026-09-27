@@ -107,7 +107,7 @@ async function run() {
   else console.log('ALL CHECKS PASSED');
 }
 
-function checkPage(vpName, lang) {
+async function checkPage(vpName, lang) {
   const issues = [];
   const htmlLang = document.documentElement.getAttribute('lang');
   const htmlDir = document.documentElement.getAttribute('dir');
@@ -170,7 +170,7 @@ function checkPage(vpName, lang) {
   // Check page-unique body content is untranslated
   // (except for pages with translated content: index.html, about.html, services.html, contact.html, projects.html)
   const pageFile = window.location.pathname.split('/').pop() || 'index.html';
-  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html') {
+  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html' && pageFile !== 'quality-hse.html') {
     const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
     if (untranslatedElements.length > 0) {
       issues.push('Found unexpected data-i18n attributes on unique body content: ' + untranslatedElements.length);
@@ -294,6 +294,76 @@ function checkPage(vpName, lang) {
       if (pnv && realNames.indexOf(pnv) === -1) issues.push('projects: map panel name "' + pnv + '" is not one of the rendered projects');
       if (lang !== 'en' && pnv === 'Oran Industrial Warehouse') issues.push('projects: map panel name not localised (' + pnv + ')');
     }
+  } else if (pageFile === 'quality-hse.html') {
+    // Fully translated page (EN source of truth + FR/AR dictionaries in assets/js/i18n.js).
+    if (!document.querySelector('title[data-i18n="quality_hse.page_title"]')) issues.push('quality-hse: page_title hook missing');
+    const heroTitle = document.querySelector('[data-i18n-html="quality_hse.hero_title"]');
+    if (!heroTitle || !heroTitle.querySelector('.text-gold')) issues.push('quality-hse: hero_title missing gold span');
+    const qH2 = document.querySelector('[data-i18n-html="quality_hse.q_h2"]');
+    if (!qH2 || !qH2.querySelector('.text-gold')) issues.push('quality-hse: q_h2 missing gold span');
+    const hseH2 = document.querySelector('[data-i18n-html="quality_hse.hse_h2"]');
+    if (!hseH2 || !hseH2.querySelector('.text-gold')) issues.push('quality-hse: hse_h2 missing gold span');
+    // The HSE heading must stay wrappable: whitespace-nowrap overflows once FR/AR copy runs longer.
+    if (hseH2 && /\bwhitespace-nowrap\b/.test(hseH2.getAttribute('class') || '')) issues.push('quality-hse: hse_h2 still carries whitespace-nowrap');
+    const htmlHeads = document.querySelectorAll('[data-i18n-html^="quality_hse."]');
+    if (htmlHeads.length !== 3) issues.push('quality-hse: expected 3 data-i18n-html headings, got ' + htmlHeads.length);
+    const qCards = document.querySelectorAll('[data-i18n^="quality_hse.qcard"]');
+    if (qCards.length !== 14) issues.push('quality-hse: expected 14 quality card hooks, got ' + qCards.length);
+    const hseCards = document.querySelectorAll('[data-i18n^="quality_hse.hsecard"]');
+    if (hseCards.length !== 12) issues.push('quality-hse: expected 12 HSE card hooks, got ' + hseCards.length);
+    const pdfBtns = document.querySelectorAll('[data-i18n="quality_hse.pdf_btn"]');
+    if (pdfBtns.length !== 2) issues.push('quality-hse: expected 2 shared PDF button spans, got ' + pdfBtns.length);
+    const iframeTitles = document.querySelectorAll('iframe[data-i18n-title^="quality_hse."]');
+    if (iframeTitles.length !== 2) issues.push('quality-hse: expected 2 data-i18n-title iframes, got ' + iframeTitles.length);
+    ['quality_hse.hero_eyebrow', 'quality_hse.hero_sub', 'quality_hse.hero_breadcrumb',
+     'quality_hse.q_pillar', 'quality_hse.q_intro', 'quality_hse.iso_badge', 'quality_hse.iso_h3',
+     'quality_hse.iso_body', 'quality_hse.iso_label', 'quality_hse.iso_sublabel',
+     'quality_hse.hse_pillar', 'quality_hse.hse_intro', 'quality_hse.closing_quote',
+     'quality_hse.closing_attr', 'quality_hse.cta_h3', 'quality_hse.cta_body',
+     'quality_hse.cta_btn_contact', 'quality_hse.cta_btn_projects'].forEach(function (k) {
+      if (!document.querySelector('[data-i18n="' + k + '"]')) issues.push('quality-hse: ' + k + ' hook missing');
+    });
+    // A translated page must not silently fall back to the EN source copy once localised.
+    const heroSub = document.querySelector('[data-i18n="quality_hse.hero_sub"]');
+    if (lang !== 'en' && heroSub && heroSub.textContent.trim().indexOf('Delivering engineering and construction excellence') === 0) issues.push('quality-hse: hero_sub not localised');
+    const ctaH3 = document.querySelector('[data-i18n="quality_hse.cta_h3"]');
+    if (lang !== 'en' && ctaH3 && ctaH3.textContent.trim() === 'Partner With a Quality & Safety Focused Team') issues.push('quality-hse: cta_h3 not localised');
+    const closeQ = document.querySelector('[data-i18n="quality_hse.closing_quote"]');
+    if (lang !== 'en' && closeQ && closeQ.textContent.indexOf('This commitment guides every project') >= 0) issues.push('quality-hse: closing_quote not localised');
+  }
+
+  // ── EN source-of-truth guard ─────────────────────────────────────────────
+  // applyI18n() writes the EN dictionary value into every hooked element, so the text rendered in
+  // EN mode *is* the dictionary value. If that diverges from the element's own source markup, a
+  // translation pass has silently rewritten the English marketing copy (or a dictionary value was
+  // invented to match a bad inventory). Whitespace is ignored; casing is not. There are NO
+  // exceptions — every hook on every page is compared. Runs once per page (EN desktop) so each
+  // divergence is reported once rather than twice.
+  if (lang === 'en' && vpName === 'desktop') {
+    const squash = function (s) { return s.replace(/[\s\u00A0]+/g, ''); };
+    const hooks = [
+      ['data-i18n', 'textContent'],
+      ['data-i18n-html', 'textContent'],
+      ['data-i18n-title', 'title'],
+      ['data-i18n-placeholder', 'placeholder'],
+      ['data-i18n-aria-label', 'aria-label'],
+      ['data-i18n-alt', 'alt']
+    ];
+    const rawHtml = await (await fetch(window.location.pathname)).text();
+    const srcDoc = new DOMParser().parseFromString(rawHtml, 'text/html');
+    hooks.forEach(function (hook) {
+      const attr = hook[0], field = hook[1];
+      Array.prototype.forEach.call(srcDoc.querySelectorAll('[' + attr + ']'), function (srcEl) {
+        const key = srcEl.getAttribute(attr);
+        const liveEl = document.querySelector('[' + attr + '="' + key + '"]');
+        if (!liveEl) { issues.push('EN guard (' + attr + '): no live element for ' + key); return; }
+        const fromSource = field === 'textContent' ? srcEl.textContent : (srcEl.getAttribute(field) || '');
+        const fromDict = field === 'textContent' ? liveEl.textContent : (liveEl.getAttribute(field) || '');
+        if (squash(fromSource) === squash(fromDict)) return;
+        issues.push('EN guard: ' + key + ' dictionary value diverges from source markup ("' +
+          fromDict.replace(/\s+/g, ' ').trim() + '" vs source "' + fromSource.replace(/\s+/g, ' ').trim() + '")');
+      });
+    });
   }
   
   return issues;
