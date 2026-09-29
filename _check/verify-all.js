@@ -110,6 +110,15 @@ async function run() {
       for (const vp of VIEWPORTS) {
         total++;
         const page = await browser.newPage();
+        // index.html streams two HD hero videos from an external CDN. They are purely decorative
+        // (absolutely-positioned, CSS-sized overlays that never affect layout or the assertions
+        // below), so they are stubbed out here: leaving them in made networkidle0 wait on
+        // third-party streaming that can stall for minutes, flaking the first navigation.
+        await page.setRequestInterception(true);
+        page.on('request', (req) => {
+          if (req.url().indexOf('videos.pexels.com') !== -1) req.abort();
+          else req.continue();
+        });
         await page.setViewport({ width: vp.w, height: vp.h });
         try {
           await page.goto(BASE_URL + pFile + '?lang=' + lang, { waitUntil: 'networkidle0', timeout: 30000 });
@@ -404,6 +413,70 @@ async function checkPage(vpName, lang) {
     if (lang !== 'en' && ctaH3 && ctaH3.textContent.trim() === 'Partner With a Quality & Safety Focused Team') issues.push('quality-hse: cta_h3 not localised');
     const closeQ = document.querySelector('[data-i18n="quality_hse.closing_quote"]');
     if (lang !== 'en' && closeQ && closeQ.textContent.indexOf('This commitment guides every project') >= 0) issues.push('quality-hse: closing_quote not localised');
+  } else if (pageFile === 'index.html') {
+    // Homepage was the last page wired for FR/AR (EN source of truth + home.*/ui.* in i18n.js).
+    // All three data-i18n-html headings carry a gold accent span, so the dictionary values must
+    // supply that markup or the accent silently disappears once localised.
+    const htmlHeads = document.querySelectorAll('[data-i18n-html]');
+    if (htmlHeads.length !== 3) issues.push('index: expected 3 data-i18n-html headings, got ' + htmlHeads.length);
+    Array.prototype.forEach.call(htmlHeads, function (h) {
+      if (!h.querySelector('.text-gold')) issues.push('index: ' + h.getAttribute('data-i18n-html') + ' missing gold span');
+    });
+    // The EN guard resolves only the FIRST element per key, so the repeated hooks are counted here.
+    const repeated = {
+      'services.card_learn_more': 4,
+      'home.comp_contact_link': 4,
+      'home.proj_card_view_project': 6
+    };
+    Object.keys(repeated).forEach(function (k) {
+      const n = document.querySelectorAll('[data-i18n="' + k + '"]').length;
+      if (n !== repeated[k]) issues.push('index: expected ' + repeated[k] + ' "' + k + '" hooks, got ' + n);
+    });
+    // Project cards: 6 names plus 6 category labels drawn from the shared projects.cat_* keys —
+    // the same mapping projects.html uses for its own filter buttons.
+    const cardNames = document.querySelectorAll('#projects [data-i18n^="home.proj_name"]');
+    if (cardNames.length !== 6) issues.push('index: expected 6 project name hooks, got ' + cardNames.length);
+    // Contact form: 4 labels + 4 placeholders. The phone label and the three name/phone/email
+    // placeholders reuse the shared contact.* keys, because their EN text is byte-identical to the
+    // homepage markup; the rest are homepage-only keys (the homepage copy is deliberately shorter).
+    ['home.contact_label_name', 'contact.form_label_phone', 'home.contact_label_email', 'home.contact_label_message'].forEach(function (k) {
+      if (!document.querySelector('#contact-form label[data-i18n="' + k + '"]')) issues.push('index: contact label hook missing: ' + k);
+    });
+    const phHooks = document.querySelectorAll('#contact-form [data-i18n-placeholder]');
+    if (phHooks.length !== 4) issues.push('index: expected 4 contact placeholder hooks, got ' + phHooks.length);
+    // The submit-state copy is injected by JS, so it never carries a data-i18n hook — assert the
+    // resolver can actually reach both keys instead.
+    ['home.contact_sending', 'home.contact_sent_success'].forEach(function (k) {
+      if (typeof window.i18nText !== 'function' || window.i18nText(k) === null) issues.push('index: window.i18nText cannot resolve ' + k);
+    });
+    // Contact info rows: the location row was already hooked, and the phone/email titles reuse the
+    // shared contact.card_*_title keys because their EN text is byte-identical to contact.html's
+    // info cards. The two value spans are deliberately left untranslated (a phone number and an
+    // obfuscated email anchor), so no hooks are expected on them.
+    ['home.contact_location_label', 'home.contact_location_value', 'contact.card_phone_title', 'contact.card_email_title'].forEach(function (k) {
+      if (!document.querySelector('[data-i18n="' + k + '"]')) issues.push('index: contact info row hook missing: ' + k);
+    });
+    // Representative sample: a localised homepage must not still render the EN source copy.
+    if (lang !== 'en') {
+      const labelName = document.querySelector('[data-i18n="home.contact_label_name"]');
+      if (labelName && labelName.textContent.trim() === 'Name') issues.push('index: contact_label_name not localised');
+      const phMsg = document.querySelector('[data-i18n-placeholder="home.contact_ph_message"]');
+      if (phMsg && phMsg.getAttribute('placeholder') === 'Tell us about your project...') issues.push('index: contact_ph_message not localised');
+      const heroSub = document.getElementById('hero-sub');
+      if (heroSub && heroSub.textContent.indexOf('delivers world-class construction solutions') >= 0) issues.push('index: hero.sub not localised');
+      const projName1 = document.querySelector('[data-i18n="home.proj_name1"]');
+      if (projName1 && projName1.textContent.trim() === 'Downtown Tower Complex') issues.push('index: proj_name1 not localised (' + projName1.textContent.trim() + ')');
+      const altEl = document.querySelector('img[data-i18n-alt="home.about_alt_construction"]');
+      if (altEl && altEl.getAttribute('alt') === 'Construction') issues.push('index: about_alt_construction not localised');
+      const statYears = document.querySelector('[data-i18n="home.stat_years"]');
+      if (statYears && statYears.textContent.trim() === 'Years Experience') issues.push('index: stat_years not localised');
+      const cardPhone = document.querySelector('[data-i18n="contact.card_phone_title"]');
+      if (cardPhone && cardPhone.textContent.trim() === 'Phone Number') issues.push('index: card_phone_title not localised');
+      const cardEmail = document.querySelector('[data-i18n="contact.card_email_title"]');
+      if (cardEmail && cardEmail.textContent.trim() === 'Email Address') issues.push('index: card_email_title not localised');
+      const locVal = document.querySelector('[data-i18n="home.contact_location_value"]');
+      if (locVal && locVal.textContent.trim() === '123 Construction Ave, Algiers, Algeria') issues.push('index: contact_location_value not localised');
+    }
   }
 
   // ── EN source-of-truth guard ─────────────────────────────────────────────
