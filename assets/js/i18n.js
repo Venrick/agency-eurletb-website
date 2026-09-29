@@ -267,7 +267,11 @@
       "quality_hse.cta_h3":"Partner With a Quality & Safety Focused Team",
       "quality_hse.cta_body":"Learn more about our quality management framework and site safety standards for your upcoming construction or civil engineering requirements.",
       "quality_hse.cta_btn_contact":"Contact Our Team",
-      "quality_hse.cta_btn_projects":"View Worksites"
+      "quality_hse.cta_btn_projects":"View Worksites",
+      "ui.aria_change_language":"Change language",
+      "ui.aria_language_options":"Language options",
+      "ui.aria_toggle_menu":"Toggle Menu",
+      "ui.aria_language_switcher":"Language switcher"
     },
     fr: {
       "nav.home":"Accueil","nav.about":"\u00C0 propos","nav.services":"Services",
@@ -490,7 +494,11 @@
       "quality_hse.cta_h3":"Collaborez avec une équipe engagée pour la qualité et la sécurité",
       "quality_hse.cta_body":"Découvrez notre cadre de management de la qualité et nos normes de sécurité sur chantier pour vos futurs besoins en construction ou en génie civil.",
       "quality_hse.cta_btn_contact":"Contactez notre équipe",
-      "quality_hse.cta_btn_projects":"Voir nos chantiers"
+      "quality_hse.cta_btn_projects":"Voir nos chantiers",
+      "ui.aria_change_language":"Changer de langue",
+      "ui.aria_language_options":"Options de langue",
+      "ui.aria_toggle_menu":"Ouvrir le menu",
+      "ui.aria_language_switcher":"Sélecteur de langue"
     },
     ar: {
       "nav.home":"\u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629","nav.about":"\u0645\u0646 \u0646\u062D\u0646",
@@ -722,7 +730,11 @@
       "quality_hse.cta_h3":"تعاونوا مع فريق يركز على الجودة والسلامة",
       "quality_hse.cta_body":"تعرّفوا على إطار إدارة الجودة لدينا ومعايير السلامة في الموقع لتلبية احتياجاتكم القادمة في البناء أو الهندسة المدنية.",
       "quality_hse.cta_btn_contact":"تواصلوا مع فريقنا",
-      "quality_hse.cta_btn_projects":"شاهد مواقعنا"
+      "quality_hse.cta_btn_projects":"شاهد مواقعنا",
+      "ui.aria_change_language":"تغيير اللغة",
+      "ui.aria_language_options":"خيارات اللغة",
+      "ui.aria_toggle_menu":"فتح القائمة",
+      "ui.aria_language_switcher":"محدد اللغة"
     }
   };
   var STORAGE_KEY = "site-lang";

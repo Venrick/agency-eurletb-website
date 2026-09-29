@@ -51,6 +51,44 @@ function staticSourceChecks() {
   ISO_9001_SUBS.forEach(function (copy) {
     if (dicts.indexOf(copy) === -1) issues.push('i18n.js: missing corrected ISO 9001 card copy ("' + copy + '")');
   });
+  /* Every language block must define exactly the same key set. A key present in EN but absent from
+     FR/AR silently falls back to the English string at runtime, which no DOM assertion would catch
+     (the element is hooked, populated, and simply wrong). Duplicates are reported too: the later
+     entry wins silently, so the earlier one is dead. */
+  const blocks = { en: [], fr: [], ar: [] };
+  let block = null;
+  const dictRegion = dicts.slice(dicts.indexOf('var I18N = {'));
+  dictRegion.split(/\r?\n/).forEach(function (line) {
+    if (/^\}\s*;/.test(line)) { block = null; return; }
+    const marker = /^\s{2,}(en|fr|ar)\s*:\s*\{\s*$/.exec(line);
+    if (marker) { block = marker[1]; return; }
+    if (!block) return;
+    // Several keys can share one line in these blocks, so scan the whole line rather than the
+    // first match. Keys are only recognised at the start of a line or straight after { or , which
+    // stops a dictionary *value* from ever being mistaken for a key.
+    const keyRe = /(?:^|[{,])\s*"([^"]+)"\s*:/g;
+    let m;
+    while ((m = keyRe.exec(line)) !== null) blocks[block].push(m[1]);
+  });
+  ['en', 'fr', 'ar'].forEach(function (b) {
+    if (!blocks[b].length) issues.push('i18n.js: could not parse the "' + b + '" dictionary block');
+  });
+  if (blocks.en.length && blocks.fr.length && blocks.ar.length) {
+    [['fr', blocks.fr], ['ar', blocks.ar]].forEach(function (pair) {
+      const have = {};
+      pair[1].forEach(function (k) { have[k] = true; });
+      blocks.en.forEach(function (k) {
+        if (!have[k]) issues.push('i18n.js: key "' + k + '" exists in the en block but is missing from the ' + pair[0] + ' block');
+      });
+    });
+    ['en', 'fr', 'ar'].forEach(function (b) {
+      const seen = {};
+      blocks[b].forEach(function (k) {
+        if (seen[k]) issues.push('i18n.js: duplicate key "' + k + '" in the ' + b + ' block');
+        seen[k] = true;
+      });
+    });
+  }
   const about = read('about.html');
   ['2009', '2013', '2018', '2024'].forEach(function (yr) {
     if (about.indexOf('data-i18n="about.timeline_' + yr + '_text"') === -1) issues.push('about.html: timeline ' + yr + ' text hook missing');
@@ -170,6 +208,40 @@ async function checkPage(vpName, lang) {
   // Check page-unique body content is untranslated
   // (except for pages with translated content: index.html, about.html, services.html, contact.html, projects.html)
   const pageFile = window.location.pathname.split('/').pop() || 'index.html';
+
+  // ── Shared chrome: language controls + hamburger ──────────────────────────
+  // These hooks live in the common header markup on every page, so the counts are asserted
+  // site-wide rather than inside a per-page branch. Non-EN must not still expose English text.
+  const chromeAria = {
+    'ui.aria_change_language': 2,   // mainbar compact button + drawer compact button
+    'ui.aria_language_options': 2,  // the two matching dropdown menus
+    'ui.aria_toggle_menu': 1        // hamburger
+  };
+  Object.keys(chromeAria).forEach(function (k) {
+    const n = document.querySelectorAll('[data-i18n-aria-label="' + k + '"]').length;
+    if (n !== chromeAria[k]) issues.push('shared aria: expected ' + chromeAria[k] + ' "' + k + '" hooks, got ' + n);
+  });
+  // The desktop 3-button switcher group exists only on the homepage; every other page relies on
+  // the compact button at both breakpoints.
+  const switcherHooks = document.querySelectorAll('[data-i18n-aria-label="ui.aria_language_switcher"]').length;
+  const wantSwitcher = pageFile === 'index.html' ? 1 : 0;
+  if (switcherHooks !== wantSwitcher) issues.push('shared aria: expected ' + wantSwitcher + ' language_switcher hooks, got ' + switcherHooks);
+  if (lang !== 'en') {
+    // Every aria key must actually change under FR/AR. A key missing from a dictionary block falls
+    // back to the English literal still sitting in the markup, so compare against that literal
+    // rather than merely checking the attribute is present.
+    const ariaEn = {
+      'ui.aria_change_language': 'Change language',
+      'ui.aria_language_options': 'Language options',
+      'ui.aria_toggle_menu': 'Toggle Menu',
+      'ui.aria_language_switcher': 'Language switcher'
+    };
+    Object.keys(ariaEn).forEach(function (k) {
+      document.querySelectorAll('[data-i18n-aria-label="' + k + '"]').forEach(function (el) {
+        if (el.getAttribute('aria-label') === ariaEn[k]) issues.push('shared aria: ' + k + ' not localised (' + lang + '): still "' + ariaEn[k] + '"');
+      });
+    });
+  }
   if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html' && pageFile !== 'quality-hse.html') {
     const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
     if (untranslatedElements.length > 0) {
@@ -248,8 +320,10 @@ async function checkPage(vpName, lang) {
     if (svcOptions.length !== 6) issues.push('contact: expected 6 footer.svc_* options, got ' + svcOptions.length);
     const phEls = document.querySelectorAll('[data-i18n-placeholder]');
     if (phEls.length !== 4) issues.push('contact: expected 4 data-i18n-placeholder elements, got ' + phEls.length);
-    const alEls = document.querySelectorAll('[data-i18n-aria-label]');
-    if (alEls.length !== 4) issues.push('contact: expected 4 data-i18n-aria-label elements, got ' + alEls.length);
+    // Scoped to the social links: the shared language/hamburger controls are asserted site-wide
+    // further up, and counting every aria hook here would conflate the two groups.
+    const alEls = document.querySelectorAll('.social-link[data-i18n-aria-label]');
+    if (alEls.length !== 4) issues.push('contact: expected 4 social-link aria hooks, got ' + alEls.length);
     const sel = document.querySelector('select');
     const selTxt = sel ? sel.textContent : '';
     ['Commercial & Industrial', 'Renovation & Remodeling', 'General Contracting', 'Heavy Machinery', 'Maintenance Services'].forEach(function (stale) {
