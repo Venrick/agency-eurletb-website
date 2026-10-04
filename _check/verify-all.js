@@ -251,7 +251,7 @@ async function checkPage(vpName, lang) {
       });
     });
   }
-  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html' && pageFile !== 'quality-hse.html') {
+  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html' && pageFile !== 'quality-hse.html' && pageFile !== 'service-residential-construction.html' && pageFile !== 'service-commercial-buildings.html') {
     const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
     if (untranslatedElements.length > 0) {
       issues.push('Found unexpected data-i18n attributes on unique body content: ' + untranslatedElements.length);
@@ -476,6 +476,57 @@ async function checkPage(vpName, lang) {
       if (cardEmail && cardEmail.textContent.trim() === 'Email Address') issues.push('index: card_email_title not localised');
       const locVal = document.querySelector('[data-i18n="home.contact_location_value"]');
       if (locVal && locVal.textContent.trim() === '123 Construction Ave, Algiers, Algeria') issues.push('index: contact_location_value not localised');
+    }
+  }
+
+  // Service detail pages: the two in-scope pages (residential / commercial) were wired to their
+  // seeded svc_* keys after the dictionary work, so every hook must now exist and must actually
+  // localise. They share the svc_page.* chrome keys and reuse footer.svc_* / nav.* for the service
+  // name and breadcrumb, exactly like services.html and contact.html do.
+  if (pageFile === 'service-residential-construction.html' || pageFile === 'service-commercial-buildings.html') {
+    const slug = pageFile === 'service-residential-construction.html' ? 'svc_residential' : 'svc_commercial';
+    const svcName = slug === 'svc_residential' ? 'residential' : 'commercial';
+    if (!document.querySelector('title[data-i18n="' + slug + '.page_title"]')) issues.push(pageFile + ': page_title hook missing');
+    ['hero_eyebrow', 'hero_tagline', 'ov_eyebrow', 'ov_h2', 'ov_p1', 'ov_p2', 'inc_h2', 'inc_sub',
+      'feat1_title', 'feat1_body', 'feat2_title', 'feat2_body', 'feat3_title', 'feat3_body',
+      'feat4_title', 'feat4_body', 'feat5_title', 'feat5_body', 'feat6_title', 'feat6_body',
+      'proc_h2', 'proc_sub', 'step1_title', 'step1_body', 'step2_title', 'step2_body',
+      'step3_title', 'step3_body', 'step4_title', 'step4_body', 'cta_h3', 'cta_sub'].forEach(function (k) {
+      if (!document.querySelector('[data-i18n="' + slug + '.' + k + '"]')) issues.push(pageFile + ': ' + slug + '.' + k + ' hook missing');
+    });
+    ['svc_page.back_link', 'svc_page.included_eyebrow', 'svc_page.process_eyebrow',
+      'svc_page.cta_btn_contact', 'svc_page.cta_btn_projects'].forEach(function (k) {
+      if (!document.querySelector('[data-i18n="' + k + '"]')) issues.push(pageFile + ': shared ' + k + ' hook missing');
+    });
+    const featTitles = document.querySelectorAll('[data-i18n^="' + slug + '.feat"][data-i18n$="_title"]');
+    if (featTitles.length !== 6) issues.push(pageFile + ': expected 6 feature title hooks, got ' + featTitles.length);
+    const featBodies = document.querySelectorAll('[data-i18n^="' + slug + '.feat"][data-i18n$="_body"]');
+    if (featBodies.length !== 6) issues.push(pageFile + ': expected 6 feature body hooks, got ' + featBodies.length);
+    const stepTitles = document.querySelectorAll('[data-i18n^="' + slug + '.step"][data-i18n$="_title"]');
+    if (stepTitles.length !== 4) issues.push(pageFile + ': expected 4 process step title hooks, got ' + stepTitles.length);
+    const stepBodies = document.querySelectorAll('[data-i18n^="' + slug + '.step"][data-i18n$="_body"]');
+    if (stepBodies.length !== 4) issues.push(pageFile + ': expected 4 process step body hooks, got ' + stepBodies.length);
+    if (!document.querySelector('#hero-title[data-i18n="footer.svc_' + svcName + '"]')) issues.push(pageFile + ': hero h1 not wired to the shared footer.svc_* service name');
+    // A translated page must not silently fall back to the EN source copy once localised.
+    if (lang !== 'en') {
+      const enCopy = {
+        svc_residential: {
+          ov_h2: 'Comprehensive Residential Building Solutions',
+          hero_tagline: 'Custom homes, multi-unit complexes, and apartment buildings delivered with premium materials and modern architectural standards.',
+          cta_h3: 'Ready to Build Your Home?'
+        },
+        svc_commercial: {
+          ov_h2: 'Commercial Buildings Built for Business',
+          hero_tagline: 'Office complexes, retail centres, and commercial facilities engineered for performance, efficiency, and longevity.',
+          cta_h3: 'Ready to Build Your Commercial Space?'
+        }
+      }[slug];
+      Object.keys(enCopy).forEach(function (k) {
+        const el = document.querySelector('[data-i18n="' + slug + '.' + k + '"]');
+        if (el && el.textContent.trim() === enCopy[k]) issues.push(pageFile + ': ' + slug + '.' + k + ' not localised (' + lang + ')');
+      });
+      const back = document.querySelector('[data-i18n="svc_page.back_link"]');
+      if (back && back.textContent.trim() === 'Back to All Services') issues.push(pageFile + ': shared svc_page.back_link not localised (' + lang + ')');
     }
   }
 
