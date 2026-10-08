@@ -251,7 +251,7 @@ async function checkPage(vpName, lang) {
       });
     });
   }
-  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html' && pageFile !== 'quality-hse.html' && pageFile !== 'service-residential-construction.html' && pageFile !== 'service-commercial-buildings.html') {
+  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html' && pageFile !== 'quality-hse.html' && pageFile !== 'service-residential-construction.html' && pageFile !== 'service-commercial-buildings.html' && pageFile !== 'service-industrial-works.html' && pageFile !== 'service-architectural-design.html') {
     const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
     if (untranslatedElements.length > 0) {
       issues.push('Found unexpected data-i18n attributes on unique body content: ' + untranslatedElements.length);
@@ -479,13 +479,20 @@ async function checkPage(vpName, lang) {
     }
   }
 
-  // Service detail pages: the two in-scope pages (residential / commercial) were wired to their
-  // seeded svc_* keys after the dictionary work, so every hook must now exist and must actually
-  // localise. They share the svc_page.* chrome keys and reuse footer.svc_* / nav.* for the service
+  // Service detail pages: the four wired pages (residential / commercial / industrial /
+  // architectural) share the svc_page.* chrome keys and reuse footer.svc_* / nav.* for the service
   // name and breadcrumb, exactly like services.html and contact.html do.
-  if (pageFile === 'service-residential-construction.html' || pageFile === 'service-commercial-buildings.html') {
-    const slug = pageFile === 'service-residential-construction.html' ? 'svc_residential' : 'svc_commercial';
-    const svcName = slug === 'svc_residential' ? 'residential' : 'commercial';
+  // Every svc_* key per page is wired here — including ov_p1 / ov_p2 on the two pages whose FR/AR
+  // copy was corrected by the client.
+  const SVC_KEY = {
+    'service-residential-construction.html': { slug: 'svc_residential', svcName: 'residential' },
+    'service-commercial-buildings.html':     { slug: 'svc_commercial',  svcName: 'commercial' },
+    'service-industrial-works.html':         { slug: 'svc_industrial',  svcName: 'industrial' },
+    'service-architectural-design.html':     { slug: 'svc_arch',        svcName: 'arch' }
+  };
+  if (SVC_KEY[pageFile]) {
+    const slug = SVC_KEY[pageFile].slug;
+    const svcName = SVC_KEY[pageFile].svcName;
     if (!document.querySelector('title[data-i18n="' + slug + '.page_title"]')) issues.push(pageFile + ': page_title hook missing');
     ['hero_eyebrow', 'hero_tagline', 'ov_eyebrow', 'ov_h2', 'ov_p1', 'ov_p2', 'inc_h2', 'inc_sub',
       'feat1_title', 'feat1_body', 'feat2_title', 'feat2_body', 'feat3_title', 'feat3_body',
@@ -512,13 +519,31 @@ async function checkPage(vpName, lang) {
       const enCopy = {
         svc_residential: {
           ov_h2: 'Comprehensive Residential Building Solutions',
+          ov_p1: 'From single-family custom homes to multi-unit residential complexes and apartment buildings, our residential construction service covers the full build cycle — foundations, structural framing, building envelopes, and interior finishing. Every home is planned around the way you live, with layouts and finishes tailored to your brief.',
+          ov_p2: 'We work to strict quality standards and building codes, coordinate all trades and suppliers in-house, and keep you informed at every milestone. The result is a home or residential development that is durable, comfortable, and delivered on time.',
           hero_tagline: 'Custom homes, multi-unit complexes, and apartment buildings delivered with premium materials and modern architectural standards.',
           cta_h3: 'Ready to Build Your Home?'
         },
         svc_commercial: {
           ov_h2: 'Commercial Buildings Built for Business',
+          ov_p1: 'We deliver office buildings, retail centres, and mixed-use commercial facilities designed around how businesses actually operate — flexible floor plates, efficient circulation, and high-quality building systems. Every project is engineered for maximum operational efficiency and long-term durability.',
+          ov_p2: 'From site preparation through structural works, facade, and fit-out, we coordinate all disciplines in-house and manage the programme tightly so your building is ready when your business needs it.',
           hero_tagline: 'Office complexes, retail centres, and commercial facilities engineered for performance, efficiency, and longevity.',
           cta_h3: 'Ready to Build Your Commercial Space?'
+        },
+        svc_industrial: {
+          ov_h2: 'Industrial Facilities Built for Performance',
+          ov_p1: 'Our industrial works service covers warehouses, logistics hubs, and production facilities designed for demanding operational loads — heavy-duty flooring, clear spans, robust building envelopes, and integrated MEP systems. We build to the standards your operations rely on.',
+          ov_p2: 'Every industrial facility is planned around workflow: goods-in, storage, processing, and dispatch. We coordinate structural, mechanical, and electrical works to deliver a facility that runs efficiently from day one.',
+          hero_tagline: 'Warehouses, production facilities, and logistics hubs engineered for heavy-duty operations.',
+          cta_h3: 'Ready to Build Your Industrial Facility?'
+        },
+        svc_arch: {
+          ov_h2: 'From Concept to Construction Documentation',
+          ov_p1: 'Our architectural design service covers the full design spectrum — feasibility studies, concept design, detailed architectural drawings, and technical documentation. We turn your requirements into a design that is buildable, compliant, and aligned with national and international engineering codes.',
+          ov_p2: 'Working alongside structural and MEP engineers, we coordinate every drawing so the design translates cleanly into construction, reducing risk and cost on site.',
+          hero_tagline: 'Concept designs, detailed drawings, and technical documentation that turn ideas into buildable projects.',
+          cta_h3: 'Have a Project in Mind?'
         }
       }[slug];
       Object.keys(enCopy).forEach(function (k) {
