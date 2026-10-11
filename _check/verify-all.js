@@ -251,7 +251,7 @@ async function checkPage(vpName, lang) {
       });
     });
   }
-  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html' && pageFile !== 'quality-hse.html' && pageFile !== 'service-residential-construction.html' && pageFile !== 'service-commercial-buildings.html' && pageFile !== 'service-industrial-works.html' && pageFile !== 'service-architectural-design.html') {
+  if (pageFile !== 'index.html' && pageFile !== 'about.html' && pageFile !== 'services.html' && pageFile !== 'contact.html' && pageFile !== 'projects.html' && pageFile !== 'quality-hse.html' && pageFile !== 'service-residential-construction.html' && pageFile !== 'service-commercial-buildings.html' && pageFile !== 'service-industrial-works.html' && pageFile !== 'service-architectural-design.html' && pageFile !== 'service-renovation-retrofit.html' && pageFile !== 'service-project-management.html') {
     const untranslatedElements = document.querySelectorAll('main [data-i18n], section:not(#hero):not(#page-hero) h1[data-i18n], section h2[data-i18n]');
     if (untranslatedElements.length > 0) {
       issues.push('Found unexpected data-i18n attributes on unique body content: ' + untranslatedElements.length);
@@ -479,16 +479,18 @@ async function checkPage(vpName, lang) {
     }
   }
 
-  // Service detail pages: the four wired pages (residential / commercial / industrial /
-  // architectural) share the svc_page.* chrome keys and reuse footer.svc_* / nav.* for the service
-  // name and breadcrumb, exactly like services.html and contact.html do.
+  // Service detail pages: the six wired pages (residential / commercial / industrial / renovation /
+  // project management / architectural) share the svc_page.* chrome keys and reuse footer.svc_* /
+  // nav.* for the service name and breadcrumb, exactly like services.html and contact.html do.
   // Every svc_* key per page is wired here — including ov_p1 / ov_p2 on the two pages whose FR/AR
   // copy was corrected by the client.
   const SVC_KEY = {
     'service-residential-construction.html': { slug: 'svc_residential', svcName: 'residential' },
     'service-commercial-buildings.html':     { slug: 'svc_commercial',  svcName: 'commercial' },
     'service-industrial-works.html':         { slug: 'svc_industrial',  svcName: 'industrial' },
-    'service-architectural-design.html':     { slug: 'svc_arch',        svcName: 'arch' }
+    'service-architectural-design.html':     { slug: 'svc_arch',        svcName: 'arch' },
+    'service-renovation-retrofit.html':      { slug: 'svc_renovation',  svcName: 'renovation' },
+    'service-project-management.html':       { slug: 'svc_pm',          svcName: 'pm' }
   };
   if (SVC_KEY[pageFile]) {
     const slug = SVC_KEY[pageFile].slug;
@@ -544,6 +546,20 @@ async function checkPage(vpName, lang) {
           ov_p2: 'Working alongside structural and MEP engineers, we coordinate every drawing so the design translates cleanly into construction, reducing risk and cost on site.',
           hero_tagline: 'Concept designs, detailed drawings, and technical documentation that turn ideas into buildable projects.',
           cta_h3: 'Have a Project in Mind?'
+        },
+        svc_renovation: {
+          ov_h2: 'Breathing New Life Into Existing Buildings',
+          ov_p1: 'Our renovation and retrofit service upgrades existing buildings — residential, commercial, or industrial — with structural reinforcement, interior remodelling, and full-scale refurbishment. We assess what is there, design targeted interventions, and deliver modern finishes that add real value.',
+          ov_p2: 'Whether it is an energy retrofit, a functional reconfiguration, or a complete building renewal, we plan the works to minimise disruption and keep the building safe and compliant throughout.',
+          hero_tagline: 'Structural upgrades, interior remodelling, and energy retrofits that extend the life of existing buildings.',
+          cta_h3: 'Ready to Transform Your Building?'
+        },
+        svc_pm: {
+          ov_h2: 'Construction Managed, End to End',
+          ov_p1: 'Our project management service takes responsibility for the whole delivery chain — planning, procurement, subcontractor coordination, cost control, and quality assurance. We keep every project on schedule and on budget while meeting the highest safety and quality standards.',
+          ov_p2: 'Acting as a single point of accountability, we coordinate consultants, suppliers, and trades, report transparently at every stage, and manage risks before they become delays.',
+          hero_tagline: 'End-to-end coordination of timelines, subcontractors, budgets, and quality control.',
+          cta_h3: 'Need Your Project Managed?'
         }
       }[slug];
       Object.keys(enCopy).forEach(function (k) {
