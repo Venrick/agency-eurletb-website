@@ -132,7 +132,9 @@ async function run() {
         await page.setViewport({ width: vp.w, height: vp.h });
         try {
           await page.goto(BASE_URL + pFile + '?lang=' + lang, { waitUntil: 'networkidle0', timeout: 30000 });
-          await page.waitForFunction(() => document.documentElement.getAttribute('lang') !== null, { timeout: 5000 });
+          // applyI18n sets lang/dir immediately after it rewrites the internal links, so waiting
+          // for both (dir is not in the source markup) also means the hrefs below are final.
+          await page.waitForFunction((l) => document.documentElement.getAttribute('lang') === l && document.documentElement.getAttribute('dir') !== null, { timeout: 5000 }, lang);
           const res = await page.evaluate(checkPage, vp.name, lang);
           if (res.length === 0) passed++;
           else failed.push({ page: pFile, lang, vp: vp.name, issues: res });
@@ -144,6 +146,187 @@ async function run() {
       }
     }
   }
+
+  /* ── The right nav / drawer / footer link is still highlighted in AR ─────────────────── */
+  const ACTIVE_CASES = [
+    { file: 'about.html', active: 'about.html' },
+    { file: 'services.html', active: 'services.html' },
+    { file: 'service-industrial-works.html', active: 'services.html' }
+  ];
+  for (const c of ACTIVE_CASES) {
+    total++;
+    try {
+      const page = await browser.newPage();
+      await page.setViewport({ width: 1440, height: 900 });
+      await page.goto(BASE_URL + c.file + '?lang=ar', { waitUntil: 'networkidle0', timeout: 30000 });
+      const r = await page.evaluate(function () {
+        const q = function (s) { return Array.prototype.map.call(document.querySelectorAll(s), function (a) { return a.getAttribute('href'); }); };
+        return {
+          nav: q('#mainbar a.nav-link.active'),
+          drawer: q('#nav-drawer a.active'),
+          footer: Array.prototype.filter.call(document.querySelectorAll('a.fnav-link'), function (a) { return a.classList.contains('text-gold'); }).map(function (a) { return a.getAttribute('href'); })
+        };
+      });
+      const bare = function (h) { return String(h).split('#')[0].split('?')[0]; };
+      const issues = [];
+      const want = bare(c.active);
+      if (!r.nav.map(bare).includes(want)) issues.push('nav: no active nav-link for ' + c.active + ' in AR (active links: ' + JSON.stringify(r.nav) + ')');
+      if (!r.drawer.map(bare).includes(want)) issues.push('drawer: no active drawer link for ' + c.active + ' in AR (active links: ' + JSON.stringify(r.drawer) + ')');
+      if (r.footer.length !== 1 || bare(r.footer[0]) !== want) issues.push('footer: expected exactly the ' + c.active + ' link highlighted in AR, got ' + JSON.stringify(r.footer));
+      const noLang = r.nav.concat(r.drawer, r.footer).filter(function (h) { return !/[?&]lang=ar/.test(h); });
+      if (noLang.length) issues.push('highlighted link(s) without ?lang=ar: ' + JSON.stringify(noLang));
+      if (issues.length) failed.push({ page: 'lang-in-url: active state', lang: 'ar', vp: 'desktop', issues: issues.map(function (i) { return c.file + ': ' + i; }) });
+      else passed++;
+      await page.close();
+    } catch (e) { failed.push({ page: 'lang-in-url: active state', lang: 'ar', vp: 'desktop', issues: [c.file + ': ' + e.message] }); }
+  }
+
+  /* ── index.html#companies reached from another page still scrolls to the section ─────── */
+  total++;
+  try {
+    const page = await browser.newPage();
+    await page.setRequestInterception(true);
+    page.on('request', function (r) { if (/\.(mp4|webm|m3u8)(\?|$)/i.test(r.url())) r.abort(); else r.continue(); });
+    await page.setViewport({ width: 1440, height: 900 });
+    const issues = [];
+    await page.goto(BASE_URL + 'about.html?lang=ar', { waitUntil: 'networkidle0', timeout: 30000 });
+    const href = await page.evaluate(function () {
+      const a = Array.prototype.find.call(document.querySelectorAll('#mainbar a[href]'), function (el) {
+        const h = el.getAttribute('href');
+        return h.split('#')[0].split('?')[0] === 'index.html' && h.indexOf('#') >= 0;
+      });
+      return a ? a.getAttribute('href') : null;
+    });
+    if (href !== 'index.html?lang=ar#companies') issues.push('the Companies nav link on about.html is "' + href + '", expected "index.html?lang=ar#companies" (query before the hash, language kept)');
+    if (href) {
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }),
+        page.evaluate(function () {
+          Array.prototype.find.call(document.querySelectorAll('#mainbar a[href]'), function (el) {
+            const h = el.getAttribute('href');
+            return h.split('#')[0].split('?')[0] === 'index.html' && h.indexOf('#') >= 0;
+          }).click();
+        })
+      ]);
+      await new Promise(function (r) { setTimeout(r, 1500); });
+      const st = await page.evaluate(function () {
+        const sec = document.getElementById('companies');
+        return {
+          hash: window.location.hash,
+          search: window.location.search,
+          lang: document.documentElement.getAttribute('lang'),
+          top: sec ? sec.getBoundingClientRect().top : null,
+          scrollY: window.scrollY
+        };
+      });
+      if (st.hash !== '#companies') issues.push('after following the link the hash is "' + st.hash + '"');
+      if (!/[?&]lang=ar/.test(st.search)) issues.push('the ?lang=ar parameter was dropped by the hash navigation (search="' + st.search + '")');
+      if (st.lang !== 'ar') issues.push('index.html arrived in "' + st.lang + '" instead of ar');
+      if (st.top === null) issues.push('#companies is missing on index.html');
+      else if (Math.abs(st.top) > 300) issues.push('#companies is not in view after following the link (top=' + st.top.toFixed(0) + 'px, scrollY=' + st.scrollY.toFixed(0) + ')');
+    }
+    if (issues.length) failed.push({ page: 'lang-in-url: hash target', lang: 'ar', vp: 'desktop', issues: issues });
+    else passed++;
+    await page.close();
+  } catch (e) { failed.push({ page: 'lang-in-url: hash target', lang: 'ar', vp: 'desktop', issues: [e.message] }); }
+
+  /* ── The URL-language rewriter: query merging, hash placement, untouched links ─────────
+     window.i18nLinkHref is the same function the load/switch pass runs over every link. */
+  total++;
+  try {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + 'about.html?lang=ar', { waitUntil: 'networkidle0', timeout: 30000 });
+    const issues = await page.evaluate(function () {
+      const out = [];
+      const f = window.i18nLinkHref;
+      if (typeof f !== 'function') return ['window.i18nLinkHref is missing: the URL-language rewriter is not wired into i18n.js'];
+      [
+        ['index.html', 'ar', 'index.html?lang=ar'],
+        ['index.html#companies', 'ar', 'index.html?lang=ar#companies'],
+        ['about.html?x=1#top', 'ar', 'about.html?x=1&lang=ar#top'],
+        ['about.html?lang=fr#top', 'ar', 'about.html?lang=ar#top'],
+        ['contact.html?company=etb', 'ar', 'contact.html?company=etb&lang=ar'],
+        ['about.html?lang=fr', 'en', 'about.html'],
+        ['index.html?lang=ar', 'en', 'index.html'],
+        ['#top', 'ar', null],
+        ['#', 'ar', null],
+        ['mailto:contact@eurlachouri.com', 'ar', null],
+        ['tel:+21327567788', 'ar', null],
+        ['javascript:void(0)', 'ar', null],
+        ['https://example.com/page.html', 'ar', null],
+        ['assets/js/i18n.js', 'ar', null],
+        ['assets/images/Logo-Dark.png', 'ar', null]
+      ].forEach(function (c) {
+        const got = f(c[0], c[1]);
+        if (got !== c[2]) out.push('rewrite(' + c[0] + ', ' + c[1] + ') gave ' + JSON.stringify(got) + ', expected ' + JSON.stringify(c[2]));
+      });
+      return out;
+    });
+    if (issues.length) failed.push({ page: 'lang-in-url: rewriter', lang: '-', vp: '-', issues: issues });
+    else passed++;
+    await page.close();
+  } catch (e) { failed.push({ page: 'lang-in-url: rewriter', lang: '-', vp: '-', issues: [e.message] }); }
+
+  /* ── AR follows index -> about -> projects -> service page with storage disabled ──────
+     Every link was rewritten on the page before, so the language must still be AR (and dir
+     rtl) after each hop even when localStorage throws on every call. */
+  total++;
+  try {
+    const page = await browser.newPage();
+    await page.evaluateOnNewDocument(function () {
+      const boom = function () { throw new Error('localStorage disabled for this test'); };
+      try {
+        Storage.prototype.getItem = boom;
+        Storage.prototype.setItem = boom;
+        Storage.prototype.removeItem = boom;
+      } catch (e) {}
+    });
+    await page.setRequestInterception(true);
+    page.on('request', function (r) { if (/\.(mp4|webm|m3u8)(\?|$)/i.test(r.url())) r.abort(); else r.continue(); });
+    await page.setViewport({ width: 1440, height: 900 });
+    const issues = [];
+    const hops = [['index.html', 'about.html'], ['about.html', 'projects.html'], ['projects.html', 'service-industrial-works.html']];
+    await page.goto(BASE_URL + 'index.html?lang=ar', { waitUntil: 'networkidle0', timeout: 30000 });
+    for (const hop of hops) {
+      const from = hop[0], to = hop[1];
+      const dead = await page.evaluate(function () { try { localStorage.getItem('site-lang'); return false; } catch (e) { return true; } });
+      if (!dead) issues.push('probe: localStorage did not throw on ' + from + ', so this test is not proving what it claims');
+      const href = await page.evaluate(function (t) {
+        const a = Array.prototype.find.call(document.querySelectorAll('a[href]'), function (el) {
+          const h = el.getAttribute('href');
+          return h.split('#')[0].split('?')[0] === t;
+        });
+        return a ? a.getAttribute('href') : null;
+      }, to);
+      if (!href) { issues.push('no link to ' + to + ' on ' + from); break; }
+      if (!/[?&]lang=ar/.test(href)) issues.push('the link to ' + to + ' on ' + from + ' does not carry ?lang=ar -> ' + href);
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }),
+        page.evaluate(function (t) {
+          Array.prototype.find.call(document.querySelectorAll('a[href]'), function (el) {
+            const h = el.getAttribute('href');
+            return h.split('#')[0].split('?')[0] === t;
+          }).click();
+        }, to)
+      ]);
+      const st = await page.evaluate(function () {
+        return {
+          lang: document.documentElement.getAttribute('lang'),
+          dir: document.documentElement.getAttribute('dir'),
+          file: window.location.pathname.split('/').pop(),
+          search: window.location.search
+        };
+      });
+      if (st.file !== to) issues.push('expected to land on ' + to + ', landed on ' + st.file);
+      if (st.lang !== 'ar') issues.push('language lost with storage disabled: ' + from + ' -> ' + to + ' ended up in "' + st.lang + '"');
+      if (st.dir !== 'rtl') issues.push('direction lost with storage disabled: ' + from + ' -> ' + to + ' ended up dir="' + st.dir + '"');
+      if (!/[?&]lang=ar/.test(st.search)) issues.push('address bar lost the language on ' + st.file + ' ("' + st.search + '")');
+    }
+    if (issues.length) failed.push({ page: 'lang-in-url: crawl (storage disabled)', lang: 'ar', vp: 'desktop', issues: issues });
+    else passed++;
+
+    await page.close();
+  } catch (e) { failed.push({ page: 'lang-in-url: crawl (storage disabled)', lang: 'ar', vp: 'desktop', issues: [e.message] }); }
 
   await browser.close();
   server.close();
@@ -216,6 +399,29 @@ async function checkPage(vpName, lang) {
   }
   probe.parentNode.removeChild(probe);
 
+  /* ── Language carried in the URL ────────────────────────────────────────────
+     A language picked on one page has to follow the visitor to the next one, so every
+     internal page link must carry the active language in its query string and EN must carry
+     none. Links that leave the site, mailto:/tel:/javascript: links, "#"-only links and
+     non-.html assets must stay untouched. The rule mirrors the rewriter in i18n.js. */
+  Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function (a) {
+    const raw  = a.getAttribute('href');
+    const bare = raw.split('#')[0].split('?')[0];
+    const isPage = raw.charAt(0) !== '#' && raw.indexOf(':') < 0 && raw.indexOf('//') !== 0 && /\.html$/i.test(bare);
+    const got  = /(?:[?&])lang=([^&#]*)/.exec(raw);
+    if (isPage) {
+      if (lang === 'en') {
+        if (got) issues.push('language in URL: EN link still carries a ?lang= parameter -> ' + raw);
+      } else if (!got) {
+        issues.push('language in URL: ' + lang + ' link is missing ?lang=' + lang + ' -> ' + raw);
+      } else if (got[1] !== lang) {
+        issues.push('language in URL: link says ?lang=' + got[1] + ' but the page is ' + lang + ' -> ' + raw);
+      }
+    } else if (got) {
+      issues.push('language in URL: a non-page link must not carry ?lang= -> ' + raw);
+    }
+  });
+
   if (vpName === 'desktop') {
     const langBtns = document.querySelectorAll('.lang-btn');
     if (langBtns.length !== 3) issues.push('desktop: expected 3 lang-btns, got ' + langBtns.length);
@@ -232,7 +438,11 @@ async function checkPage(vpName, lang) {
       const current = btn.querySelector('.lang-current');
       if (current && current.textContent.trim().toLowerCase() !== lang) issues.push('mobile: compact shows ' + current.textContent + ' not ' + lang);
     }
-    const logo = mainbar && mainbar.querySelector('a[href="index.html"]');
+    /* Path-based lookup: in FR/AR every href carries ?lang=xx, so an exact href="index.html"
+       selector would silently stop matching and skip the mobile layout assertions below. */
+    const logo = mainbar && Array.prototype.find.call(mainbar.querySelectorAll('a[href]'), function (a) {
+      return a.getAttribute('href').split('#')[0].split('?')[0] === 'index.html';
+    });
     const hamburger = document.getElementById('hamburger');
     if (logo && hamburger && compact) {
       const mainbarRect = mainbar.getBoundingClientRect();

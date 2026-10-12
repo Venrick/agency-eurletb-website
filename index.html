@@ -1504,10 +1504,16 @@
       const drawerLinks = document.querySelectorAll('.nav-drawer a');
       const sectionMap = { hero: 'index.html', about: 'about.html', stats: 'about.html', services: 'services.html', companies: 'companies.html', projects: 'projects.html', contact: 'contact.html' };
 
+      // Compare the href with the ?lang= query removed: the language travels in the URL, so a
+      // raw comparison would stop matching once the links are rewritten. The #hash is kept
+      // because it is part of the target here (index.html vs index.html#companies), which is
+      // what stops "Companies" being underlined while the hero is on screen.
+      const linkTarget = href => String(href).split('?')[0];
+
       function setActive(id) {
         const target = sectionMap[id];
-        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === target));
-        drawerLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === target));
+        navLinks.forEach(a => a.classList.toggle('active', linkTarget(a.getAttribute('href')) === target));
+        drawerLinks.forEach(a => a.classList.toggle('active', linkTarget(a.getAttribute('href')) === target));
       }
 
       const spyObserver = new IntersectionObserver((entries) => {

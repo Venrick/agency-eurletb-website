@@ -1571,8 +1571,67 @@
     });
   }
 
+  /* ── Language carried in the URL ──────────────────────────────────────────────
+     A language chosen on one page has to follow the visitor to the next one, so every
+     internal page link carries ?lang=<code>: the query goes before the #hash and is merged
+     with any query the link already had, and EN removes the parameter again. Links that
+     leave the site or cannot hold a page language (http(s), mailto:, tel:, javascript:,
+     "#"-only, non-.html assets) are never touched. The address bar is kept in step too,
+     without pushing a history entry. */
+  var PAGE_RX = /^[^?#]*\.html$/i;
+
+  /* "/dir/page.html?x=1#top" -> "/dir/page.html" */
+  function linkPath(href) {
+    return String(href == null ? "" : href).split("#")[0].split("?")[0];
+  }
+
+  /* New href for one link, or null when the link must stay exactly as it is. */
+  function rewriteLink(href, lang) {
+    var h = String(href == null ? "" : href);
+    if (!h || h.charAt(0) === "#") return null;
+    var hash = "";
+    var hi = h.indexOf("#");
+    if (hi >= 0) { hash = h.slice(hi); h = h.slice(0, hi); }
+    var query = "";
+    var qi = h.indexOf("?");
+    if (qi >= 0) { query = h.slice(qi + 1); h = h.slice(0, qi); }
+    if (h.indexOf(":") >= 0 || h.indexOf("//") === 0) return null;
+    if (!PAGE_RX.test(h)) return null;
+    var keep = [];
+    query.split("&").forEach(function (kv) {
+      if (kv && kv.split("=")[0] !== "lang") keep.push(kv);
+    });
+    if (lang !== "en") keep.push("lang=" + lang);
+    return h + (keep.length ? "?" + keep.join("&") : "") + hash;
+  }
+
+  function rewriteLinks(lang) {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var raw  = a.getAttribute("href");
+      var next = rewriteLink(raw, lang);
+      if (next !== null && next !== raw) a.setAttribute("href", next);
+    });
+  }
+
+  function syncAddressBar(lang) {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      if (lang === "en") params.delete("lang"); else params.set("lang", lang);
+      var qs  = params.toString();
+      var loc = window.location;
+      var url = loc.pathname + (qs ? "?" + qs : "") + loc.hash;
+      if (url !== loc.pathname + loc.search + loc.hash) window.history.replaceState(null, "", url);
+    } catch (e) {}
+  }
+
   function applyI18n(lang) {
+    if (LANG_CODES.indexOf(lang) < 0) lang = "en";
     var t = I18N[lang] || I18N.en;
+    /* Links are rewritten before lang/dir are set, so anything that waits for those two
+       attributes (the guard, a crawler, a screenshot harness) can rely on the hrefs already
+       carrying the language. */
+    rewriteLinks(lang);
+    syncAddressBar(lang);
     document.documentElement.setAttribute("lang", lang);
     document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
@@ -1611,9 +1670,9 @@
     try {
       var p = new URLSearchParams(window.location.search);
       var q = p.get("lang");
-      if (q && I18N[q]) return q;
+      if (LANG_CODES.indexOf(q) >= 0) return q;          /* ?lang= wins; anything else is ignored */
       var saved = localStorage.getItem(STORAGE_KEY);
-      if (I18N[saved]) return saved;
+      if (LANG_CODES.indexOf(saved) >= 0) return saved;
     } catch (e) {}
     return "en";
   }
@@ -1626,13 +1685,19 @@
       var ul = titleEl.parentElement && titleEl.parentElement.querySelector("ul");
       if (!ul) return;
       ul.querySelectorAll("a.fnav-link").forEach(function (a) {
-        var href   = a.getAttribute("href");
+        /* Path only: the language travels in the query string, so comparing the raw href
+           would stop matching as soon as the links carry ?lang=fr/ar. */
+        var href   = linkPath(a.getAttribute("href"));
         var active = href === currentPage || (isServicePage && href === "services.html");
         a.classList.toggle("text-gold",     active);
         a.classList.toggle("text-white/55", !active);
       });
     });
   }
+
+  /* The same rewriter the load/switch pass uses, exposed so a page script or the guard can
+     ask what a given link would become (and prove query merging and hash placement). */
+  window.i18nLinkHref = function (href, lang) { return rewriteLink(href, lang); };
 
   /* Read-only accessor so page scripts can resolve the same dictionary keys the
      DOM hooks use. Needed by projects.html, whose project text is rendered by JS

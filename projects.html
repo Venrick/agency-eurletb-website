@@ -1213,9 +1213,12 @@
       });
 
       // ── Active mobile-drawer link ──
+      // Compare the page path only: the language travels in the URL (?lang=fr/ar), so a
+      // raw href comparison would stop matching as soon as the links are rewritten.
+      const linkPath = href => String(href).split('#')[0].split('?')[0];
       const currentPage = window.location.pathname.split('/').pop() || 'index.html';
       drawer.querySelectorAll('a').forEach(a => {
-        if (a.getAttribute('href') === currentPage) {
+        if (linkPath(a.getAttribute('href')) === currentPage) {
           a.classList.add('active');
         }
       });
