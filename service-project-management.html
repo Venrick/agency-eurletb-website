@@ -31,6 +31,9 @@
   </script>
 
   <style>
+    /* ── Phone numbers ── */
+    .phone-ltr { direction: ltr; unicode-bidi: isolate; }
+    
     /* ── Blueprint grid ── */
     .blueprint-subtle { background-image: linear-gradient(rgba(193,159,93,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(193,159,93,.04) 1px,transparent 1px); background-size:48px 48px; }
     
@@ -121,14 +124,14 @@
     <!-- Top bar -->
     <div id="topbar" class="bg-[rgba(15,19,35,0.95)] border-b border-[rgba(193,159,93,0.15)] flex items-center justify-between px-4 md:px-12 h-9">
       <div class="flex items-center gap-3 md:gap-7">
-        <a href="tel:+213000000000" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
+        <a href="tel:+21327567788" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
           <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="hidden md:inline">+213 (0) 00 00 00 00</span>
+          <span class="hidden md:inline phone-ltr" dir="ltr">027 56 77 88</span>
           <span class="md:hidden" data-i18n="topbar.call">Call</span>
         </a>
-        <a href="mailto:contact@etbachouri.com" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
+        <a href="mailto:contact@eurlachouri.com" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
           <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="hidden sm:inline">contact@etbachouri.com</span>
+          <span class="hidden sm:inline">contact@eurlachouri.com</span>
           <span class="sm:hidden" data-i18n="topbar.email">Email</span>
         </a>
       </div>
@@ -516,7 +519,15 @@
       <ul class="list-none p-0 m-0 flex flex-col gap-3">
         <li class="flex items-start gap-[10px]">
           <svg class="w-3 h-3 mt-[3px] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="text-[12px] text-white/40" data-i18n="footer.address">Zone Industrielle, Blida, Algeria</span>
+          <span class="text-[12px] text-white/40" data-i18n="footer.address">Cité 98 LSP Housing, Building F, No. 70, Khemis Miliana, Aïn Defla, Algeria</span>
+        </li>
+        <li class="flex items-start gap-[10px]">
+          <svg class="w-3 h-3 mt-[3px] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <span class="text-[12px] text-white/40"><span class="phone-ltr" dir="ltr"><a href="tel:+21327567788" class="hover:text-gold transition-colors no-underline">027 56 77 88</a></span><br><span class="phone-ltr" dir="ltr"><a href="tel:+21327567777" class="hover:text-gold transition-colors no-underline">027 56 77 77</a></span></span>
+        </li>
+        <li class="flex items-start gap-[10px]">
+          <svg class="w-3 h-3 mt-[3px] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span class="text-[12px] text-white/40"><a href="mailto:contact@eurlachouri.com" class="hover:text-gold transition-colors no-underline">contact@eurlachouri.com</a></span>
         </li>
       </ul>
     </div>

@@ -95,6 +95,16 @@ function staticSourceChecks() {
   });
   const closingTagHooks = about.match(/<\/[a-z0-9]+[^>]*\sdata-i18n/gi) || [];
   if (closingTagHooks.length) issues.push('about.html: ' + closingTagHooks.length + ' data-i18n hook(s) sit on a closing tag and are never applied');
+  /* Client contact details (sitewide update, own commit): every entry below is either the old
+     placeholder or the previous domain, so any survivor in a page or in a dictionary means a spot
+     was missed. Checked against the raw source, which the DOM sweep cannot see (e.g. meta tags). */
+  const FORBIDDEN_CONTACT = ['123 Construction', '00 00 00 00', '555 123', '555 789', 'etbachouri.com', '__cf_email__', 'cdn-cgi'];
+  PAGES.concat(['assets/js/i18n.js']).forEach(function (f) {
+    const src = read(f);
+    FORBIDDEN_CONTACT.forEach(function (bad) {
+      if (src.indexOf(bad) >= 0) issues.push(f + ': forbidden contact string still present: "' + bad + '"');
+    });
+  });
   return issues;
 }
 
@@ -164,7 +174,48 @@ async function checkPage(vpName, lang) {
   
   const mainbar = document.getElementById('mainbar');
   if (!mainbar) issues.push('mainbar missing');
-  
+
+  /* ── Phone numbers must stay LTR inside an RTL (Arabic) page ─────────────────
+     A phone number is a run of weak characters, so in an RTL paragraph bidi
+     re-orders the digit groups and a " / " pair can end up reading right-to-left.
+     Every element that owns a phone number as its *own* text must therefore sit
+     inside a dir="ltr" wrapper, whose shared .phone-ltr rule isolates the run. */
+  const PHONE_RX = /0\d{2}(\s\d{2}){3}/;
+  const phoneHolders = [];
+  document.querySelectorAll('body *').forEach(function (el) {
+    const ownsPhone = Array.prototype.some.call(el.childNodes, function (n) {
+      return n.nodeType === 3 && PHONE_RX.test(n.nodeValue);
+    });
+    if (ownsPhone) phoneHolders.push(el);
+  });
+  const phoneFile = window.location.pathname.split('/').pop() || 'index.html';
+  const phoneExpected = (phoneFile === 'index.html' || phoneFile === 'contact.html') ? 5 : 3;
+  if (phoneHolders.length !== phoneExpected) {
+    issues.push('phone numbers in DOM: ' + phoneHolders.length + ', expected ' + phoneExpected);
+  }
+  phoneHolders.forEach(function (el) {
+    const label = '<' + el.tagName.toLowerCase() + '> "' + el.textContent.trim().slice(0, 30) + '"';
+    const wrapper = el.closest('[dir="ltr"]');
+    if (!wrapper) issues.push('phone not inside a dir="ltr" wrapper: ' + label);
+    else if (!wrapper.classList.contains('phone-ltr')) issues.push('phone wrapper missing the .phone-ltr class: ' + label);
+    const dir = window.getComputedStyle(el).direction;
+    if (dir !== 'ltr') issues.push('phone renders direction:' + dir + ' (expected ltr): ' + label);
+  });
+  /* Layout probe: one isolated " / " pair inside a forced RTL container must still
+     read left-to-right. Without the isolate the two runs swap and the first
+     number lands to the right of the second. */
+  const probe = document.createElement('div');
+  probe.setAttribute('dir', 'rtl');
+  probe.setAttribute('style', 'position:absolute; left:-9999px; top:0; white-space:nowrap; font-size:13px');
+  probe.innerHTML = '<span class="phone-ltr" dir="ltr"><span class="p1">027 56 77 88</span> / <span class="p2">027 56 77 77</span></span>';
+  document.body.appendChild(probe);
+  const p1 = probe.querySelector('.p1').getBoundingClientRect();
+  const p2 = probe.querySelector('.p2').getBoundingClientRect();
+  if (!(p1.left < p2.left)) {
+    issues.push('RTL " / " pair reordered: 027 56 77 88 at x=' + p1.left.toFixed(1) + ', 027 56 77 77 at x=' + p2.left.toFixed(1));
+  }
+  probe.parentNode.removeChild(probe);
+
   if (vpName === 'desktop') {
     const langBtns = document.querySelectorAll('.lang-btn');
     if (langBtns.length !== 3) issues.push('desktop: expected 3 lang-btns, got ' + langBtns.length);
@@ -451,8 +502,8 @@ async function checkPage(vpName, lang) {
     });
     // Contact info rows: the location row was already hooked, and the phone/email titles reuse the
     // shared contact.card_*_title keys because their EN text is byte-identical to contact.html's
-    // info cards. The two value spans are deliberately left untranslated (a phone number and an
-    // obfuscated email anchor), so no hooks are expected on them.
+    // info cards. The two value spans are deliberately left untranslated (a pair of tel: links and a
+    // plain mailto address), so no hooks are expected on them.
     ['home.contact_location_label', 'home.contact_location_value', 'contact.card_phone_title', 'contact.card_email_title'].forEach(function (k) {
       if (!document.querySelector('[data-i18n="' + k + '"]')) issues.push('index: contact info row hook missing: ' + k);
     });
@@ -475,7 +526,7 @@ async function checkPage(vpName, lang) {
       const cardEmail = document.querySelector('[data-i18n="contact.card_email_title"]');
       if (cardEmail && cardEmail.textContent.trim() === 'Email Address') issues.push('index: card_email_title not localised');
       const locVal = document.querySelector('[data-i18n="home.contact_location_value"]');
-      if (locVal && locVal.textContent.trim() === '123 Construction Ave, Algiers, Algeria') issues.push('index: contact_location_value not localised');
+      if (locVal && locVal.textContent.trim() === 'Cité 98 LSP Housing, Building F, No. 70, Khemis Miliana, Aïn Defla, Algeria') issues.push('index: contact_location_value not localised');
     }
   }
 
