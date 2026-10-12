@@ -329,10 +329,10 @@ async function checkPage(vpName, lang) {
     if (svcOptions.length !== 6) issues.push('contact: expected 6 footer.svc_* options, got ' + svcOptions.length);
     const phEls = document.querySelectorAll('[data-i18n-placeholder]');
     if (phEls.length !== 4) issues.push('contact: expected 4 data-i18n-placeholder elements, got ' + phEls.length);
-    // Scoped to the social links: the shared language/hamburger controls are asserted site-wide
-    // further up, and counting every aria hook here would conflate the two groups.
+    // Scoped to the social links (LinkedIn, Instagram, YouTube): the shared
+    // language/hamburger controls are asserted site-wide further up, and counting every aria hook here would conflate the two groups.
     const alEls = document.querySelectorAll('.social-link[data-i18n-aria-label]');
-    if (alEls.length !== 4) issues.push('contact: expected 4 social-link aria hooks, got ' + alEls.length);
+    if (alEls.length !== 3) issues.push('contact: expected 3 social-link aria hooks, got ' + alEls.length);
     const sel = document.querySelector('select');
     const selTxt = sel ? sel.textContent : '';
     ['Commercial & Industrial', 'Renovation & Remodeling', 'General Contracting', 'Heavy Machinery', 'Maintenance Services'].forEach(function (stale) {
