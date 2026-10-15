@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title data-i18n="about.title">About Us — EURL ETB Achouri Toufik</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="icon" type="image/png" href="assets/images/Favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -108,8 +109,8 @@
     <!-- Main bar -->
     <div id="mainbar" class="bg-navy flex items-center justify-between px-4 md:px-12 h-[110px] border-b-[3px] border-gold">
       <a href="index.html" class="flex items-center no-underline">
-        <img src="assets/images/Logo-H-Dark.svg" alt="EURL ETB Achouri Toufik" class="logo-light hidden max-md:block lg:block" style="height:72px;">
-        <img src="assets/images/Logo-Dark.svg" alt="EURL ETB Achouri Toufik" class="hidden md:block lg:hidden" style="height:72px;">
+        <img src="assets/images/Logo-Horizontal-Dark.png" alt="EURL ETB Achouri Toufik" class="logo-light hidden max-md:block lg:block" style="height:72px;">
+        <img src="assets/images/Logo-Dark.png" alt="EURL ETB Achouri Toufik" class="hidden md:block lg:hidden" style="height:72px;">
       </a>
 
       <div class="flex items-center gap-9">
@@ -168,9 +169,13 @@
 
 <!-- ═══════════ PAGE HERO ═══════════ -->
 <section class="relative bg-navy pt-[160px] pb-32 overflow-hidden flex items-center min-h-[520px]">
-  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-     style="background-image:url('assets/images/hero-about.jpg'); opacity:0.18;">
-  </div>
+  <!-- Faint photo backdrop, the way every other page hero has one (contact-hero.jpeg,
+       projects-hero.jpeg, services-hero.jpeg, iso.jpg). The About photo was never produced:
+       hero-about.jpg is not on disk and never was in this repository's history, so the
+       reference only produced a 404 on every page load and had no visual effect (opacity 0.18
+       over a missing file). Drop the photo into assets/images and put background-image back on
+       the div below when it exists. -->
+  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"></div>
   <div class="blueprint page-hero-grid absolute inset-0 z-0"></div>
   <div class="absolute top-[104px] left-12 w-20 h-20 border-t-2 border-l-2 border-gold/40 z-10"></div>
   <div class="absolute bottom-6 right-12 w-20 h-20 border-b-2 border-r-2 border-gold/40 z-10"></div>
@@ -468,7 +473,7 @@
   <div class="relative z-10 max-w-[1200px] mx-auto px-4 md:px-12 pt-16 pb-12 grid grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
     <div>
       <a href="index.html" class="flex items-center no-underline mb-5">
-        <img src="assets/images/Logo-Dark.svg" alt="EURL ETB Achouri Toufik" style="height:88px;">
+        <img src="assets/images/Logo-Horizontal-Dark.png" alt="EURL ETB Achouri Toufik" style="height:88px;">
       </a>
       <p class="text-[13px] text-white/50 leading-[1.7] max-w-[280px] mb-7" data-i18n="footer.tagline">Building tomorrow's landmarks with precision, integrity, and an unwavering commitment to quality craftsmanship since 2009.</p>
       <ul class="list-none p-0 m-0 flex flex-col gap-3">
