@@ -25,7 +25,17 @@
       "#mainbar .lang-compact-btn{min-height:44px}" +
       "#mainbar .hamburger{grid-column:3;grid-row:1;justify-self:end;min-width:44px;min-height:44px;align-items:center;justify-content:center}" +
     "}" +
-    "@media(max-width:1023px) and (min-width:769px){.nav-desktop{gap:12px !important}}" +
+    // Desktop nav: below 1200px the EN/FR labels do not fit at the default 36px gap (they wrap
+    // onto two lines and squeeze the logo; measured with FR, the binding language: the FR row
+    // still wraps up to 1159px on index.html and 1139px on about.html), so the whole 769-1199
+    // band keeps a 12px gap; 769-920px measured as needing more still gets 4px between links,
+    // 12px links and a 12px nav-to-switcher gap. Twin of the inline <style> in index.html.
+    "@media(max-width:1199px) and (min-width:769px){.nav-desktop{gap:12px !important}}" +
+    "@media(max-width:920px) and (min-width:769px){" +
+      ".nav-desktop{gap:4px !important}" +
+      ".nav-desktop .nav-link{font-size:12px;letter-spacing:.5px}" +
+      "#mainbar>div{gap:12px !important}" +
+    "}" +
     "html[dir=rtl] #hero-content{margin-left:0 !important;margin-right:0}" +
     "@media(min-width:768px){html[dir=rtl] #hero-content{margin-right:48px !important}}" +
     "@media(min-width:1024px){html[dir=rtl] #hero-content{margin-right:96px !important}}" +
