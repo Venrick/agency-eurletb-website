@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer-core');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
+const execFileSync = require('child_process').execFileSync;
 
 const EDGE_PATH = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
 const ROOT_DIR = path.resolve(__dirname, '..');
@@ -104,6 +105,337 @@ function staticSourceChecks() {
     FORBIDDEN_CONTACT.forEach(function (bad) {
       if (src.indexOf(bad) >= 0) issues.push(f + ': forbidden contact string still present: "' + bad + '"');
     });
+  });
+  return issues;
+}
+
+/* ── Every local asset reference must resolve to a real file, with the exact case ──────────
+   The DOM sweep above only sees <img> elements at runtime, and only in a page that is already
+   loaded. This pass reads all 13 pages as *text* and resolves every local reference they make:
+   <img src> and <img data-src>, <script src>, <link href> for icon / apple-touch-icon /
+   stylesheet / preload, <source src>, <video src> and <video poster>, the other media tags'
+   src, url(...) inside an inline style attribute, url(...) inside a <style> block, and the
+   og:image / twitter:image content.
+   Existence alone is not enough: Windows matches file names case-insensitively, so a page that
+   asks for "assets/Images/Logo-Dark.png" renders fine here and 404s on any case-sensitive host
+   (Linux, most CDNs). Every reference is therefore compared case-sensitively and a case mismatch
+   is its own failure, naming the file that is really on disk.
+   There is NO exceptions list. Absolute URLs (http(s)://, //), data:, mailto:, tel:, javascript:,
+   blob:, about: and "#..." fragments are not local paths and are out of scope by definition.
+   A reference to a file that exists on disk but is not in the git index is reported as well:
+   the worktree serves it, a fresh clone or a deploy from git would 404 it. */
+function staticAssetChecks() {
+  const issues = [];
+  const exact = new Set();      /* relative paths as spelled on disk */
+  const byLower = new Map();    /* lower-cased path -> the case-correct one */
+  (function walk(dir) {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(function (e) {
+      if (e.name === '.git' || e.name === 'node_modules') return;
+      const abs = path.join(dir, e.name);
+      const rel = path.relative(ROOT_DIR, abs).split(path.sep).join('/');
+      if (e.isDirectory()) walk(abs);
+      else {
+        exact.add(rel);
+        if (!byLower.has(rel.toLowerCase())) byLower.set(rel.toLowerCase(), rel);
+      }
+    });
+  })(ROOT_DIR);
+
+  /* Index contents, NUL-separated so git never escapes the non-ASCII names
+     ("assets/Politique Qualité …pdf"). A missing git is not a failure — the check is skipped. */
+  let staged = null;
+  try {
+    staged = new Set(execFileSync('git', ['ls-files', '-z'], { cwd: ROOT_DIR, maxBuffer: 1 << 26 })
+      .toString('utf8').split('\u0000').filter(Boolean));
+  } catch (e) { staged = null; }
+
+  const OUT_OF_SCOPE = /^(\/\/|https?:|data:|mailto:|tel:|javascript:|blob:|about:|#)/i;
+  const urlRx = function () { return /url\(\s*(['"]?)([^'")]*?)\1\s*\)/gi; };
+  const ATTR = function (name, tag) {
+    const m = new RegExp('\\b' + name + '\\s*=\\s*("[^"]*"|\'[^\']*\'|[^\\s>]+)', 'i').exec(tag);
+    return m ? m[1].replace(/^["']/, '').replace(/["']$/, '') : null;
+  };
+  const refs = [];
+
+  PAGES.forEach(function (page) {
+    const html = fs.readFileSync(path.join(ROOT_DIR, page), 'utf8');
+    const nl = [];
+    for (let i = 0; i < html.length; i++) if (html.charCodeAt(i) === 10) nl.push(i);
+    const lineOf = function (off) {
+      let lo = 0, hi = nl.length;
+      while (lo < hi) { const mid = (lo + hi) >> 1; if (nl[mid] < off) lo = mid + 1; else hi = mid; }
+      return lo + 1;
+    };
+    const add = function (raw, kind, off) {
+      const v = String(raw == null ? '' : raw).trim();
+      if (!v || OUT_OF_SCOPE.test(v)) return;
+      refs.push({ ref: v, kind: kind, page: page, line: lineOf(off) });
+    };
+
+    const TAG_RX = /<(img|script|link|source|video|audio|iframe|embed|track)\b([^>]*)>/gi;
+    let m;
+    while ((m = TAG_RX.exec(html))) {
+      const tag = m[1].toLowerCase(), attrs = m[2];
+      const want = [];
+      if (tag === 'img') { want.push(['src', 'img src']); want.push(['data-src', 'img data-src']); }
+      else if (tag === 'link') {
+        const rel = String(ATTR('rel', attrs) || '').toLowerCase();
+        if (!/\b(icon|apple-touch-icon|stylesheet|preload)\b/.test(rel)) continue;
+        want.push(['href', 'link[' + rel + '] href']);
+      } else if (tag === 'video') { want.push(['src', 'video src']); want.push(['poster', 'video poster']); }
+      else { want.push(['src', tag + ' src']); }
+      want.forEach(function (w) {
+        const val = ATTR(w[0], attrs);
+        if (val !== null) add(val, w[1], m.index);
+      });
+    }
+    const STYLE_ATTR_RX = /\bstyle\s*=\s*("[^"]*"|'[^']*')/gi;
+    while ((m = STYLE_ATTR_RX.exec(html))) {
+      const val = m[1].slice(1, -1), rx = urlRx();
+      let u;
+      while ((u = rx.exec(val))) add(u[2], 'inline style url()', m.index + u.index);
+    }
+    const STYLE_BLK_RX = /<style\b[^>]*>([\s\S]*?)<\/style>/gi;
+    while ((m = STYLE_BLK_RX.exec(html))) {
+      const rx = urlRx();
+      let u;
+      while ((u = rx.exec(m[1]))) add(u[2], 'stylesheet url()', m.index + u.index);
+    }
+    const META_RX = /<meta\b[^>]*>/gi;
+    while ((m = META_RX.exec(html))) {
+      const key = String(ATTR('property', m[0]) || ATTR('name', m[0]) || '').toLowerCase();
+      if (key !== 'og:image' && key !== 'twitter:image') continue;
+      const val = ATTR('content', m[0]);
+      if (val !== null) add(val, 'meta ' + key, m.index);
+    }
+  });
+
+  refs.forEach(function (r) {
+    const clean = r.ref.split('#')[0].split('?')[0];
+    if (!clean) return;
+    let rel;
+    try { rel = decodeURIComponent(clean); } catch (e) { rel = clean; }
+    rel = rel.charAt(0) === '/' ? rel.slice(1)
+      : path.posix.normalize(path.posix.join(path.posix.dirname(r.page), rel));
+    if (exact.has(rel)) r.real = rel;
+    else if (byLower.has(rel.toLowerCase())) { r.problem = 'WRONG CASE'; r.real = byLower.get(rel.toLowerCase()); }
+    else r.problem = 'MISSING';
+    if (!r.problem && staged && !staged.has(rel)) r.problem = 'NOT IN THE GIT INDEX (a fresh clone or a deploy from git would 404 it)';
+  });
+
+  /* One entry per (problem, path), so a file several pages ask for is reported once. */
+  const group = new Map();
+  refs.forEach(function (r) {
+    if (!r.problem) return;
+    const key = r.problem + ' ' + r.ref;
+    if (!group.has(key)) group.set(key, { problem: r.problem, ref: r.ref, real: r.real, where: [] });
+    const g = group.get(key);
+    if (g.where.length < 4) g.where.push(r.page + ':' + r.line + ' (' + r.kind + ')');
+  });
+  group.forEach(function (g) {
+    issues.push('asset reference ' + g.ref + ': ' + g.problem +
+      (g.real && g.real !== g.ref ? ' — the file on disk is "' + g.real + '"' : '') +
+      '; referenced by ' + g.where.join(', '));
+  });
+  return issues;
+}
+
+/* ── Header/nav layout sweep ──────────────────────────────────────────────────────────
+   Between the mobile breakpoint (768) and the full desktop header the nav is squeezed, and the
+   bands that keep it on a single row are hand-tuned in each page's CSS. The suite therefore pins
+   the widths that straddle those bands: 800 and 900 (inside the tightened 769..920 band), 1024
+   (mid band), 1140 (the width at which the FR row still wrapped before the band was extended),
+   1199 (the last width of the tightened band) and 1210 (the first width that uses the default
+   spacing), on the three pages that carry the canonical header, in all three languages, because
+   the nav labels are translated and FR is the widest of the three. At 768 the same page is then
+   probed the way a visitor uses it: hamburger visible, desktop nav hidden, one real click opens
+   the drawer, a second one closes it. */
+const HEADER_PAGES = ['index.html', 'about.html', 'contact.html'];
+const HEADER_WIDTHS = [800, 900, 1024, 1140, 1199, 1210];
+
+/* Runs inside the page; every value is read from the live layout, nothing is assumed. */
+function headerMetrics() {
+  const out = {};
+  const mb = document.getElementById('mainbar');
+  const mbRect = mb.getBoundingClientRect();
+  out.overflowDoc = document.documentElement.scrollWidth - window.innerWidth;
+  out.overflowBody = document.body.scrollWidth - window.innerWidth;
+  /* The header shells (logo / nav / switcher) share the 110px bar: one that grows, or that stops
+     being vertically centred, means the row wrapped or an item was pushed onto a second line. */
+  const shell = Array.prototype.slice.call(mb.children).filter(k => k.getBoundingClientRect().width > 0);
+  out.shellHeights = shell.map(k => +k.getBoundingClientRect().height.toFixed(1));
+  out.shellSpreads = shell.map(k => {
+    const r = k.getBoundingClientRect();
+    return +Math.abs((r.top + r.height / 2) - (mbRect.top + mbRect.height / 2)).toFixed(1);
+  });
+  const logoImgs = Array.prototype.slice.call(mb.querySelectorAll('a img'));
+  const vis = logoImgs.filter(i => getComputedStyle(i).display !== 'none' && i.getBoundingClientRect().width > 0);
+  out.logoVisible = vis.length;
+  if (vis.length === 1) {
+    const i = vis[0], r = i.getBoundingClientRect();
+    /* Squeeze = how much narrower the logo is than its own aspect ratio allows, i.e. how hard
+       flex is compressing it. */
+    out.logoSqueeze = +((r.height * (i.naturalWidth / i.naturalHeight)) - r.width).toFixed(1);
+    out.logoH = +r.height.toFixed(1);
+  }
+  const nav = document.querySelector('#mainbar .nav-desktop');
+  const links = Array.prototype.slice.call(document.querySelectorAll('#mainbar .nav-desktop > li > a'));
+  const lis = Array.prototype.slice.call(document.querySelectorAll('#mainbar .nav-desktop > li'));
+  out.navDisplay = nav ? getComputedStyle(nav).display : null;
+  out.navScrollOverflow = nav ? (nav.scrollWidth - nav.clientWidth) : null;
+  out.linkCount = links.length;
+  const hs = links.map(a => a.getBoundingClientRect().height);
+  out.linkH = hs.length ? [+Math.min.apply(null, hs).toFixed(1), +Math.max.apply(null, hs).toFixed(1)] : [];
+  out.linksWrapped = hs.length ? (Math.max.apply(null, hs) - Math.min.apply(null, hs) > 3) : null;
+  out.navRows = new Set(lis.map(li => Math.round(li.getBoundingClientRect().top))).size;
+  const swBtn = document.querySelector('#mainbar .lang-btn');
+  const sw = swBtn && swBtn.closest('div');
+  const ham = document.getElementById('hamburger');
+  const drawer = document.getElementById('nav-drawer');
+  const compact = mb.querySelector('.lang-compact');
+  out.swDisplay = sw ? getComputedStyle(sw).display : null;
+  out.hamDisplay = ham ? getComputedStyle(ham).display : null;
+  out.drawerDisplay = drawer ? getComputedStyle(drawer).display : null;
+  out.compactDisplay = compact ? getComputedStyle(compact).display : null;
+  /* Overlap is measured as a real gap between boxes (max of the two left edges minus min of the
+     two right edges) instead of a subtraction, which would flip sign under RTL. */
+  const gap = (a, b) => +Math.max(a.l, b.l) - Math.min(a.r, b.r);
+  const rect = el => { const r = el.getBoundingClientRect(); return { l: +r.left.toFixed(1), r: +r.right.toFixed(1) }; };
+  out.gapLogoNav = (vis.length === 1 && nav) ? +gap(rect(vis[0].closest('a')), rect(nav)).toFixed(1) : null;
+  out.gapNavSwitch = (nav && sw) ? +gap(rect(nav), rect(sw)).toFixed(1) : null;
+  return out;
+}
+
+/* Verdict for one measured width. The thresholds describe the layout, not the fix: at most 1px of
+   horizontal overflow (sub-pixel rounding), exactly one visible logo at its natural 72px height
+   and unsqueezed, a flex nav that is one row of seven unwrapped links, no hamburger / drawer /
+   compact switcher, and no negative gap between logo, nav and switcher. */
+function headerIssues(w, m) {
+  const bad = [];
+  const push = s => bad.push(w + 'px: ' + s);
+  if (m.overflowDoc > 1 || m.overflowBody > 1) push('horizontal overflow (document +' + m.overflowDoc + 'px, body +' + m.overflowBody + 'px)');
+  if (m.logoVisible !== 1) push(m.logoVisible + ' logo images visible, expected exactly 1');
+  if (m.logoSqueeze > 1) push('logo squeezed by ' + m.logoSqueeze + 'px');
+  if (m.logoH !== 72) push('logo is ' + m.logoH + 'px tall, expected 72px');
+  if (m.navDisplay !== 'flex') push('desktop nav display is ' + m.navDisplay);
+  if (m.navScrollOverflow > 1) push('nav overflows its own box by ' + m.navScrollOverflow + 'px');
+  if (m.navRows !== 1) push('nav links sit on ' + m.navRows + ' rows');
+  if (m.linkCount !== 7) push(m.linkCount + ' nav links, expected 7');
+  if (m.linksWrapped) push('nav links wrapped (heights ' + JSON.stringify(m.linkH) + ')');
+  if (m.hamDisplay !== 'none') push('hamburger visible (' + m.hamDisplay + ')');
+  if (m.drawerDisplay !== 'none') push('drawer visible (' + m.drawerDisplay + ')');
+  if (m.swDisplay !== 'flex') push('language switcher display is ' + m.swDisplay);
+  if (m.compactDisplay !== 'none') push('compact switcher visible (' + m.compactDisplay + ')');
+  if (m.gapLogoNav !== null && m.gapLogoNav < 0) push('logo and nav overlap by ' + (-m.gapLogoNav) + 'px');
+  if (m.gapNavSwitch !== null && m.gapNavSwitch < 0) push('nav and language switcher overlap by ' + (-m.gapNavSwitch) + 'px');
+  m.shellHeights.forEach((h, i) => { if (h > 104) push('header item ' + i + ' is ' + h + 'px tall (the bar content box is 107px)'); });
+  m.shellSpreads.forEach((sp, i) => { if (sp > 6) push('header item ' + i + ' is ' + sp + 'px off the bar centre'); });
+  return bad;
+}
+
+/* One (page, lang) case: load once, re-measure at every pinned width, then probe the 768 band. */
+async function headerSweepCase(browser, pFile, lang) {
+  const issues = [];
+  const page = await browser.newPage();
+  await page.setRequestInterception(true);
+  page.on('request', req => {
+    const u = req.url();
+    if (u.indexOf('videos.pexels.com') !== -1 || /\.(mp4|webm)(\?|$)/i.test(u)) req.abort(); else req.continue();
+  });
+  try {
+    await page.setViewport({ width: 1440, height: 900 });
+    await page.goto(BASE_URL + pFile + '?lang=' + lang, { waitUntil: 'networkidle0', timeout: 40000 });
+    await page.evaluate(() => document.fonts.ready);
+    await new Promise(r => setTimeout(r, 400));
+    for (const w of HEADER_WIDTHS) {
+      await page.setViewport({ width: w, height: 900 });
+      await new Promise(r => setTimeout(r, 120));
+      const m = await page.evaluate(headerMetrics);
+      headerIssues(w, m).forEach(s => issues.push(s));
+    }
+    /* Mobile band (768 = the widest mobile width): the same page must fall back to the drawer.
+       The hamburger listener is attached at the end of each page's main script, i.e. after the
+       GSAP/ScrollTrigger CDNs, so a click sent before that is simply lost; wait for readiness and
+       then click, with one retry so a slow CDN is not reported as a broken drawer. */
+    await page.setViewport({ width: 768, height: 900 });
+    await page.waitForFunction(() => document.readyState === 'complete' &&
+      typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined', { timeout: 15000 })
+      .catch(() => {});
+    await new Promise(r => setTimeout(r, 400));
+    const snap = () => page.evaluate(() => {
+      const dr = document.getElementById('nav-drawer'), ham = document.getElementById('hamburger');
+      const nav = document.querySelector('#mainbar .nav-desktop');
+      return {
+        hamDisplay: getComputedStyle(ham).display,
+        navDisplay: getComputedStyle(nav).display,
+        drawerOpen: dr.classList.contains('open'),
+        drawerH: +dr.getBoundingClientRect().height.toFixed(1),
+        visibleLinks: Array.prototype.filter.call(dr.querySelectorAll('a'), a => a.getBoundingClientRect().height > 0).length
+      };
+    });
+    const closed = await snap();
+    if (closed.hamDisplay !== 'flex') issues.push('768px: hamburger display is ' + closed.hamDisplay);
+    if (closed.navDisplay !== 'none') issues.push('768px: desktop nav still visible (' + closed.navDisplay + ')');
+    if (closed.drawerOpen || closed.drawerH !== 0) issues.push('768px: drawer already open before any click (' + JSON.stringify(closed) + ')');
+    let opened = null;
+    for (let i = 0; i < 2; i++) {
+      await page.click('#hamburger');
+      await new Promise(r => setTimeout(r, 600));
+      opened = await snap();
+      if (opened.drawerOpen && opened.drawerH > 0) break;
+    }
+    if (!opened.drawerOpen || opened.drawerH === 0) issues.push('768px: a click on the hamburger did not open the drawer (' + JSON.stringify(opened) + ')');
+    else if (opened.visibleLinks !== 7) issues.push('768px: the open drawer shows ' + opened.visibleLinks + ' links, expected 7');
+    await page.click('#hamburger');
+    await new Promise(r => setTimeout(r, 600));
+    const reclosed = await snap();
+    if (reclosed.drawerOpen || reclosed.drawerH !== 0) issues.push('768px: a second click did not close the drawer (' + JSON.stringify(reclosed) + ')');
+  } catch (e) {
+    issues.push(e.message);
+  }
+  await page.close();
+  return issues;
+}
+
+/* ── Guard: page links created by script ──────────────────────────────────────────────
+   The ?lang= rewriter walks document.querySelectorAll('a[href]') inside applyI18n, so it covers
+   every anchor that is in the DOM when it runs - including anchors inside containers that are
+   hidden and filled later (the project modal, the nav drawer) - and it runs again on every
+   language switch. It cannot cover an anchor that a page script creates while that switch is
+   running, because projects.html rebuilds its cards from a MutationObserver on <html lang>, which
+   fires after applyI18n has already returned. Nothing does that today: the project cards are built
+   by script but contain no anchor (the card div itself is clickable), and the only anchors a page
+   script creates are Leaflet's attribution links, which spell out absolute https:// URLs and must
+   stay untouched. This scan keeps it that way: every inline <script> on every page is scanned for
+   an internal .html link that exists only in script - a template literal / innerHTML string,
+   setAttribute('href', ...), or an .href assignment - because such a link would silently lose
+   ?lang= instead of following the visitor to the next page. Build it with
+   window.i18nLinkHref(href, lang) instead, or put it in the markup. */
+function dynamicPageLinkScan() {
+  const issues = [];
+  const patterns = [
+    { rx: /<a\s[^>]*href\s*=\s*(["'])(?!#|https?:|mailto:|tel:|\/\/|javascript:)([^"']*\.html[^"']*)\1/gi, what: 'an <a href="..."> string for an internal page' },
+    { rx: /setAttribute\(\s*["']href["'][^)]*\.html/gi, what: "setAttribute('href', ...) with an internal page URL" },
+    { rx: /\.href\s*=\s*["'][^"']*\.html[^"']*["']/gi, what: '.href = "page.html"' }
+  ];
+  const SCRIPT_RX = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
+  PAGES.forEach(function (file) {
+    const html = fs.readFileSync(path.join(ROOT_DIR, file), 'utf8');
+    let m;
+    while ((m = SCRIPT_RX.exec(html))) {
+      if (/\bsrc\s*=/.test(m[1])) continue;   /* an external <script src>, not our code */
+      const startLine = html.slice(0, m.index).split('\n').length;
+      patterns.forEach(function (p) {
+        p.rx.lastIndex = 0;
+        let hit;
+        while ((hit = p.rx.exec(m[2]))) {
+          const line = startLine + m[2].slice(0, hit.index).split('\n').length - 1;
+          issues.push(file + ':' + line + ': a script builds ' + p.what + ' ("' +
+            hit[0].replace(/\s+/g, ' ').slice(0, 70) + '"), which cannot carry the ?lang= the rest of ' +
+            'the site uses — build it with window.i18nLinkHref(href, lang) or put it in the markup');
+        }
+      });
+    }
   });
   return issues;
 }
@@ -328,6 +660,112 @@ async function run() {
     await page.close();
   } catch (e) { failed.push({ page: 'lang-in-url: crawl (storage disabled)', lang: 'ar', vp: 'desktop', issues: [e.message] }); }
 
+  /* ── Header/nav layout sweep: the desktop nav on one row, with no overlap, 769..1100 ─────────
+     One case per (page, language) - see HEADER_PAGES / HEADER_WIDTHS above for why those four
+     widths and why FR/AR matter. Each case also probes the 768 band. */
+  for (const hPage of HEADER_PAGES) {
+    for (const hLang of LANGS) {
+      total++;
+      const where = 'header sweep ' + hPage + ' @ ' + HEADER_WIDTHS.join('/') + 'px + 768px';
+      try {
+        const issues = await headerSweepCase(browser, hPage, hLang);
+        if (issues.length === 0) passed++;
+        else failed.push({ page: where, lang: hLang, vp: '-', issues: issues });
+      } catch (e) {
+        failed.push({ page: where, lang: hLang, vp: '-', issues: [e.message] });
+      }
+    }
+  }
+
+
+  /* ── The language survives every link, including the ones a page script creates ──────────────
+     projects.html is the only page whose content is built by script: the cards (which contain no
+     anchor - the card itself is the click target), the map control (Leaflet builds its attribution
+     anchors from absolute https:// URLs, which must stay untouched) and the modal (hidden, filled
+     by script, and the home of the one internal link no visitor sees before clicking a card). The
+     rewriter runs over the whole document inside applyI18n, so a switch has to reach all of them -
+     including a link that was added to the DOM after load. */
+  total++;
+  try {
+    const issues = [];
+    const page = await browser.newPage();
+    await page.setRequestInterception(true);
+    page.on('request', req => {
+      const u = req.url();
+      if (u.indexOf('videos.pexels.com') !== -1 || /\.(mp4|webm)(\?|$)/i.test(u)) req.abort(); else req.continue();
+    });
+    await page.setViewport({ width: 1440, height: 900 });
+    await page.goto(BASE_URL + 'projects.html?lang=ar', { waitUntil: 'networkidle0', timeout: 40000 });
+    await page.evaluate(() => document.fonts.ready);
+    await new Promise(r => setTimeout(r, 600));   /* the cards and the map are built after load */
+
+    const counts = await page.evaluate(() => ({
+      cards: document.querySelectorAll('#project-grid .project-card').length,
+      data: typeof projectData !== 'undefined' ? Object.keys(projectData).length : -1
+    }));
+    if (counts.cards < 1 || (counts.data > 0 && counts.cards !== counts.data)) {
+      issues.push('projects.html shows ' + counts.cards + ' project cards for ' + counts.data + ' entries in projectData');
+    }
+
+    await page.evaluate(() => { const c = document.querySelector('#project-grid .project-card'); if (c) c.click(); });
+    await new Promise(r => setTimeout(r, 400));
+    const modalCta = () => page.evaluate(() => {
+      const a = document.querySelector('#modal-box a[href]');
+      return a ? a.getAttribute('href') : null;
+    });
+    const arHref = await modalCta();
+    if (arHref !== 'contact.html?lang=ar') issues.push('the modal CTA reads "' + arHref + '" on load in AR, expected "contact.html?lang=ar" (the modal is hidden and filled by script, but its link is in the markup and must be rewritten)');
+
+
+    /* A link added to the DOM after load must be picked up by the next switch as well: this stands
+       in for a script-built anchor and pins the scope of the rewriter. */
+    await page.evaluate(() => {
+      const mk = (id, href) => { const a = document.createElement('a'); a.id = id; a.setAttribute('href', href); a.textContent = 'probe'; document.body.appendChild(a); };
+      mk('sweep-probe-internal', 'contact.html#form');
+      mk('sweep-probe-external', 'https://example.com/other.html');
+    });
+    const switched = await page.evaluate(() => {
+      const btn = document.querySelector('.lang-btn[data-lang="fr"]');
+      if (!btn) return false;
+      btn.click();
+      return true;
+    });
+    if (!switched) issues.push('the header has no .lang-btn[data-lang="fr"], so the switch could not be exercised');
+    await new Promise(r => setTimeout(r, 700));
+
+    const frHref = await modalCta();
+    if (frHref !== 'contact.html?lang=fr') issues.push('after the switch to FR the modal CTA reads "' + frHref + '", expected "contact.html?lang=fr"');
+    const probes = await page.evaluate(() => {
+      const g = id => { const el = document.getElementById(id); return el ? el.getAttribute('href') : '(missing)'; };
+      return { internal: g('sweep-probe-internal'), external: g('sweep-probe-external') };
+    });
+    if (probes.internal !== 'contact.html?lang=fr#form') issues.push('a link added after load kept "' + probes.internal + '" through the switch to FR, expected "contact.html?lang=fr#form" (the language goes before the #hash)');
+    if (probes.external !== 'https://example.com/other.html') issues.push('the rewriter touched an external link: "' + probes.external + '"');
+
+    /* Only the two probes are exempt: every other internal link on the page - nav, drawer, footer,
+       the card CTAs and the modal - must have followed the switch. */
+    const stray = await page.evaluate(() => {
+      const bad = [];
+      document.querySelectorAll('a[href]').forEach(a => {
+        if (a.id.indexOf('sweep-probe') === 0) return;
+        const raw = a.getAttribute('href');
+        const bare = raw.split('#')[0].split('?')[0];
+        if (raw.charAt(0) === '#' || raw.indexOf(':') >= 0 || raw.indexOf('//') === 0 || !/\.html$/i.test(bare)) return;
+        const got = /(?:[?&])lang=([^&#]*)/.exec(raw);
+        if (!got || got[1] !== 'fr') bad.push(raw + (got ? ' (lang=' + got[1] + ')' : ' (no lang)'));
+      });
+      return bad;
+    });
+    stray.forEach(s => issues.push('internal link left in AR after the switch to FR: ' + s));
+
+    await page.close();
+    if (issues.length === 0) passed++;
+    else failed.push({ page: 'script-built and hidden links', lang: 'ar -> fr', vp: 'desktop', issues: issues });
+  } catch (e) {
+    failed.push({ page: 'script-built and hidden links', lang: 'ar -> fr', vp: 'desktop', issues: [e.message] });
+  }
+
+
   await browser.close();
   server.close();
 
@@ -341,6 +779,29 @@ async function run() {
   } catch (e) {
     failed.push({ page: 'source scan', lang: '-', vp: '-', issues: [e.message] });
   }
+
+  // Static scan of every local asset reference on all 13 pages (see staticAssetChecks): each one
+  // must resolve to a file that exists on disk with exactly the case the page spells out.
+  total++;
+  try {
+    const assetIssues = staticAssetChecks();
+    if (assetIssues.length === 0) passed++;
+    else failed.push({ page: 'asset refs scan', lang: '-', vp: '-', issues: assetIssues });
+  } catch (e) {
+    failed.push({ page: 'asset refs scan', lang: '-', vp: '-', issues: [e.message] });
+  }
+  // Static scan of the inline scripts of all 13 pages (see dynamicPageLinkScan): a script that
+  // spells out an internal .html link would silently drop ?lang= on the next language switch.
+  total++;
+  try {
+    const linkIssues = dynamicPageLinkScan();
+    if (linkIssues.length === 0) passed++;
+    else failed.push({ page: 'script-built links scan', lang: '-', vp: '-', issues: linkIssues });
+  } catch (e) {
+    failed.push({ page: 'script-built links scan', lang: '-', vp: '-', issues: [e.message] });
+  }
+
+
 
   console.log(`\n=== SUMMARY ===\nTotal: ${total}, Passed: ${passed}, Failed: ${failed.length}`);
   if (failed.length) failed.forEach(f => console.log(`  FAIL: ${f.page} ${f.lang} ${f.vp} -> ${f.issues.join('; ')}`));
@@ -866,6 +1327,58 @@ async function checkPage(vpName, lang) {
     });
   }
   
+  /* ── Every <img> in the DOM must really load ────────────────────────────────
+     A wrong asset path fails silently: the request 404s, naturalWidth stays 0 and the page
+     quietly renders the alt text instead of the picture. There is NO exceptions list here, so
+     every <img> in the document is judged — including the ones the responsive classes hide
+     (display:none still fetches eagerly) and the lazy ones below the fold. A lazy image is not
+     requested until it scrolls near the viewport, so those are scrolled into view and switched
+     to loading="eager" first, and an image is only reported if it still has no pixels after that
+     bounded wait. Anything still unresolved is named by src, so the list doubles as the audit. */
+  const images = Array.prototype.slice.call(document.images);
+  const imgOk = function (i) { return i.complete && i.naturalWidth > 0; };
+  const sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  const waitImg = function (i, ms) {
+    return new Promise(function (res) {
+      if (i.complete) return res();
+      const done = function () { clearTimeout(t); i.removeEventListener('load', done); i.removeEventListener('error', done); res(); };
+      const t = setTimeout(done, ms);
+      i.addEventListener('load', done);
+      i.addEventListener('error', done);
+    });
+  };
+  /* listeners first, then trigger the fetch, so a fast 404 is not missed */
+  const triggerImg = function (i, ms) {
+    return new Promise(function (res) {
+      const done = function () { clearTimeout(t); i.removeEventListener('load', done); i.removeEventListener('error', done); res(); };
+      const t = setTimeout(done, ms);
+      i.addEventListener('load', done);
+      i.addEventListener('error', done);
+      if (i.getAttribute('loading') === 'lazy') i.setAttribute('loading', 'eager');
+      i.scrollIntoView({ block: 'center' });
+      if (imgOk(i)) done();
+    });
+  };
+  const inFlight = images.filter(function (i) { return !imgOk(i) && !i.complete; });
+  if (inFlight.length) await Promise.race([Promise.all(inFlight.map(function (i) { return waitImg(i, 4000); })), sleep(4000)]);
+  for (const img of images.filter(function (i) { return !imgOk(i); })) {
+    /* This site's own lazy pattern: createSlideshow() parks each slide's URL in data-src until
+       the slide becomes current/next. Promote it the way the page itself would, so a broken
+       slide URL is still caught — only the promotion differs, never the assertion. */
+    if (img.hasAttribute('data-src')) img.setAttribute('src', img.getAttribute('data-src'));
+    if (img.getAttribute('loading') === 'lazy') await triggerImg(img, 2000);
+    else if (!img.complete) await waitImg(img, 1500);
+  }
+  images.filter(function (i) { return !imgOk(i); }).forEach(function (i) {
+    const ident = ' [' + i.tagName.toLowerCase() + (i.id ? '#' + i.id : '') +
+      (typeof i.className === 'string' && i.className.trim() ? '.' + i.className.trim().split(/\s+/).join('.') : '') + ']';
+    issues.push('image not loaded: ' + (i.getAttribute('src') || i.currentSrc || '(no src attribute)') + ident +
+      (i.hasAttribute('data-src') ? ' (data-src="' + i.getAttribute('data-src') + '" not promoted)' : '') +
+      ' (naturalSize ' + i.naturalWidth + 'x' + i.naturalHeight + ', complete=' + i.complete +
+      ', display=' + getComputedStyle(i).display + ', loading=' + (i.getAttribute('loading') || 'eager') +
+      ', alt="' + (i.getAttribute('alt') || '') + '")');
+  });
+
   return issues;
 }
 
