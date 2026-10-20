@@ -422,18 +422,31 @@ async function headerSweepCase(browser, pFile, lang) {
     if (closed.hamDisplay !== 'flex') issues.push('768px: hamburger display is ' + closed.hamDisplay);
     if (closed.navDisplay !== 'none') issues.push('768px: desktop nav still visible (' + closed.navDisplay + ')');
     if (closed.drawerOpen || closed.drawerH !== 0) issues.push('768px: drawer already open before any click (' + JSON.stringify(closed) + ')');
+    /* .nav-drawer animates max-height over .35s, so any fixed sleep after the click races the
+       transition: it reported "did not close" on 4 consecutive runs with drawerOpen already false
+       and the height still 233px / 58px, i.e. sampled mid-animation, not a layout bug. Poll for
+       the state the click must produce instead — same assertion, bounded, and it still reports the
+       snapshot when the state never arrives. */
+    const waitDrawer = async (wantOpen, ms) => {
+      const until = Date.now() + ms;
+      let s = await snap();
+      while (Date.now() < until) {
+        if (s.drawerOpen === wantOpen && (wantOpen ? s.drawerH > 0 : s.drawerH === 0)) return s;
+        await new Promise(r => setTimeout(r, 50));
+        s = await snap();
+      }
+      return s;
+    };
     let opened = null;
     for (let i = 0; i < 2; i++) {
       await page.click('#hamburger');
-      await new Promise(r => setTimeout(r, 600));
-      opened = await snap();
+      opened = await waitDrawer(true, 2500);
       if (opened.drawerOpen && opened.drawerH > 0) break;
     }
     if (!opened.drawerOpen || opened.drawerH === 0) issues.push('768px: a click on the hamburger did not open the drawer (' + JSON.stringify(opened) + ')');
     else if (opened.visibleLinks !== 7) issues.push('768px: the open drawer shows ' + opened.visibleLinks + ' links, expected 7');
     await page.click('#hamburger');
-    await new Promise(r => setTimeout(r, 600));
-    const reclosed = await snap();
+    const reclosed = await waitDrawer(false, 2500);
     if (reclosed.drawerOpen || reclosed.drawerH !== 0) issues.push('768px: a second click did not close the drawer (' + JSON.stringify(reclosed) + ')');
   } catch (e) {
     issues.push(e.message);
