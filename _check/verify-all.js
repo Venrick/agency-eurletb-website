@@ -526,8 +526,13 @@ async function run() {
           // for both (dir is not in the source markup) also means the hrefs below are final.
           await page.waitForFunction((l) => document.documentElement.getAttribute('lang') === l && document.documentElement.getAttribute('dir') !== null, { timeout: 5000 }, lang);
           const res = await page.evaluate(checkPage, vp.name, lang);
-          if (res.length === 0) passed++;
-          else failed.push({ page: pFile, lang, vp: vp.name, issues: res });
+          /* Image loading is asserted separately: assertImages is a self-contained page function
+             so the local-asset test can drive it on its own. It runs on this same loaded page,
+             right after checkPage, so every page/language/viewport case is judged as before. */
+          const imgIssues = await page.evaluate(assertImages, { retryRemote: true });
+          const all = res.concat(imgIssues);
+          if (all.length === 0) passed++;
+          else failed.push({ page: pFile, lang, vp: vp.name, issues: all });
         } catch (e) {
           failed.push({ page: pFile, lang, vp: vp.name, issues: [e.message] });
         } finally {
@@ -824,6 +829,72 @@ async function run() {
   }
 
 
+  /* ── A missing LOCAL asset still fails immediately, with no retry ─────────────────────────
+     assertImages hands remote images one retry, so this pins the other half of that bargain.
+     A local file that is not there is a fact about this repository: it must be reported on the
+     first pass, labelled as a local failure (never "remote image"), and assertImages must return
+     long before the 1200ms remote-retry pause could have elapsed. Every real image on the page is
+     settled and scrolled into view first, so the only thing left in flight when the probe runs is
+     the probe itself — the measured time is the assertion's own cost, not leftover page loading. */
+  total++;
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1440, height: 900 });
+    await page.goto(BASE_URL + 'index.html?lang=en', { waitUntil: 'networkidle0', timeout: 30000 });
+    const settled = await page.evaluate(async function () {
+      const all = function () { return Array.prototype.slice.call(document.images); };
+      const waitFor = async function (ms) {
+        const until = Date.now() + ms;
+        while (Date.now() < until) {
+          if (all().every(function (i) { return i.complete; })) return true;
+          await new Promise(function (r) { setTimeout(r, 100); });
+        }
+        return all().every(function (i) { return i.complete; });
+      };
+      all().forEach(function (i) {
+        if (i.getAttribute('loading') === 'lazy') i.setAttribute('loading', 'eager');
+        i.scrollIntoView({ block: 'center' });
+      });
+      window.scrollTo(0, 0);
+      return waitFor(15000);
+    });
+    const missing = 'assets/images/__local-asset-that-is-not-there__.png';
+    await page.evaluate(function (src) {
+      const img = document.createElement('img');
+      img.id = 'missing-local-probe';
+      img.setAttribute('alt', 'missing local asset probe');
+      img.setAttribute('src', src);
+      document.body.appendChild(img);
+    }, missing);
+    const t0 = Date.now();
+    const imgIssues = await page.evaluate(assertImages, { retryRemote: true });
+    const elapsed = Date.now() - t0;
+    const issues = [];
+    if (!settled) issues.push('probe setup: the page\'s own images had not all settled, so the timing below is not meaningful');
+    const mine = imgIssues.filter(function (s) { return s.indexOf(missing) >= 0; });
+    const others = imgIssues.filter(function (s) { return s.indexOf(missing) < 0; });
+    if (mine.length !== 1) {
+      issues.push('expected exactly one report for the missing local file ' + missing + ', got ' + mine.length + ' — all reports: ' + JSON.stringify(imgIssues));
+    } else {
+      if (mine[0].indexOf('image not loaded:') !== 0) issues.push('a missing local file is not reported as "image not loaded": ' + mine[0]);
+      if (/remote image/.test(mine[0])) issues.push('a missing local file is labelled as a remote image: ' + mine[0]);
+      if (/retry/i.test(mine[0])) issues.push('a missing local file went through the remote retry path: ' + mine[0]);
+    }
+    /* One remote retry costs at least the 1200ms pause before the request is even repeated; a
+       local 404 settles on the first pass. Half that budget is already generous headroom. The
+       timing is only meaningful when the probe is the only thing that failed: if another image on
+       the page failed remotely, the retry pass ran for it and the total is no longer the probe's
+       own cost — that other failure is reported by the page sweep anyway. */
+    if (!others.length && elapsed >= 600) {
+      issues.push('a missing local image took ' + elapsed + 'ms to be reported, which means it was retried like a remote one');
+    }
+    if (issues.length) failed.push({ page: 'local asset failure', lang: 'en', vp: 'desktop', issues: issues });
+    else passed++;
+    await page.close();
+  } catch (e) {
+    failed.push({ page: 'local asset failure', lang: 'en', vp: 'desktop', issues: [e.message] });
+  }
+
   await browser.close();
   server.close();
 
@@ -864,6 +935,119 @@ async function run() {
   console.log(`\n=== SUMMARY ===\nTotal: ${total}, Passed: ${passed}, Failed: ${failed.length}`);
   if (failed.length) failed.forEach(f => console.log(`  FAIL: ${f.page} ${f.lang} ${f.vp} -> ${f.issues.join('; ')}`));
   else console.log('ALL CHECKS PASSED');
+}
+/* ── Every <img> in the DOM must really load ────────────────────────────────────────────────
+   A wrong asset path fails silently: the request 404s, naturalWidth stays 0 and the page quietly
+   renders the alt text instead of the picture. There is NO exceptions list here, so every <img>
+   in the document is judged — including the ones the responsive classes hide (display:none still
+   fetches eagerly) and the lazy ones below the fold. A lazy image is not requested until it
+   scrolls near the viewport, so those are scrolled into view and switched to loading="eager"
+   first, and an image is only reported if it still has no pixels after that bounded wait.
+   Anything still unresolved is named by src, so the list doubles as the audit.
+
+   The two failure modes are not the same risk, so they are not handled the same way:
+   - a LOCAL file that is missing is a fact about this repository: it is reported on the first
+     pass, immediately, and never retried.
+   - a REMOTE image (http(s):// or //) can fail because a third-party CDN hiccuped for a second.
+     Two Unsplash photos on index.html once came back 0x0 in one run and loaded in the next, with
+     nothing in the code to fix. Those get exactly one retry after RETRY_WAIT_MS, and the failure
+     is labelled "remote image" so the two cases can never be confused in the report.
+
+   This function is handed straight to page.evaluate, so it must stay self-contained — no
+   reference to anything outside its own body. It also lives outside checkPage because the
+   local-asset test drives it on its own. */
+async function assertImages(opts) {
+  const cfg = opts || {};
+  const retryRemote = cfg.retryRemote !== false;
+  const RETRY_WAIT_MS = 1200;   /* pause before the single remote retry */
+  const RETRY_LOAD_MS = 6000;   /* how long the retried request may take */
+  const issues = [];
+
+  const isRemote = function (u) { return /^(\/\/|https?:\/\/)/i.test(String(u || '').trim()); };
+  const srcOf = function (i) { return i.getAttribute('src') || i.currentSrc || ''; };
+  const imgOk = function (i) { return i.complete && i.naturalWidth > 0; };
+  const sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  const waitImg = function (i, ms) {
+    return new Promise(function (res) {
+      if (i.complete) return res();
+      const done = function () { clearTimeout(t); i.removeEventListener('load', done); i.removeEventListener('error', done); res(); };
+      const t = setTimeout(done, ms);
+      i.addEventListener('load', done);
+      i.addEventListener('error', done);
+    });
+  };
+  /* listeners first, then trigger the fetch, so a fast 404 is not missed */
+  const triggerImg = function (i, ms) {
+    return new Promise(function (res) {
+      const done = function () { clearTimeout(t); i.removeEventListener('load', done); i.removeEventListener('error', done); res(); };
+      const t = setTimeout(done, ms);
+      i.addEventListener('load', done);
+      i.addEventListener('error', done);
+      if (i.getAttribute('loading') === 'lazy') i.setAttribute('loading', 'eager');
+      i.scrollIntoView({ block: 'center' });
+      if (imgOk(i)) done();
+    });
+  };
+
+
+  /* A retry has to be a fresh request: dropping and re-setting src makes the browser refetch the
+     same URL (a failed load is not a cacheable success). Bounded, and it cannot resolve before
+     the new request settles unless pixels actually arrive. */
+  const reloadImg = function (i) {
+    return new Promise(function (res) {
+      const src = i.getAttribute('src');
+      let t, quick;
+      const done = function () {
+        clearTimeout(t); clearTimeout(quick);
+        i.removeEventListener('load', done); i.removeEventListener('error', done);
+        res();
+      };
+      i.addEventListener('load', done);
+      i.addEventListener('error', done);
+      t = setTimeout(done, RETRY_LOAD_MS);
+      quick = setTimeout(function () { if (imgOk(i)) done(); }, 60);
+      i.removeAttribute('src');
+      if (src !== null) i.setAttribute('src', src);
+    });
+  };
+
+  const images = Array.prototype.slice.call(document.images);
+  const inFlight = images.filter(function (i) { return !imgOk(i) && !i.complete; });
+  if (inFlight.length) await Promise.race([Promise.all(inFlight.map(function (i) { return waitImg(i, 4000); })), sleep(4000)]);
+  for (const img of images.filter(function (i) { return !imgOk(i); })) {
+    /* This site's own lazy pattern: createSlideshow() parks each slide's URL in data-src until
+       the slide becomes current/next. Promote it the way the page itself would, so a broken
+       slide URL is still caught — only the promotion differs, never the assertion. */
+    if (img.hasAttribute('data-src')) img.setAttribute('src', img.getAttribute('data-src'));
+    if (img.getAttribute('loading') === 'lazy') await triggerImg(img, 2000);
+    else if (!img.complete) await waitImg(img, 1500);
+  }
+
+  let remaining = images.filter(function (i) { return !imgOk(i); });
+  let retried = 0;
+  if (retryRemote) {
+    const remoteBad = remaining.filter(function (i) { return isRemote(srcOf(i)); });
+    if (remoteBad.length) {
+      await sleep(RETRY_WAIT_MS);
+      await Promise.all(remoteBad.map(function (i) { return reloadImg(i); }));
+      retried = remoteBad.length;
+      remaining = images.filter(function (i) { return !imgOk(i); });
+    }
+  }
+
+  remaining.forEach(function (i) {
+    const ident = ' [' + i.tagName.toLowerCase() + (i.id ? '#' + i.id : '') +
+      (typeof i.className === 'string' && i.className.trim() ? '.' + i.className.trim().split(/\s+/).join('.') : '') + ']';
+    const remote = isRemote(srcOf(i));
+    const label = remote ? ('remote image did not load' + (retried ? ' after 1 retry' : '')) : 'image not loaded';
+    issues.push(label + ': ' + (srcOf(i) || '(no src attribute)') + ident +
+      (i.hasAttribute('data-src') ? ' (data-src="' + i.getAttribute('data-src') + '" not promoted)' : '') +
+      ' (naturalSize ' + i.naturalWidth + 'x' + i.naturalHeight + ', complete=' + i.complete +
+      ', display=' + getComputedStyle(i).display + ', loading=' + (i.getAttribute('loading') || 'eager') +
+      ', alt="' + (i.getAttribute('alt') || '') + '")');
+  });
+
+  return issues;
 }
 
 async function checkPage(vpName, lang) {
@@ -1385,57 +1569,8 @@ async function checkPage(vpName, lang) {
     });
   }
   
-  /* ── Every <img> in the DOM must really load ────────────────────────────────
-     A wrong asset path fails silently: the request 404s, naturalWidth stays 0 and the page
-     quietly renders the alt text instead of the picture. There is NO exceptions list here, so
-     every <img> in the document is judged — including the ones the responsive classes hide
-     (display:none still fetches eagerly) and the lazy ones below the fold. A lazy image is not
-     requested until it scrolls near the viewport, so those are scrolled into view and switched
-     to loading="eager" first, and an image is only reported if it still has no pixels after that
-     bounded wait. Anything still unresolved is named by src, so the list doubles as the audit. */
-  const images = Array.prototype.slice.call(document.images);
-  const imgOk = function (i) { return i.complete && i.naturalWidth > 0; };
-  const sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
-  const waitImg = function (i, ms) {
-    return new Promise(function (res) {
-      if (i.complete) return res();
-      const done = function () { clearTimeout(t); i.removeEventListener('load', done); i.removeEventListener('error', done); res(); };
-      const t = setTimeout(done, ms);
-      i.addEventListener('load', done);
-      i.addEventListener('error', done);
-    });
-  };
-  /* listeners first, then trigger the fetch, so a fast 404 is not missed */
-  const triggerImg = function (i, ms) {
-    return new Promise(function (res) {
-      const done = function () { clearTimeout(t); i.removeEventListener('load', done); i.removeEventListener('error', done); res(); };
-      const t = setTimeout(done, ms);
-      i.addEventListener('load', done);
-      i.addEventListener('error', done);
-      if (i.getAttribute('loading') === 'lazy') i.setAttribute('loading', 'eager');
-      i.scrollIntoView({ block: 'center' });
-      if (imgOk(i)) done();
-    });
-  };
-  const inFlight = images.filter(function (i) { return !imgOk(i) && !i.complete; });
-  if (inFlight.length) await Promise.race([Promise.all(inFlight.map(function (i) { return waitImg(i, 4000); })), sleep(4000)]);
-  for (const img of images.filter(function (i) { return !imgOk(i); })) {
-    /* This site's own lazy pattern: createSlideshow() parks each slide's URL in data-src until
-       the slide becomes current/next. Promote it the way the page itself would, so a broken
-       slide URL is still caught — only the promotion differs, never the assertion. */
-    if (img.hasAttribute('data-src')) img.setAttribute('src', img.getAttribute('data-src'));
-    if (img.getAttribute('loading') === 'lazy') await triggerImg(img, 2000);
-    else if (!img.complete) await waitImg(img, 1500);
-  }
-  images.filter(function (i) { return !imgOk(i); }).forEach(function (i) {
-    const ident = ' [' + i.tagName.toLowerCase() + (i.id ? '#' + i.id : '') +
-      (typeof i.className === 'string' && i.className.trim() ? '.' + i.className.trim().split(/\s+/).join('.') : '') + ']';
-    issues.push('image not loaded: ' + (i.getAttribute('src') || i.currentSrc || '(no src attribute)') + ident +
-      (i.hasAttribute('data-src') ? ' (data-src="' + i.getAttribute('data-src') + '" not promoted)' : '') +
-      ' (naturalSize ' + i.naturalWidth + 'x' + i.naturalHeight + ', complete=' + i.complete +
-      ', display=' + getComputedStyle(i).display + ', loading=' + (i.getAttribute('loading') || 'eager') +
-      ', alt="' + (i.getAttribute('alt') || '') + '")');
-  });
+  /* Image loading is asserted by assertImages(), which run() calls on this same loaded page
+     right after checkPage, so the per-page sweep covers it exactly as before. */
 
   return issues;
 }
