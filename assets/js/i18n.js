@@ -29,7 +29,10 @@
     // onto two lines and squeeze the logo; measured with FR, the binding language: the FR row
     // still wraps up to 1159px on index.html and 1139px on about.html), so the whole 769-1199
     // band keeps a 12px gap; 769-920px measured as needing more still gets 4px between links,
-    // 12px links and a 12px nav-to-switcher gap. Twin of the inline <style> in index.html.
+    // 12px links and a 12px nav-to-switcher gap.
+    // This is the only copy of the rule. It is injected into every page's <head> when this file
+    // runs at the end of <body>, i.e. after each page's own <style>, and it carries !important on
+    // both gaps, so it also wins any tie with a page-local rule. Pages must not re-declare it.
     "@media(max-width:1199px) and (min-width:769px){.nav-desktop{gap:12px !important}}" +
     "@media(max-width:920px) and (min-width:769px){" +
       ".nav-desktop{gap:4px !important}" +

@@ -425,28 +425,6 @@
         min-height: 380px;
       }
     }
-
-    /* ── Desktop nav breathing room for the switcher (769–1199px) ──
-       The nav and the 3-button switcher share the bar with the logo. At the default 36px gap the
-       EN and FR labels no longer fit below 1200px: they wrap onto two lines and squeeze the logo.
-       Measured with FR, the binding language: at a 36px gap the FR row still wraps up to 1159px on
-       index.html and up to 1139px on about.html, so the whole 769–1199 band keeps the tighter 12px
-       gap — 1200px is the first width where the default gap is safe in all three languages. */
-    @media(max-width:1199px) and (min-width:769px) {
-      .nav-desktop { gap: 12px !important; }
-    }
-
-    /* ── Low end of that band (769–920px) ──
-       Measured: at 769px the FR row needs ~73px more than the bar has, and FR keeps overflowing
-       past 900px even at the 12px gap above, while the logo is squeezed to 0–23px of its 59.7px.
-       Same failure mode, tighter numbers: 6px between links, 12px between the nav and the
-       switcher, and 12px links with lighter tracking. Scoped to this band only — ≥921px keeps
-       the rule above, ≥1200px and ≤768px (drawer) are untouched. */
-    @media(max-width:920px) and (min-width:769px) {
-      .nav-desktop { gap: 4px !important; }
-      .nav-desktop .nav-link { font-size: 12px; letter-spacing: 0.5px; }
-      #mainbar > div { gap: 12px !important; }
-    }
   </style>
 </head>
 
