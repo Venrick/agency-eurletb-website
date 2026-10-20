@@ -106,6 +106,51 @@ function staticSourceChecks() {
       if (src.indexOf(bad) >= 0) issues.push(f + ': forbidden contact string still present: "' + bad + '"');
     });
   });
+  /* Share and identity URLs must name the real host. og:url, twitter:url and <link rel="canonical">
+     are the address a crawler or a share card quotes for the page, and they are absolute by design,
+     so a wrong host there is invisible in the browser — it only shows up in search results and in
+     every shared card. Each absolute value must therefore start with https://www.eurlachouri.com/.
+     Relative values stay legal (a relative canonical is valid HTML and survives a domain move), but
+     a scheme-relative "//…" value does not pass: it names no scheme, so it can leave the www https
+     origin. "http://…" fails on its own. The previous domain is banned separately by
+     FORBIDDEN_CONTACT above, so "etbachouri.com" keeps failing there. */
+  const CANONICAL_PREFIX = 'https://www.eurlachouri.com/';
+  const META_URL_KEYS = { 'og:url': true, 'twitter:url': true, 'canonical': true };
+  PAGES.forEach(function (page) {
+    const html = read(page);
+    const ATTR = function (name, tag) {
+      const mm = new RegExp('\\b' + name + '\\s*=\\s*("[^"]*"|\'[^\']*\'|[^\\s>]+)', 'i').exec(tag);
+      return mm ? mm[1].replace(/^["']/, '').replace(/["']$/, '') : null;
+    };
+    const TAG_RX = /<(meta|link)\b([^>]*)>/gi;
+    let m;
+    while ((m = TAG_RX.exec(html)) !== null) {
+      const isMeta = m[1].toLowerCase() === 'meta';
+      let key, attrName;
+      if (isMeta) {
+        key = String(ATTR('property', m[2]) || ATTR('name', m[2]) || '').trim().toLowerCase();
+        if (!META_URL_KEYS[key]) continue;
+        attrName = 'content';
+      } else {
+        if (!/(^|\s)canonical(\s|$)/i.test(String(ATTR('rel', m[2]) || '').trim())) continue;
+        key = 'canonical';
+        attrName = 'href';
+      }
+      const raw = ATTR(attrName, m[2]);
+      if (raw === null) { issues.push(page + ': ' + key + ' tag without a ' + attrName + ' value'); continue; }
+      const v = raw.trim();
+      if (!v) { issues.push(page + ': empty ' + key + ' — point it at ' + CANONICAL_PREFIX + ' or drop the tag'); continue; }
+      /* absolute = carries a scheme or is protocol-relative; both must land on the www https origin */
+      if (/^(\/\/|[a-z][a-z0-9+.-]*:)/i.test(v) && v.indexOf(CANONICAL_PREFIX) !== 0) {
+        let hint = '';
+        if (/^\/\//.test(v)) hint = ' (scheme-relative: spell out the https www origin)';
+        else if (/etbachouri\.com/i.test(v)) hint = ' (the retired domain)';
+        else if (/^http:\/\//i.test(v)) hint = ' (http, not https)';
+        else if (/^https?:\/\/eurlachouri\.com/i.test(v)) hint = ' (host without www)';
+        issues.push(page + ': ' + key + ' "' + v + '" must start with ' + CANONICAL_PREFIX + hint);
+      }
+    }
+  });
   return issues;
 }
 
