@@ -91,9 +91,37 @@ function staticSourceChecks() {
     });
   }
   const about = read('about.html');
-  ['2009', '2013', '2018', '2024'].forEach(function (yr) {
+  ['1997', '2013', '2018', '2024'].forEach(function (yr) {
     if (about.indexOf('data-i18n="about.timeline_' + yr + '_text"') === -1) issues.push('about.html: timeline ' + yr + ' text hook missing');
   });
+  /* Founding facts (own commit): the company was founded in 1997 in Khemis Miliana and has 30+
+     years behind it. The superseded figures must not survive anywhere — not in a page, not in a
+     dictionary, and not inside a \uXXXX-escaped FR/AR string, which is why i18n.js is scanned a
+     second time after unescaping (the footer taglines in both blocks are written that way).
+     "2009" is banned outright rather than per key: no legitimate copy in this project names that
+     year (the ISO references are 9001 / 2015, the timeline is 1997 / 2013 / 2018 / 2024). */
+  const FORBIDDEN_FACTS = ['2009', '15+', '15 Years', '15 ans', 'over 15', 'plus de 15', '15 عام'];
+  PAGES.concat(['assets/js/i18n.js']).forEach(function (f) {
+    const src = read(f);
+    const plain = src.replace(/\\u([0-9A-Fa-f]{4})/g, function (_, h) { return String.fromCharCode(parseInt(h, 16)); });
+    FORBIDDEN_FACTS.forEach(function (bad) {
+      if (src.indexOf(bad) >= 0 || plain.indexOf(bad) >= 0) issues.push(f + ': superseded founding fact still present: "' + bad + '"');
+    });
+  });
+  /* The timeline key was renamed with the year, so the new pair must exist in the markup and in
+     every dictionary, and the retired pair must be gone from both. */
+  ['about.timeline_1997_label', 'about.timeline_1997_text'].forEach(function (k) {
+    if (dicts.indexOf('"' + k + '"') === -1) issues.push('i18n.js: missing renamed timeline key "' + k + '"');
+  });
+  if (dicts.indexOf('about.timeline_2009_') >= 0) issues.push('i18n.js: retired key about.timeline_2009_* still present');
+  if (about.indexOf('about.timeline_2009_') >= 0) issues.push('about.html: retired key about.timeline_2009_* still present');
+  if (about.indexOf('data-i18n="about.timeline_1997_label"') === -1) issues.push('about.html: timeline 1997 label hook missing');
+  /* The foundation year opens the timeline; the existence check above would still pass with the
+     entry moved last. */
+  const firstTimelineHook = about.indexOf('data-i18n="about.timeline_');
+  if (firstTimelineHook >= 0 && about.indexOf('data-i18n="about.timeline_1997_label"') !== firstTimelineHook) {
+    issues.push('about.html: the 1997 entry is not the first timeline entry');
+  }
   const closingTagHooks = about.match(/<\/[a-z0-9]+[^>]*\sdata-i18n/gi) || [];
   if (closingTagHooks.length) issues.push('about.html: ' + closingTagHooks.length + ' data-i18n hook(s) sit on a closing tag and are never applied');
   /* Client contact details (sitewide update, own commit): every entry below is either the old
