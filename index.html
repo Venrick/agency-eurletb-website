@@ -823,8 +823,9 @@
 
   <!-- ═══════════════════════════════ PROJECTS ═══════════════════════════════ -->
   <!-- Companies preview -->
-  <section id="companies" class="bg-white py-24 px-12">
-    <div class="max-w-[1200px] mx-auto">
+  <section id="companies" class="bg-navy py-24 px-12 relative overflow-hidden">
+    <div class="blueprint absolute inset-0 pointer-events-none opacity-40"></div>
+    <div class="max-w-[1200px] mx-auto relative z-10">
       <div id="companies-header" class="text-center max-w-[760px] mx-auto mb-12">
         <div class="flex items-center justify-center gap-3 mb-4">
           <span class="w-8 h-[1px] bg-gold inline-block"></span>
@@ -832,10 +833,10 @@
           <span class="w-8 h-[1px] bg-gold inline-block"></span>
         </div>
         <h2
-          class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-4" data-i18n-html="home.comp_h2">
+          class="font-condensed text-[clamp(32px,5vw,52px)] font-extrabold text-white leading-[1.1] tracking-[-0.5px] mb-4" data-i18n-html="home.comp_h2">
           Companies Within <span class="text-gold">Our Group</span>
         </h2>
-        <p class="text-[14px] text-muted leading-[1.75]" data-i18n="home.comp_intro">
+        <p class="text-[14px] text-white/70 leading-[1.75]" data-i18n="home.comp_intro">
           Explore the specialized entities that operate alongside ETB Achouri Toufik, each focused on distinct sectors.
         </p>
       </div>
@@ -868,47 +869,47 @@
 
       <!-- Pillar hint -->
       <div id="companies-pillar-hint" class="text-center mb-8">
-        <p class="font-barlow text-[14px] text-muted" data-i18n="home.comp_pillar_hint">
+        <p class="font-barlow text-[14px] text-gold leading-[1.75]" data-i18n="home.comp_pillar_hint">
           Click on a pillar to explore our sister companies
         </p>
       </div>
 
       <!-- Company Cards Grid — hidden on the page; the cards are cloned into the modal on pillar click -->
       <div id="companies-grid" class="grid grid-cols-4 gap-8 max-lg:grid-cols-2 max-sm:hidden hidden">
-        <article data-company-id="bitumax" class="company-card bg-white border-b-[3px] border-b-gold rounded-[2px] p-6 shadow-[0_1px_4px_rgba(30,36,60,0.05)] flex flex-col items-center text-center hover:shadow-[0_4px_12px_rgba(30,36,60,0.1)] transition-shadow">
-          <div class="mb-4">
-            <img src="assets/images/company-logos/bitumax.svg" alt="SARL BITUMAX logo" class="w-20 h-20 object-contain" />
+        <article data-company-id="bitumax" class="company-card bg-navy-card border-t-[3px] border-t-gold rounded-[3px] p-7 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex flex-col items-center text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] hover:-translate-y-1 transition-all duration-300">
+          <div class="mb-5 w-[60px] h-[60px] rounded-full bg-white flex items-center justify-center flex-shrink-0">
+            <img src="assets/images/company-logos/bitumax.svg" alt="SARL BITUMAX logo" class="w-10 h-10 object-contain" />
           </div>
-          <h3 class="font-barlow text-[15px] font-semibold text-navy mb-3 leading-tight">SARL BITUMAX</h3>
-          <p class="text-[13px] text-muted leading-[1.6] mb-5 flex-1" data-i18n="home.comp_body2">Road works, logistics, paving, and public works execution.</p>
-          <a href="contact.html?company=bitumax" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
+          <h3 class="font-barlow text-[16px] font-semibold text-white mb-3 leading-tight">SARL BITUMAX</h3>
+          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-6 flex-1" data-i18n="home.comp_body2">Road works, logistics, paving, and public works execution.</p>
+          <a href="contact.html?company=bitumax" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-gold hover:text-white transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
-        <article data-company-id="bati-achouri" class="company-card bg-white border-b-[3px] border-b-gold rounded-[2px] p-6 shadow-[0_1px_4px_rgba(30,36,60,0.05)] flex flex-col items-center text-center hover:shadow-[0_4px_12px_rgba(30,36,60,0.1)] transition-shadow">
-          <div class="mb-4">
-            <img src="assets/images/company-logos/bati-achouri.svg" alt="BATI Achouri logo" class="w-20 h-20 object-contain" />
+        <article data-company-id="bati-achouri" class="company-card bg-navy-card border-t-[3px] border-t-gold rounded-[3px] p-7 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex flex-col items-center text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] hover:-translate-y-1 transition-all duration-300">
+          <div class="mb-5 w-[60px] h-[60px] rounded-full bg-white flex items-center justify-center flex-shrink-0">
+            <img src="assets/images/company-logos/bati-achouri.svg" alt="BATI Achouri logo" class="w-10 h-10 object-contain" />
           </div>
-          <h3 class="font-barlow text-[15px] font-semibold text-navy mb-3 leading-tight">BATI Achouri</h3>
-          <p class="text-[13px] text-muted leading-[1.6] mb-5 flex-1" data-i18n="home.comp_body3">Building and infrastructure works from planning to finish.</p>
-          <a href="contact.html?company=bati-achouri" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
+          <h3 class="font-barlow text-[16px] font-semibold text-white mb-3 leading-tight">BATI Achouri</h3>
+          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-6 flex-1" data-i18n="home.comp_body3">Building and infrastructure works from planning to finish.</p>
+          <a href="contact.html?company=bati-achouri" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-gold hover:text-white transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
-        <article data-company-id="batikram" class="company-card bg-white border-b-[3px] border-b-gold rounded-[2px] p-6 shadow-[0_1px_4px_rgba(30,36,60,0.05)] flex flex-col items-center text-center hover:shadow-[0_4px_12px_rgba(30,36,60,0.1)] transition-shadow">
-          <div class="mb-4">
-            <img src="assets/images/company-logos/batikram.svg" alt="SARL BATIKRAM logo" class="w-20 h-20 object-contain" />
+        <article data-company-id="batikram" class="company-card bg-navy-card border-t-[3px] border-t-gold rounded-[3px] p-7 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex flex-col items-center text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] hover:-translate-y-1 transition-all duration-300">
+          <div class="mb-5 w-[60px] h-[60px] rounded-full bg-white flex items-center justify-center flex-shrink-0">
+            <img src="assets/images/company-logos/batikram.svg" alt="SARL BATIKRAM logo" class="w-10 h-10 object-contain" />
           </div>
-          <h3 class="font-barlow text-[15px] font-semibold text-navy mb-3 leading-tight">SARL BATIKRAM</h3>
-          <p class="text-[13px] text-muted leading-[1.6] mb-5 flex-1" data-i18n="home.comp_body4">Real estate promotion and development opportunities.</p>
-          <a href="contact.html?company=batikram" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
+          <h3 class="font-barlow text-[16px] font-semibold text-white mb-3 leading-tight">SARL BATIKRAM</h3>
+          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-6 flex-1" data-i18n="home.comp_body4">Real estate promotion and development opportunities.</p>
+          <a href="contact.html?company=batikram" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-gold hover:text-white transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
-        <article data-company-id="etrabal" class="company-card bg-white border-b-[3px] border-b-gold rounded-[2px] p-6 shadow-[0_1px_4px_rgba(30,36,60,0.05)] flex flex-col items-center text-center hover:shadow-[0_4px_12px_rgba(30,36,60,0.1)] transition-shadow">
-          <div class="mb-4">
-            <img src="assets/images/company-logos/etrabal.svg" alt="EURL ETRABAL logo" class="w-20 h-20 object-contain" />
+        <article data-company-id="etrabal" class="company-card bg-navy-card border-t-[3px] border-t-gold rounded-[3px] p-7 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex flex-col items-center text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] hover:-translate-y-1 transition-all duration-300">
+          <div class="mb-5 w-[60px] h-[60px] rounded-full bg-white flex items-center justify-center flex-shrink-0">
+            <img src="assets/images/company-logos/etrabal.svg" alt="EURL ETRABAL logo" class="w-10 h-10 object-contain" />
           </div>
-          <h3 class="font-barlow text-[15px] font-semibold text-navy mb-3 leading-tight">EURL ETRABAL</h3>
-          <p class="text-[13px] text-muted leading-[1.6] mb-5 flex-1" data-i18n="home.comp_body_etrabal">Hydraulic systems, fluid power solutions, and water management equipment.</p>
-          <a href="contact.html?company=etrabal" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
+          <h3 class="font-barlow text-[16px] font-semibold text-white mb-3 leading-tight">EURL ETRABAL</h3>
+          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-6 flex-1" data-i18n="home.comp_body_etrabal">Hydraulic systems, fluid power solutions, and water management equipment.</p>
+          <a href="contact.html?company=etrabal" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-gold hover:text-white transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
       </div>
 
