@@ -269,31 +269,6 @@
       box-shadow: 0 8px 32px rgba(30, 36, 60, .12);
     }
 
-    .company-preview-card {
-      transition: transform .25s, box-shadow .25s;
-      position: relative;
-    }
-
-    .company-preview-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 3px;
-      width: 0;
-      background: #c19f5d;
-      transition: width 0.4s ease;
-    }
-
-    .company-preview-card:hover::before {
-      width: 100%;
-    }
-
-    .company-preview-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 32px rgba(30, 36, 60, .12);
-    }
-
     /* ── Project card ── */
     .project-overlay {
       opacity: 0;
@@ -423,6 +398,38 @@
     @media(max-width:768px) {
       #map-right-col {
         min-height: 380px;
+      }
+    }
+
+    /* Companies section: the four sister-company cards live in the modal at every viewport, so the
+       grid only ever exists as a hidden template that the clone is taken from. */
+    #companies-grid {
+      display: none !important;
+    }
+    #companies-modal {
+      display: none;
+    }
+
+    .company-card {
+      transition: box-shadow 200ms ease-out, transform 200ms ease-out;
+    }
+    .company-card:hover {
+      box-shadow: 0 4px 16px rgba(30, 36, 60, 0.12);
+    }
+
+    #companies-modal:not(.hidden) {
+      display: flex !important;
+      animation: compSlideUp 250ms ease-out;
+    }
+
+    @keyframes compSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
   </style>
@@ -818,7 +825,7 @@
   <!-- Companies preview -->
   <section id="companies" class="bg-white py-24 px-12">
     <div class="max-w-[1200px] mx-auto">
-      <div id="companies-header" class="text-center max-w-[760px] mx-auto mb-14">
+      <div id="companies-header" class="text-center max-w-[760px] mx-auto mb-12">
         <div class="flex items-center justify-center gap-3 mb-4">
           <span class="w-8 h-[1px] bg-gold inline-block"></span>
           <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold" data-i18n="home.comp_eyebrow">Group Companies</span>
@@ -833,69 +840,84 @@
         </p>
       </div>
 
-      <div id="companies-grid" class="grid grid-cols-4 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
-        <article
-          class="company-preview-card bg-light-bg border border-[rgba(30,36,60,0.08)] rounded-[3px] p-7 shadow-[0_2px_16px_rgba(30,36,60,0.06)] flex flex-col">
-          <div class="flex items-center gap-4 mb-5 pb-5 border-b border-[rgba(30,36,60,0.06)]">
-            <div class="w-12 h-12 bg-navy rounded-[5px] flex items-center justify-center flex-shrink-0">
-              <span class="font-condensed text-[14px] font-bold text-gold">EA</span>
-            </div>
-            <h3 class="font-barlow text-[17px] font-semibold text-navy leading-tight">EURL ETB Achouri Toufik</h3>
+      <!-- ETB Logo Display -->
+      <div id="companies-logo-container" class="flex flex-col items-center justify-center mb-12">
+        <div class="relative inline-block">
+          <img id="companies-etb-logo" src="assets/images/etb-logo-full.svg" alt="EURL ETB Achouri Toufik - Four Pillars" 
+               usemap="#etb-logo-map"
+               class="max-w-[500px] md:max-lg:max-w-[320px] max-md:max-w-[220px] w-full h-auto cursor-pointer block" />
+          
+          <!-- Image map: one rect per gold pillar group, measured from the artwork (2000x2000 viewBox).
+               Pillar x-bands 700-790 / 830-930 / 1070-1170 / 1210-1300, bases at y=1290. -->
+          <map name="etb-logo-map" id="etb-logo-map">
+            <area shape="rect" coords="680,940,810,1310" alt="SARL BITUMAX" data-company="bitumax" class="pillar-hotspot cursor-pointer" />
+            <area shape="rect" coords="810,840,1000,1310" alt="BATI Achouri" data-company="bati-achouri" class="pillar-hotspot cursor-pointer" />
+            <area shape="rect" coords="1000,730,1190,1310" alt="SARL BATIKRAM" data-company="batikram" class="pillar-hotspot cursor-pointer" />
+            <area shape="rect" coords="1190,830,1330,1310" alt="EURL ETRABAL" data-company="etrabal" class="pillar-hotspot cursor-pointer" />
+          </map>
+
+          <!-- Transparent touch/click targets over the same pillar rectangles (percentages of the square logo) -->
+          <div class="absolute inset-0 pointer-events-none" id="pillar-touch-overlay">
+            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:34%;top:47%;width:6.5%;height:18.5%" data-company="bitumax" aria-label="SARL BITUMAX"></button>
+            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:40.5%;top:42%;width:9.5%;height:23.5%" data-company="bati-achouri" aria-label="BATI Achouri"></button>
+            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:50%;top:36.5%;width:9.5%;height:29%" data-company="batikram" aria-label="SARL BATIKRAM"></button>
+            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:59.5%;top:41.5%;width:7%;height:24%" data-company="etrabal" aria-label="EURL ETRABAL"></button>
           </div>
-          <p class="text-[13.5px] text-muted leading-[1.75] mb-6 flex-1" data-i18n="home.comp_body1">Civil engineering and full-spectrum construction delivery.</p>
-          <a href="contact.html?company=etb"
-            class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-1" data-i18n="home.comp_contact_link">Contact
-            &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Pillar hint -->
+      <div id="companies-pillar-hint" class="text-center mb-8">
+        <p class="font-barlow text-[14px] text-muted" data-i18n="home.comp_pillar_hint">
+          Click on a pillar to explore our sister companies
+        </p>
+      </div>
+
+      <!-- Company Cards Grid — hidden on the page; the cards are cloned into the modal on pillar click -->
+      <div id="companies-grid" class="grid grid-cols-4 gap-8 max-lg:grid-cols-2 max-sm:hidden hidden">
+        <article data-company-id="bitumax" class="company-card bg-white border-b-[3px] border-b-gold rounded-[2px] p-6 shadow-[0_1px_4px_rgba(30,36,60,0.05)] flex flex-col items-center text-center hover:shadow-[0_4px_12px_rgba(30,36,60,0.1)] transition-shadow">
+          <div class="mb-4">
+            <img src="assets/images/company-logos/bitumax.svg" alt="SARL BITUMAX logo" class="w-20 h-20 object-contain" />
+          </div>
+          <h3 class="font-barlow text-[15px] font-semibold text-navy mb-3 leading-tight">SARL BITUMAX</h3>
+          <p class="text-[13px] text-muted leading-[1.6] mb-5 flex-1" data-i18n="home.comp_body2">Road works, logistics, paving, and public works execution.</p>
+          <a href="contact.html?company=bitumax" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
-        <article
-          class="company-preview-card bg-light-bg border border-[rgba(30,36,60,0.08)] rounded-[3px] p-7 shadow-[0_2px_16px_rgba(30,36,60,0.06)] flex flex-col">
-          <div class="flex items-center gap-4 mb-5 pb-5 border-b border-[rgba(30,36,60,0.06)]">
-            <div class="w-12 h-12 bg-navy rounded-[5px] flex items-center justify-center flex-shrink-0">
-              <span class="font-condensed text-[14px] font-bold text-gold">BM</span>
-            </div>
-            <h3 class="font-barlow text-[17px] font-semibold text-navy leading-tight">SARL BITUMAX</h3>
+        <article data-company-id="bati-achouri" class="company-card bg-white border-b-[3px] border-b-gold rounded-[2px] p-6 shadow-[0_1px_4px_rgba(30,36,60,0.05)] flex flex-col items-center text-center hover:shadow-[0_4px_12px_rgba(30,36,60,0.1)] transition-shadow">
+          <div class="mb-4">
+            <img src="assets/images/company-logos/bati-achouri.svg" alt="BATI Achouri logo" class="w-20 h-20 object-contain" />
           </div>
-          <p class="text-[13.5px] text-muted leading-[1.75] mb-6 flex-1" data-i18n="home.comp_body2">Road works, logistics, paving, and public works execution.</p>
-          <a href="contact.html?company=bitumax"
-            class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-1" data-i18n="home.comp_contact_link">Contact
-            &rarr;</a>
+          <h3 class="font-barlow text-[15px] font-semibold text-navy mb-3 leading-tight">BATI Achouri</h3>
+          <p class="text-[13px] text-muted leading-[1.6] mb-5 flex-1" data-i18n="home.comp_body3">Building and infrastructure works from planning to finish.</p>
+          <a href="contact.html?company=bati-achouri" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
-        <article
-          class="company-preview-card bg-light-bg border border-[rgba(30,36,60,0.08)] rounded-[3px] p-7 shadow-[0_2px_16px_rgba(30,36,60,0.06)] flex flex-col">
-          <div class="flex items-center gap-4 mb-5 pb-5 border-b border-[rgba(30,36,60,0.06)]">
-            <div class="w-12 h-12 bg-navy rounded-[5px] flex items-center justify-center flex-shrink-0">
-              <span class="font-condensed text-[14px] font-bold text-gold">BA</span>
-            </div>
-            <h3 class="font-barlow text-[17px] font-semibold text-navy leading-tight">BATI Achouri</h3>
+        <article data-company-id="batikram" class="company-card bg-white border-b-[3px] border-b-gold rounded-[2px] p-6 shadow-[0_1px_4px_rgba(30,36,60,0.05)] flex flex-col items-center text-center hover:shadow-[0_4px_12px_rgba(30,36,60,0.1)] transition-shadow">
+          <div class="mb-4">
+            <img src="assets/images/company-logos/batikram.svg" alt="SARL BATIKRAM logo" class="w-20 h-20 object-contain" />
           </div>
-          <p class="text-[13.5px] text-muted leading-[1.75] mb-6 flex-1" data-i18n="home.comp_body3">Building and infrastructure works from planning to finish.</p>
-          <a href="contact.html?company=bati-achouri"
-            class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-1" data-i18n="home.comp_contact_link">Contact
-            &rarr;</a>
+          <h3 class="font-barlow text-[15px] font-semibold text-navy mb-3 leading-tight">SARL BATIKRAM</h3>
+          <p class="text-[13px] text-muted leading-[1.6] mb-5 flex-1" data-i18n="home.comp_body4">Real estate promotion and development opportunities.</p>
+          <a href="contact.html?company=batikram" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
-        <article
-          class="company-preview-card bg-light-bg border border-[rgba(30,36,60,0.08)] rounded-[3px] p-7 shadow-[0_2px_16px_rgba(30,36,60,0.06)] flex flex-col">
-          <div class="flex items-center gap-4 mb-5 pb-5 border-b border-[rgba(30,36,60,0.06)]">
-            <div class="w-12 h-12 bg-navy rounded-[5px] flex items-center justify-center flex-shrink-0">
-              <span class="font-condensed text-[14px] font-bold text-gold">BK</span>
-            </div>
-            <h3 class="font-barlow text-[17px] font-semibold text-navy leading-tight">SARL BATIKRAM</h3>
+        <article data-company-id="etrabal" class="company-card bg-white border-b-[3px] border-b-gold rounded-[2px] p-6 shadow-[0_1px_4px_rgba(30,36,60,0.05)] flex flex-col items-center text-center hover:shadow-[0_4px_12px_rgba(30,36,60,0.1)] transition-shadow">
+          <div class="mb-4">
+            <img src="assets/images/company-logos/etrabal.svg" alt="EURL ETRABAL logo" class="w-20 h-20 object-contain" />
           </div>
-          <p class="text-[13.5px] text-muted leading-[1.75] mb-6 flex-1" data-i18n="home.comp_body4">Real estate promotion and development opportunities.</p>
-          <a href="contact.html?company=batikram"
-            class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline flex items-center gap-1" data-i18n="home.comp_contact_link">Contact
-            &rarr;</a>
+          <h3 class="font-barlow text-[15px] font-semibold text-navy mb-3 leading-tight">EURL ETRABAL</h3>
+          <p class="text-[13px] text-muted leading-[1.6] mb-5 flex-1" data-i18n="home.comp_body_etrabal">Hydraulic systems, fluid power solutions, and water management equipment.</p>
+          <a href="contact.html?company=etrabal" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-navy hover:text-gold transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
       </div>
 
-      <div class="mt-12 flex justify-center">
-        <a href="index.html#companies"
-          class="bg-navy text-white font-condensed text-[12px] font-bold tracking-[2px] uppercase px-8 py-4 hover:bg-navy-dark transition-colors no-underline" data-i18n="home.comp_cta_view_all">
-          View All Companies &rarr;
-        </a>
+      <!-- Company card modal (hidden by default, opened by a pillar click) -->
+      <div id="companies-modal" class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-[3px] max-w-[360px] w-full p-6 relative shadow-2xl">
+          <button id="companies-modal-close" type="button" class="absolute top-4 right-4 text-navy hover:text-gold text-lg p-2 leading-none font-bold cursor-pointer" aria-label="Close">✕</button>
+          <div id="companies-modal-content"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -1419,11 +1441,10 @@
         scrollTrigger: { trigger: '#companies', start: 'top 78%', once: true },
         y: 30, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
       });
-      gsap.fromTo('.company-preview-card',
-        { y: 45, opacity: 0 },
+      gsap.from('#companies-logo-container, #companies-pillar-hint',
         {
-          scrollTrigger: { trigger: '#companies-grid', start: 'top 82%', once: true },
-          y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: { trigger: '#companies', start: 'top 78%', once: true },
+          y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out',
           clearProps: 'all'
         }
       );
@@ -1500,7 +1521,7 @@
       // raw comparison would stop matching once the links are rewritten. The #hash is kept
       // because it is part of the target here (index.html vs index.html#companies), which is
       // what stops "Companies" being underlined while the hero is on screen.
-      const linkTarget = href => String(href).split('?')[0];
+      const linkTarget = href => String(href).replace(/\?[^#]*/, '');
 
       function setActive(id) {
         const target = sectionMap[id];
@@ -1576,6 +1597,70 @@
               btn.classList.remove('bg-green-600', 'text-white');
             }, 3000);
           }, 1500);
+        });
+      }
+
+      // ═══════════ COMPANIES MODAL LOGIC ═══════════
+      const compModal = document.getElementById('companies-modal');
+      const compModalContent = document.getElementById('companies-modal-content');
+      const compModalClose = document.getElementById('companies-modal-close');
+
+      function showCompanyCard(companyId) {
+        if (!compModal || !compModalContent) return;
+        const card = document.querySelector('.company-card[data-company-id="' + companyId + '"]');
+        if (!card) return;
+        compModalContent.innerHTML = '';
+        const clone = card.cloneNode(true);
+        clone.classList.remove('hidden');
+        clone.classList.add('w-full');
+        compModalContent.appendChild(clone);
+        compModal.classList.remove('hidden');
+        compModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function hideCompanyCard() {
+        if (!compModal) return;
+        compModal.classList.add('hidden');
+        compModal.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+
+      if (compModalClose) compModalClose.addEventListener('click', hideCompanyCard);
+      if (compModal) {
+        compModal.addEventListener('click', (e) => {
+          if (e.target === compModal) hideCompanyCard();
+        });
+      }
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && compModal && !compModal.classList.contains('hidden')) {
+          hideCompanyCard();
+        }
+      });
+
+      document.querySelectorAll('.pillar-hotspot, .pillar-btn').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          const cid = el.getAttribute('data-company');
+          if (cid) showCompanyCard(cid);
+        });
+      });
+
+      const etbLogo = document.getElementById('companies-etb-logo');
+      if (etbLogo) {
+        // Fallback for clicks that land outside the transparent overlay buttons: map the click to the
+        // measured pillar bands (fractions of the 2000-unit logo width) instead of equal quarters.
+        const pillars = [
+          { from: 0.34, to: 0.405, id: 'bitumax' },
+          { from: 0.405, to: 0.50, id: 'bati-achouri' },
+          { from: 0.50, to: 0.595, id: 'batikram' },
+          { from: 0.595, to: 0.665, id: 'etrabal' }
+        ];
+        etbLogo.addEventListener('click', (e) => {
+          const rect = etbLogo.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const hit = pillars.find(p => x >= p.from && x < p.to);
+          if (hit) showCompanyCard(hit.id);
         });
       }
     }); // end window load
