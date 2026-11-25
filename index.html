@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -356,6 +356,16 @@
       border: 4px solid #ffffff;
     }
 
+    @media(max-width:900px) {
+      .about-badge {
+        padding: 12px 18px;
+        min-width: 100px;
+      }
+      .about-badge > div:first-child {
+        font-size: 28px;
+      }
+    }
+
     /* ── Input focus ── */
     input:focus,
     textarea:focus {
@@ -393,6 +403,23 @@
       .about-grid {
         grid-template-columns: 1fr !important;
       }
+      /* On mobile show images panel as a compact banner */
+      #about-images {
+        min-height: 220px !important;
+      }
+      /* Hide the two-column image layout on mobile, show only the construction photo */
+      #about-images > div:first-child {
+        display: none;
+      }
+      #about-images > div:nth-child(2) {
+        width: 100% !important;
+        padding: 0 !important;
+      }
+      #about-images > div:nth-child(2) img {
+        border-radius: 0 !important;
+        height: 220px;
+        object-position: center 60%;
+      }
     }
 
     @media(max-width:768px) {
@@ -411,25 +438,87 @@
     }
 
     .company-card {
-      transition: box-shadow 200ms ease-out, transform 200ms ease-out;
+      transition: box-shadow 300ms ease-out, transform 300ms ease-out;
     }
     .company-card:hover {
-      box-shadow: 0 4px 16px rgba(30, 36, 60, 0.12);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(193, 159, 93, 0.32);
     }
 
+    /* The modal itself is toggled by the .hidden class; the entrance/exit motion is a GSAP tween on
+       #companies-modal-panel (300ms in, 200ms out) so the two never fight over the same properties. */
     #companies-modal:not(.hidden) {
       display: flex !important;
-      animation: compSlideUp 250ms ease-out;
     }
 
-    @keyframes compSlideUp {
+    #companies-modal-content {
+      max-height: 72vh;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    /* ── Companies: pillar hover affordance ── */
+    /* The hotspot buttons are invisible (opacity-0) so the artwork stays clean; on hover/focus they
+       reveal a translucent gold band plus a soft glow — 200ms, and no box moves. */
+    .pillar-btn {
+      border-radius: 2px;
+      outline: 1px solid transparent;
+      transition: opacity 200ms ease-out, background-color 200ms ease-out,
+        box-shadow 200ms ease-out, outline-color 200ms ease-out;
+    }
+
+    @keyframes pillarGlow {
       from {
-        opacity: 0;
-        transform: translateY(16px);
+        box-shadow: 0 0 0 rgba(193, 159, 93, 0);
       }
       to {
+        box-shadow: 0 0 14px rgba(193, 159, 93, 0.45), inset 0 0 10px rgba(193, 159, 93, 0.18);
+      }
+    }
+
+    @media (hover: hover) {
+      .pillar-btn:hover {
         opacity: 1;
-        transform: translateY(0);
+        background-color: rgba(193, 159, 93, 0.12);
+        outline-color: rgba(193, 159, 93, 0.65);
+        animation: pillarGlow 200ms ease-out forwards;
+      }
+    }
+
+    .pillar-btn:focus-visible {
+      opacity: 1;
+      background-color: rgba(193, 159, 93, 0.16);
+      outline: 2px solid rgba(193, 159, 93, 0.8);
+      outline-offset: 1px;
+      animation: pillarGlow 200ms ease-out forwards;
+    }
+
+    /* ── Companies: pillar hint pulse ── */
+    @keyframes hintPulse {
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.18);
+        opacity: 0.65;
+      }
+    }
+
+    .hint-pulse {
+      animation: hintPulse 2s ease-in-out 3;
+      transform-origin: center;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .company-card,
+      .pillar-btn {
+        transition: none;
+      }
+      .pillar-btn:hover,
+      .pillar-btn:focus-visible,
+      .hint-pulse {
+        animation: none;
       }
     }
   </style>
@@ -450,7 +539,7 @@
         </a>
         <a href="mailto:contact@eurlachouri.com" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
           <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="hidden sm:inline">contact@eurlachouri.com</span>
+          <span class="hidden sm:inline phone-ltr" dir="ltr">contact@eurlachouri.com</span>
           <span class="sm:hidden" data-i18n="topbar.email">Email</span>
         </a>
       </div>
@@ -462,13 +551,13 @@
     </div>
 
     <!-- Main bar -->
-    <div id="mainbar" class="bg-navy flex items-center justify-between px-4 md:px-12 h-[110px] border-b-[3px] border-gold">
-      <a href="index.html" class="flex items-center no-underline">
-        <img src="assets/images/Logo-Horizontal-Dark.png" alt="EURL ETB Achouri Toufik" class="logo-light hidden max-md:block lg:block" style="height:72px;">
+    <div id="mainbar" class="bg-navy flex items-center justify-between px-4 md:px-12 h-[80px] md:h-[110px] border-b-[3px] border-gold">
+      <a href="index.html" class="flex items-center no-underline flex-shrink-0">
+        <img src="assets/images/Logo-Horizontal-Dark.png" alt="EURL ETB Achouri Toufik" class="logo-light hidden max-md:block lg:block" style="height:48px;">
         <img src="assets/images/Logo-Dark.png" alt="EURL ETB Achouri Toufik" class="hidden md:block lg:hidden" style="height:72px;">
       </a>
 
-      <div class="flex items-center gap-9">
+      <div class="flex items-center gap-3 md:gap-9">
         <ul class="nav-desktop flex items-center gap-9 list-none m-0 p-0">
           <li><a href="index.html"       data-i18n="nav.home" class="nav-link active font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">Home</a></li>
           <li><a href="about.html"       data-i18n="nav.about" class="nav-link font-barlow text-[13px] font-medium tracking-[1.2px] uppercase text-white/75 hover:text-white transition-colors no-underline">About</a></li>
@@ -502,16 +591,6 @@
 
     <!-- Mobile drawer -->
     <div class="nav-drawer" id="nav-drawer">
-      <div class="px-6 pt-4 pb-2">
-        <div class="lang-compact relative">
-          <button type="button" class="lang-compact-btn" aria-haspopup="true" aria-expanded="false" data-i18n-aria-label="ui.aria_change_language" aria-label="Change language">
-            <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
-            <span class="lang-current">EN</span>
-            <svg class="lang-caret" viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
-          </button>
-          <div class="lang-menu" role="menu" data-i18n-aria-label="ui.aria_language_options" aria-label="Language options" hidden></div>
-        </div>
-      </div>
       <a href="index.html" data-i18n="nav.home">Home</a>
       <a href="about.html" data-i18n="nav.about">About</a>
       <a href="services.html" data-i18n="nav.services">Services</a>
@@ -612,7 +691,7 @@
     </div>
 
     <!-- Content -->
-    <div id="about-content" class="bg-white px-16 py-20 flex flex-col justify-center">
+    <div id="about-content" class="bg-white px-6 py-10 md:px-16 md:py-20 flex flex-col justify-center">
       <div class="flex items-center gap-3 mb-4">
         <span class="w-8 h-[1px] bg-gold inline-block"></span>
         <span class="font-condensed text-[11px] font-bold tracking-[3px] uppercase text-gold" data-i18n="home.about_eyebrow">About Our Company</span>
@@ -621,12 +700,12 @@
         class="font-condensed text-[clamp(32px,4vw,52px)] font-extrabold text-navy leading-[1.1] tracking-[-0.5px] mb-5" data-i18n-html="home.about_h2">
         We Build Visions<br>Into <span class="text-gold">Reality</span>
       </h2>
-      <p class="text-[14px] text-muted leading-[1.8] mb-8 max-w-[460px]" data-i18n="home.about_body">
+      <p class="text-[14px] text-muted leading-[1.8] mb-8 max-w-full md:max-w-[460px]" data-i18n="home.about_body">
         At EURL ETB Achouri Toufik, we take pride in delivering superior construction services.
         From residential complexes to industrial warehouses, our commitment to quality, safety,
         and innovation stands at the forefront of every project we undertake.
       </p>
-      <div class="grid grid-cols-2 gap-4 mb-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         <!-- Feature 1 -->
         <div class="flex items-start gap-3">
           <div
@@ -842,36 +921,38 @@
       </div>
 
       <!-- ETB Logo Display -->
-      <div id="companies-logo-container" class="flex flex-col items-center justify-center mb-12">
+      <div id="companies-logo-container" class="flex flex-col items-center justify-center mb-6">
         <div class="relative inline-block">
-          <img id="companies-etb-logo" src="assets/images/etb-logo-full.svg" alt="EURL ETB Achouri Toufik - Four Pillars" 
-               usemap="#etb-logo-map"
-               class="max-w-[500px] md:max-lg:max-w-[320px] max-md:max-w-[220px] w-full h-auto cursor-pointer block" />
+          <img id="companies-etb-logo" src="assets/images/Logo-Dark.png" alt="EURL ETB Achouri Toufik - Four Pillars" 
+               class="max-w-[360px] md:max-lg:max-w-[300px] max-md:max-w-[220px] w-full h-auto cursor-pointer block" />
           
-          <!-- Image map: one rect per gold pillar group, measured from the artwork (2000x2000 viewBox).
-               Pillar x-bands 700-790 / 830-930 / 1070-1170 / 1210-1300, bases at y=1290. -->
+          <!-- Pillar geometry, measured from Logo-Dark.png (302x364 natural size). Chromium hit-tests
+               image-map areas in unscaled CSS pixels once the image is downscaled, which mis-routes
+               taps on tablet/mobile, so `usemap` is intentionally omitted: the logo's own click handler
+               routes by width fractions (scale-invariant) and the overlay buttons cover the bands. -->
           <map name="etb-logo-map" id="etb-logo-map">
-            <area shape="rect" coords="680,940,810,1310" alt="SARL BITUMAX" data-company="bitumax" class="pillar-hotspot cursor-pointer" />
-            <area shape="rect" coords="810,840,1000,1310" alt="BATI Achouri" data-company="bati-achouri" class="pillar-hotspot cursor-pointer" />
-            <area shape="rect" coords="1000,730,1190,1310" alt="SARL BATIKRAM" data-company="batikram" class="pillar-hotspot cursor-pointer" />
-            <area shape="rect" coords="1190,830,1330,1310" alt="EURL ETRABAL" data-company="etrabal" class="pillar-hotspot cursor-pointer" />
+            <area shape="rect" coords="79,166,101,246" alt="SARL BITUMAX" data-company="bitumax" class="pillar-hotspot cursor-pointer" />
+            <area shape="rect" coords="111,141,135,246" alt="BATI Achouri" data-company="bati-achouri" class="pillar-hotspot cursor-pointer" />
+            <area shape="rect" coords="170,113,194,246" alt="SARL BATIKRAM" data-company="batikram" class="pillar-hotspot cursor-pointer" />
+            <area shape="rect" coords="204,138,227,246" alt="EURL ETRABAL" data-company="etrabal" class="pillar-hotspot cursor-pointer" />
           </map>
 
-          <!-- Transparent touch/click targets over the same pillar rectangles (percentages of the square logo) -->
+          <!-- Transparent touch/click targets over the same pillar rectangles (percentages of the logo) -->
           <div class="absolute inset-0 pointer-events-none" id="pillar-touch-overlay">
-            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:34%;top:47%;width:6.5%;height:18.5%" data-company="bitumax" aria-label="SARL BITUMAX"></button>
-            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:40.5%;top:42%;width:9.5%;height:23.5%" data-company="bati-achouri" aria-label="BATI Achouri"></button>
-            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:50%;top:36.5%;width:9.5%;height:29%" data-company="batikram" aria-label="SARL BATIKRAM"></button>
-            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:59.5%;top:41.5%;width:7%;height:24%" data-company="etrabal" aria-label="EURL ETRABAL"></button>
+            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:26.2%;top:45.6%;width:7.3%;height:22.0%" data-company="bitumax" aria-label="SARL BITUMAX"></button>
+            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:36.8%;top:38.7%;width:7.9%;height:28.8%" data-company="bati-achouri" aria-label="BATI ACHOURI"></button>
+            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:56.3%;top:31.0%;width:7.9%;height:36.5%" data-company="batikram" aria-label="SARL BATIKRAM"></button>
+            <button type="button" class="pillar-btn absolute opacity-0 cursor-pointer pointer-events-auto" style="left:67.5%;top:37.9%;width:7.6%;height:29.7%" data-company="etrabal" aria-label="EURL ETRABAL"></button>
           </div>
         </div>
-      </div>
 
-      <!-- Pillar hint -->
-      <div id="companies-pillar-hint" class="text-center mb-8">
-        <p class="font-barlow text-[14px] text-gold leading-[1.75]" data-i18n="home.comp_pillar_hint">
-          Click on a pillar to explore our sister companies
-        </p>
+        <!-- Pillar hint sits directly under the logo -->
+        <div id="companies-pillar-hint" class="text-center mt-5">
+          <p class="font-barlow text-[13px] tracking-[1px] text-gold/80 leading-[1.75] flex items-center justify-center gap-2">
+            <svg id="companies-pillar-hint-icon" class="w-3.5 h-3.5 flex-shrink-0 hint-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/></svg>
+            <span data-i18n="home.comp_pillar_hint">Click on a pillar to explore our sister companies</span>
+          </p>
+        </div>
       </div>
 
       <!-- Company Cards Grid — hidden on the page; the cards are cloned into the modal on pillar click -->
@@ -880,8 +961,17 @@
           <div class="mb-5 w-[60px] h-[60px] rounded-full bg-white flex items-center justify-center flex-shrink-0">
             <img src="assets/images/company-logos/bitumax.svg" alt="SARL BITUMAX logo" class="w-10 h-10 object-contain" />
           </div>
-          <h3 class="font-barlow text-[16px] font-semibold text-white mb-3 leading-tight">SARL BITUMAX</h3>
-          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-6 flex-1" data-i18n="home.comp_body2">Road works, logistics, paving, and public works execution.</p>
+          <h3 class="font-barlow text-[16px] font-semibold text-white mb-2 leading-tight">SARL BITUMAX</h3>
+          <div class="flex items-center justify-center gap-1.5 font-condensed text-[10px] font-bold tracking-[1.5px] uppercase text-gold/80 mb-3">
+            <span class="text-[9px] leading-none" aria-hidden="true">★</span>
+            <span data-i18n="home.comp_meta_bitumax">Est. 1998 · Road Works &amp; Logistics</span>
+          </div>
+          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-4" data-i18n="home.comp_body2">Road works, logistics, paving, and public works execution.</p>
+          <ul class="w-full text-[12.5px] text-white/65 leading-[1.6] mb-6 flex-1 list-none p-0 m-0 space-y-1">
+            <li data-i18n="home.comp_svc_bitumax_1">Road construction &amp; paving</li>
+            <li data-i18n="home.comp_svc_bitumax_2">Asphalt production &amp; laying</li>
+            <li data-i18n="home.comp_svc_bitumax_3">Logistics &amp; heavy transport</li>
+          </ul>
           <a href="contact.html?company=bitumax" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-gold hover:text-white transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
@@ -889,8 +979,17 @@
           <div class="mb-5 w-[60px] h-[60px] rounded-full bg-white flex items-center justify-center flex-shrink-0">
             <img src="assets/images/company-logos/bati-achouri.svg" alt="BATI Achouri logo" class="w-10 h-10 object-contain" />
           </div>
-          <h3 class="font-barlow text-[16px] font-semibold text-white mb-3 leading-tight">BATI Achouri</h3>
-          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-6 flex-1" data-i18n="home.comp_body3">Building and infrastructure works from planning to finish.</p>
+          <h3 class="font-barlow text-[16px] font-semibold text-white mb-2 leading-tight">BATI Achouri</h3>
+          <div class="flex items-center justify-center gap-1.5 font-condensed text-[10px] font-bold tracking-[1.5px] uppercase text-gold/80 mb-3">
+            <span class="text-[9px] leading-none" aria-hidden="true">★</span>
+            <span data-i18n="home.comp_meta_bati_achouri">Est. 2005 · Building &amp; Infrastructure</span>
+          </div>
+          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-4" data-i18n="home.comp_body3">Building and infrastructure works from planning to finish.</p>
+          <ul class="w-full text-[12.5px] text-white/65 leading-[1.6] mb-6 flex-1 list-none p-0 m-0 space-y-1">
+            <li data-i18n="home.comp_svc_bati_achouri_1">Residential &amp; commercial buildings</li>
+            <li data-i18n="home.comp_svc_bati_achouri_2">Structural works &amp; concrete</li>
+            <li data-i18n="home.comp_svc_bati_achouri_3">Turnkey project delivery</li>
+          </ul>
           <a href="contact.html?company=bati-achouri" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-gold hover:text-white transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
@@ -898,8 +997,17 @@
           <div class="mb-5 w-[60px] h-[60px] rounded-full bg-white flex items-center justify-center flex-shrink-0">
             <img src="assets/images/company-logos/batikram.svg" alt="SARL BATIKRAM logo" class="w-10 h-10 object-contain" />
           </div>
-          <h3 class="font-barlow text-[16px] font-semibold text-white mb-3 leading-tight">SARL BATIKRAM</h3>
-          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-6 flex-1" data-i18n="home.comp_body4">Real estate promotion and development opportunities.</p>
+          <h3 class="font-barlow text-[16px] font-semibold text-white mb-2 leading-tight">SARL BATIKRAM</h3>
+          <div class="flex items-center justify-center gap-1.5 font-condensed text-[10px] font-bold tracking-[1.5px] uppercase text-gold/80 mb-3">
+            <span class="text-[9px] leading-none" aria-hidden="true">★</span>
+            <span data-i18n="home.comp_meta_batikram">Est. 2010 · Real Estate &amp; Development</span>
+          </div>
+          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-4" data-i18n="home.comp_body4">Real estate promotion and development opportunities.</p>
+          <ul class="w-full text-[12.5px] text-white/65 leading-[1.6] mb-6 flex-1 list-none p-0 m-0 space-y-1">
+            <li data-i18n="home.comp_svc_batikram_1">Real estate promotion</li>
+            <li data-i18n="home.comp_svc_batikram_2">Land development</li>
+            <li data-i18n="home.comp_svc_batikram_3">Project management</li>
+          </ul>
           <a href="contact.html?company=batikram" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-gold hover:text-white transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
 
@@ -907,18 +1015,29 @@
           <div class="mb-5 w-[60px] h-[60px] rounded-full bg-white flex items-center justify-center flex-shrink-0">
             <img src="assets/images/company-logos/etrabal.svg" alt="EURL ETRABAL logo" class="w-10 h-10 object-contain" />
           </div>
-          <h3 class="font-barlow text-[16px] font-semibold text-white mb-3 leading-tight">EURL ETRABAL</h3>
-          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-6 flex-1" data-i18n="home.comp_body_etrabal">Hydraulic systems, fluid power solutions, and water management equipment.</p>
+          <h3 class="font-barlow text-[16px] font-semibold text-white mb-2 leading-tight">EURL ETRABAL</h3>
+          <div class="flex items-center justify-center gap-1.5 font-condensed text-[10px] font-bold tracking-[1.5px] uppercase text-gold/80 mb-3">
+            <span class="text-[9px] leading-none" aria-hidden="true">★</span>
+            <span data-i18n="home.comp_meta_etrabal">Est. 2015 · Hydraulic Systems &amp; Water</span>
+          </div>
+          <p class="text-[13.5px] text-white/70 leading-[1.7] mb-4" data-i18n="home.comp_body_etrabal">Hydraulic systems, fluid power solutions, and water management equipment.</p>
+          <ul class="w-full text-[12.5px] text-white/65 leading-[1.6] mb-6 flex-1 list-none p-0 m-0 space-y-1">
+            <li data-i18n="home.comp_svc_etrabal_1">Hydraulic &amp; fluid power systems</li>
+            <li data-i18n="home.comp_svc_etrabal_2">Water management equipment</li>
+            <li data-i18n="home.comp_svc_etrabal_3">Installation &amp; maintenance</li>
+          </ul>
           <a href="contact.html?company=etrabal" class="font-condensed text-[11px] font-bold tracking-[1.7px] uppercase text-gold hover:text-white transition-colors no-underline" data-i18n="home.comp_contact_link">Get in Touch →</a>
         </article>
       </div>
+    </div>
 
-      <!-- Company card modal (hidden by default, opened by a pillar click) -->
-      <div id="companies-modal" class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center p-4">
-        <div class="bg-white rounded-[3px] max-w-[360px] w-full p-6 relative shadow-2xl">
-          <button id="companies-modal-close" type="button" class="absolute top-4 right-4 text-navy hover:text-gold text-lg p-2 leading-none font-bold cursor-pointer" aria-label="Close">✕</button>
-          <div id="companies-modal-content"></div>
-        </div>
+    <!-- Company card modal (hidden by default, opened by a pillar click). It lives outside the
+         z-10 content wrapper so its fixed overlay can stack above the fixed navbar (z-[100]). -->
+    <div id="companies-modal" class="hidden fixed inset-0 bg-black/50 z-[110] items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Company details" data-i18n-aria-label="home.comp_modal_label">
+      <div id="companies-modal-panel" class="bg-white rounded-[3px] max-w-[360px] w-full p-6 relative shadow-2xl">
+        <button id="companies-modal-close" type="button" class="absolute -top-3 -end-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white border border-navy/10 text-navy text-lg leading-none font-bold shadow-md cursor-pointer transition-colors duration-200 hover:bg-gold hover:text-white hover:border-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold" aria-label="Close" data-i18n-aria-label="home.comp_modal_close">✕</button>
+        <div id="companies-modal-content"></div>
+        <p class="mt-3 text-center font-barlow text-[11px] tracking-[0.5px] text-muted" data-i18n="home.comp_modal_hint">Press ESC to close</p>
       </div>
     </div>
   </section>
@@ -1442,10 +1561,10 @@
         scrollTrigger: { trigger: '#companies', start: 'top 78%', once: true },
         y: 30, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power2.out'
       });
-      gsap.from('#companies-logo-container, #companies-pillar-hint',
+      gsap.from('#companies-logo-container',
         {
           scrollTrigger: { trigger: '#companies', start: 'top 78%', once: true },
-          y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out',
+          y: 30, opacity: 0, duration: 0.6, ease: 'power2.out',
           clearProps: 'all'
         }
       );
@@ -1603,28 +1722,114 @@
 
       // ═══════════ COMPANIES MODAL LOGIC ═══════════
       const compModal = document.getElementById('companies-modal');
+      const compModalPanel = document.getElementById('companies-modal-panel');
       const compModalContent = document.getElementById('companies-modal-content');
       const compModalClose = document.getElementById('companies-modal-close');
+      const compHint = document.getElementById('companies-pillar-hint');
+      const compHintIcon = document.getElementById('companies-pillar-hint-icon');
+      const compSection = document.getElementById('companies');
+      let compLastTrigger = null;
+
+      // The hint pulses three times once the section is actually seen (not on page load, which may be
+      // far above), then dims after 8s; engaging with a pillar hides it outright. Dimming rather than
+      // hiding keeps the affordance discoverable for anyone who lands on the section later.
+      let compHintTimer = null;
+      let compHintSettled = false;
+      let compHintHidden = false;
+
+      function tweenCompanyPillarHint(target) {
+        if (window.gsap) {
+          gsap.to(compHint, { opacity: target, duration: 0.5, ease: 'power2.out' });
+        } else {
+          compHint.style.opacity = String(target);
+        }
+      }
+
+      // Called once the user engages (pillar click): the hint has done its job.
+      function hideCompanyPillarHint() {
+        if (!compHint || compHintHidden) return;
+        compHintHidden = true;
+        compHintSettled = true;
+        if (compHintTimer) { clearTimeout(compHintTimer); compHintTimer = null; }
+        compHint.setAttribute('aria-hidden', 'true');
+        tweenCompanyPillarHint(0);
+      }
+
+      // Called by the timer: de-emphasise but keep the copy legible.
+      function dimCompanyPillarHint() {
+        if (!compHint || compHintSettled) return;
+        compHintSettled = true;
+        compHintTimer = null;
+        tweenCompanyPillarHint(0.45);
+      }
+
+      function startCompanyPillarHint() {
+        if (compHintSettled || compHintTimer || !compHint) return;
+        if (compHintIcon) {
+          // Re-add the class so the 3× pulse starts when the section is reached, not on page load.
+          compHintIcon.classList.remove('hint-pulse');
+          void compHintIcon.offsetWidth; // force reflow to restart the CSS animation
+          compHintIcon.classList.add('hint-pulse');
+        }
+        compHintTimer = setTimeout(dimCompanyPillarHint, 8000);
+      }
+
+      if (compSection && compHint) {
+        if ('IntersectionObserver' in window) {
+          const compHintIo = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                startCompanyPillarHint();
+                compHintIo.disconnect();
+              }
+            });
+          }, { threshold: 0.35 });
+          compHintIo.observe(compSection);
+        } else {
+          startCompanyPillarHint();
+        }
+      }
 
       function showCompanyCard(companyId) {
         if (!compModal || !compModalContent) return;
         const card = document.querySelector('.company-card[data-company-id="' + companyId + '"]');
         if (!card) return;
+        compLastTrigger = document.activeElement;
         compModalContent.innerHTML = '';
         const clone = card.cloneNode(true);
         clone.classList.remove('hidden');
         clone.classList.add('w-full');
         compModalContent.appendChild(clone);
+        compModalContent.scrollTop = 0;
         compModal.classList.remove('hidden');
         compModal.classList.add('flex');
         document.body.style.overflow = 'hidden';
+        hideCompanyPillarHint();
+        if (compModalPanel && window.gsap) {
+          gsap.killTweensOf(compModalPanel);
+          gsap.fromTo(compModalPanel,
+            { y: 40, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out', clearProps: 'transform,opacity' });
+        }
+        if (compModalClose) compModalClose.focus({ preventScroll: true });
       }
 
       function hideCompanyCard() {
-        if (!compModal) return;
-        compModal.classList.add('hidden');
-        compModal.classList.remove('flex');
-        document.body.style.overflow = '';
+        if (!compModal || compModal.classList.contains('hidden')) return;
+        const finish = function () {
+          compModal.classList.add('hidden');
+          compModal.classList.remove('flex');
+          document.body.style.overflow = '';
+          if (compModalPanel && window.gsap) {
+            gsap.set(compModalPanel, { clearProps: 'transform,opacity' });
+          }
+          if (compLastTrigger && compLastTrigger.focus) {
+            compLastTrigger.focus({ preventScroll: true });
+          }
+        };
+        if (!compModalPanel || !window.gsap) { finish(); return; }
+        gsap.killTweensOf(compModalPanel);
+        gsap.to(compModalPanel, { y: 20, opacity: 0, duration: 0.2, ease: 'power2.in', onComplete: finish });
       }
 
       if (compModalClose) compModalClose.addEventListener('click', hideCompanyCard);
@@ -1650,12 +1855,12 @@
       const etbLogo = document.getElementById('companies-etb-logo');
       if (etbLogo) {
         // Fallback for clicks that land outside the transparent overlay buttons: map the click to the
-        // measured pillar bands (fractions of the 2000-unit logo width) instead of equal quarters.
+        // measured pillar bands (fractions of the logo width) instead of equal quarters.
         const pillars = [
-          { from: 0.34, to: 0.405, id: 'bitumax' },
-          { from: 0.405, to: 0.50, id: 'bati-achouri' },
-          { from: 0.50, to: 0.595, id: 'batikram' },
-          { from: 0.595, to: 0.665, id: 'etrabal' }
+          { from: 0.262, to: 0.334, id: 'bitumax' },
+          { from: 0.368, to: 0.447, id: 'bati-achouri' },
+          { from: 0.563, to: 0.642, id: 'batikram' },
+          { from: 0.675, to: 0.752, id: 'etrabal' }
         ];
         etbLogo.addEventListener('click', (e) => {
           const rect = etbLogo.getBoundingClientRect();

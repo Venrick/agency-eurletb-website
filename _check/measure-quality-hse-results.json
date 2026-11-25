@@ -1,0 +1,1408 @@
+{
+  "generatedAt": "2026-10-26T12:52:52.978Z",
+  "page": "quality-hse.html",
+  "viewports": [
+    375,
+    768,
+    1440
+  ],
+  "languages": [
+    "en",
+    "fr",
+    "ar"
+  ],
+  "screenshotDir": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots",
+  "sourceScan": {
+    "physical": [],
+    "anchoring": [
+      {
+        "line": 232,
+        "text": "<div class=\"absolute top-0 left-0 bottom-0 w-[5px] bg-gold\"></div>"
+      }
+    ]
+  },
+  "tests": [
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "height": 667,
+      "lang": "en",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "375 vs 375"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 48, right 327"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "Standard Target"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=ltr"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            313,
+            313,
+            340,
+            365,
+            340,
+            313,
+            463
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            313,
+            340,
+            340,
+            365,
+            365,
+            338
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\en-mobile-full.png"
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "height": 1024,
+      "lang": "en",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "768 vs 768"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 48, right 720"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "Standard Target"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=ltr"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            313,
+            313,
+            287,
+            287,
+            287,
+            287,
+            434
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            287,
+            287,
+            313,
+            313,
+            340,
+            340
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\en-tablet-full.png"
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "lang": "en",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "1440 vs 1440"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 120, right 1320"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "Standard Target"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=ltr"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            287,
+            287,
+            287,
+            287,
+            287,
+            287,
+            152
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            287,
+            287,
+            287,
+            287,
+            287,
+            287
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\en-desktop-full.png"
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "height": 667,
+      "lang": "fr",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "375 vs 375"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 48, right 327"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "Norme visée"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=ltr"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            313,
+            338,
+            365,
+            365,
+            365,
+            338,
+            489
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            338,
+            340,
+            391,
+            416,
+            416,
+            415
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\fr-mobile-full.png"
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "height": 1024,
+      "lang": "fr",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "768 vs 768"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 48, right 720"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "Norme visée"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=ltr"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            313,
+            313,
+            340,
+            340,
+            313,
+            313,
+            485
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            314,
+            314,
+            340,
+            340,
+            391,
+            391
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\fr-tablet-full.png"
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "lang": "fr",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "1440 vs 1440"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 120, right 1320"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "Norme visée"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=ltr"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            287,
+            287,
+            287,
+            313,
+            313,
+            313,
+            152
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            287,
+            287,
+            287,
+            338,
+            338,
+            338
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\fr-desktop-full.png"
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "height": 667,
+      "lang": "ar",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "375 vs 375"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 48, right 327"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "المعيار المستهدف"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=rtl"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            314,
+            287,
+            287,
+            287,
+            314,
+            287,
+            360
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            314,
+            262,
+            313,
+            313,
+            313,
+            340
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\ar-mobile-full.png"
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "height": 1024,
+      "lang": "ar",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "768 vs 768"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 48, right 720"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "المعيار المستهدف"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=rtl"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            262,
+            262,
+            262,
+            262,
+            262,
+            262,
+            305
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            314,
+            314,
+            287,
+            287,
+            314,
+            314
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\ar-tablet-full.png"
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "lang": "ar",
+      "pass": true,
+      "failures": [],
+      "ratios": {
+        "qualityBody": 6.34,
+        "hseBody": 6.61,
+        "isoLabel": 6.11
+      },
+      "checks": [
+        {
+          "id": "no-horizontal-overflow",
+          "pass": true,
+          "detail": "1440 vs 1440"
+        },
+        {
+          "id": "card-counts-7-6",
+          "pass": true,
+          "detail": "7/6"
+        },
+        {
+          "id": "body-text-15px",
+          "pass": true,
+          "detail": "13 cards, sizes 15px"
+        },
+        {
+          "id": "line-height-1.7",
+          "pass": true,
+          "detail": "25.5px"
+        },
+        {
+          "id": "grid-gap-24",
+          "pass": true,
+          "detail": "24px/24px"
+        },
+        {
+          "id": "no-card-clipping",
+          "pass": true,
+          "detail": "0 clipped"
+        },
+        {
+          "id": "no-edge-bleed",
+          "pass": true,
+          "detail": "left 120, right 1320"
+        },
+        {
+          "id": "uniform-card-heights-per-row",
+          "pass": true,
+          "detail": "0 uneven row(s)"
+        },
+        {
+          "id": "iso-gold-budget-1",
+          "pass": true,
+          "detail": "المعيار المستهدف"
+        },
+        {
+          "id": "iso-dot-muted-static",
+          "pass": true,
+          "detail": "{\"background\":\"rgb(90, 95, 114)\",\"animation\":\"none\"}"
+        },
+        {
+          "id": "iso-box-border-muted",
+          "pass": true,
+          "detail": "rgba(90, 95, 114, 0.25)"
+        },
+        {
+          "id": "contrast-quality-body",
+          "pass": true,
+          "detail": "6.34:1"
+        },
+        {
+          "id": "contrast-hse-body",
+          "pass": true,
+          "detail": "6.61:1"
+        },
+        {
+          "id": "contrast-iso-label",
+          "pass": true,
+          "detail": "6.11:1"
+        },
+        {
+          "id": "direction-attribute",
+          "pass": true,
+          "detail": "dir=rtl"
+        }
+      ],
+      "metrics": {
+        "overflowPx": 0,
+        "heroPadding": {
+          "padTop": "160px",
+          "padBottom": "128px",
+          "padLeft": "0px",
+          "padRight": "0px"
+        },
+        "banner": {
+          "borderColor": "rgba(193, 159, 93, 0.3)",
+          "dot": {
+            "background": "rgb(90, 95, 114)",
+            "animation": "none"
+          },
+          "box": {
+            "background": "rgb(30, 36, 60)",
+            "borderColor": "rgba(90, 95, 114, 0.25)"
+          }
+        },
+        "quality": {
+          "count": 7,
+          "columnGap": "24px",
+          "heights": [
+            262,
+            262,
+            262,
+            262,
+            262,
+            262,
+            152
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        },
+        "hse": {
+          "count": 6,
+          "columnGap": "24px",
+          "heights": [
+            262,
+            262,
+            262,
+            262,
+            262,
+            262
+          ],
+          "fontSizes": [
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px",
+            "15px"
+          ]
+        }
+      },
+      "screenshot": "C:\\Users\\youce\\AppData\\Local\\Temp\\quality-hse-shots\\ar-desktop-full.png"
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0
+  }
+}

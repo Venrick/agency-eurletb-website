@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -483,7 +483,7 @@
         </a>
         <a href="mailto:contact@eurlachouri.com" class="flex items-center gap-[7px] text-[11px] text-white/55 tracking-[0.5px] no-underline hover:text-white/80 transition-colors">
           <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#c19f5d" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="hidden sm:inline">contact@eurlachouri.com</span>
+          <span class="hidden sm:inline phone-ltr" dir="ltr">contact@eurlachouri.com</span>
           <span class="sm:hidden" data-i18n="topbar.email">Email</span>
         </a>
       </div>
@@ -534,16 +534,6 @@
 
     <!-- Mobile drawer -->
     <div class="nav-drawer" id="nav-drawer">
-      <div class="px-6 pt-4 pb-2">
-        <div class="lang-compact relative">
-          <button type="button" class="lang-compact-btn" aria-haspopup="true" aria-expanded="false" data-i18n-aria-label="ui.aria_change_language" aria-label="Change language">
-            <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
-            <span class="lang-current">EN</span>
-            <svg class="lang-caret" viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
-          </button>
-          <div class="lang-menu" role="menu" data-i18n-aria-label="ui.aria_language_options" aria-label="Language options" hidden></div>
-        </div>
-      </div>
       <a href="index.html" data-i18n="nav.home">Home</a>
       <a href="about.html" data-i18n="nav.about">About</a>
       <a href="services.html" data-i18n="nav.services">Services</a>
@@ -1014,10 +1004,9 @@
           attributionControl: true
         });
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          subdomains: 'abcd',
-          maxZoom: 20
+        L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19
         }).addTo(map);
 
         const pinIcon = L.divIcon({

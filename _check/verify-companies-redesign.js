@@ -26,9 +26,10 @@ const EXPECTED = [
 ];
 
 const VIEWPORTS = [
-  { name: 'desktop', w: 1440, h: 900, logoW: 500 },
-  { name: 'tablet', w: 768, h: 1024, logoW: 320 },
-  { name: 'mobile', w: 375, h: 667, logoW: 220 }
+  // The artwork's natural size is 302×364, so `max-w-[360px]` never upscales it on desktop.
+  { name: 'desktop', w: 1440, h: 900, logoW: 302, logoH: 364 },
+  { name: 'tablet', w: 768, h: 1024, logoW: 300, logoH: 362 },
+  { name: 'mobile', w: 375, h: 667, logoW: 220, logoH: 265 }
 ];
 
 function createServer() {
@@ -103,6 +104,15 @@ async function sectionChecks(browser, vp, lang) {
       visibleCards: Array.prototype.filter.call(document.querySelectorAll('.company-card'), c => c.offsetParent !== null).length,
       hintText: hint ? hint.textContent.trim() : null,
       hintVisible: !!(hint && hint.offsetParent !== null),
+      hintPulse: !!(document.getElementById('companies-pillar-hint-icon') &&
+        document.getElementById('companies-pillar-hint-icon').classList.contains('hint-pulse')),
+      cardExtras: Array.prototype.map.call(document.querySelectorAll('.company-card'), function (c) {
+        const meta = c.querySelector('[data-i18n^="home.comp_meta_"]');
+        return {
+          meta: meta ? meta.textContent.trim() : null,
+          bullets: c.querySelectorAll('ul li').length
+        };
+      }),
       btns,
       areas: Array.prototype.map.call(document.querySelectorAll('#etb-logo-map area'), a => ({ id: a.getAttribute('data-company'), coords: a.getAttribute('coords') })),
       etbRefs: document.querySelectorAll('[data-company="etb"], [data-company-id="etb"]').length,
@@ -112,26 +122,29 @@ async function sectionChecks(browser, vp, lang) {
 
   if (!lang || lang === 'en') {
     check(Math.abs(geo.logo.w - vp.logoW) <= 2, tag + 'logo rendered ' + Math.round(geo.logo.w) + 'px, expected ' + vp.logoW + 'px');
-    check(Math.abs(geo.logo.w - geo.logo.h) <= 2, tag + 'logo is not square: ' + Math.round(geo.logo.w) + 'x' + Math.round(geo.logo.h));
-    check(geo.logo.natural === 2000, tag + 'logo intrinsic width ' + geo.logo.natural + ', expected 2000');
+    check(Math.abs(geo.logo.h - vp.logoH) <= 2, tag + 'logo rendered ' + Math.round(geo.logo.h) + 'px, expected ' + vp.logoH + 'px');
+    check(geo.logo.natural === 302, tag + 'logo intrinsic width ' + geo.logo.natural + ', expected 302');
     check(geo.gridDisplay === 'none', tag + 'companies grid display is "' + geo.gridDisplay + '", expected none');
     check(geo.visibleCards === 0, tag + 'visible company cards on page: ' + geo.visibleCards + ' (expected 0)');
     check(geo.hintVisible, tag + 'pillar hint is not visible');
+    check(geo.hintPulse, tag + 'pillar hint icon is not pulsing (hint-pulse class missing)');
+    check(geo.cardExtras.length === 4 && geo.cardExtras.every(c => !!c.meta && c.bullets === 3),
+      tag + 'card metadata/bullets incomplete: ' + JSON.stringify(geo.cardExtras));
     check(geo.etbRefs === 0, tag + 'found ' + geo.etbRefs + ' leftover ETB company hooks');
     check(geo.cardIds.join(',') === 'bitumax,bati-achouri,batikram,etrabal', tag + 'card order is ' + geo.cardIds.join(','));
     check(geo.areas.length === 4, tag + 'image map has ' + geo.areas.length + ' areas, expected 4');
     check(geo.areas.map(a => a.id).join(',') === 'bitumax,bati-achouri,batikram,etrabal', tag + 'area order is ' + geo.areas.map(a => a.id).join(','));
     geo.areas.forEach(a => {
       const c = a.coords.split(',').map(Number);
-      check(c.length === 4 && c[2] > c[0] && c[3] > c[1] && c[2] <= 2000 && c[3] <= 2000, tag + 'bad area coords for ' + a.id + ': ' + a.coords);
+      check(c.length === 4 && c[2] > c[0] && c[3] > c[1] && c[2] <= 302 && c[3] <= 364, tag + 'bad area coords for ' + a.id + ': ' + a.coords);
     });
   }
 
   // Overlay buttons must sit exactly on the measured pillar bands.
-  const bands = [[680, 810], [810, 1000], [1000, 1190], [1190, 1330]];
+  const bands = [[79, 101], [111, 135], [170, 194], [204, 227]];
   check(geo.btns.length === 4, tag + 'overlay has ' + geo.btns.length + ' buttons, expected 4');
   geo.btns.forEach((b, i) => {
-    const expCx = geo.logo.x + (((bands[i][0] + bands[i][1]) / 2) / 2000) * geo.logo.w;
+    const expCx = geo.logo.x + (((bands[i][0] + bands[i][1]) / 2) / 302) * geo.logo.w;
     const gotCx = b.x + b.w / 2;
     check(Math.abs(gotCx - expCx) <= 3, tag + b.id + ' hotspot centre x is ' + Math.round(gotCx) + ', pillar centre is ' + Math.round(expCx));
     check(b.w > 10 && b.h > 10, tag + b.id + ' hotspot is too small (' + Math.round(b.w) + 'x' + Math.round(b.h) + ')');
@@ -144,10 +157,10 @@ async function sectionChecks(browser, vp, lang) {
 async function modalState(page) {
   return page.evaluate(() => {
     const m = document.getElementById('companies-modal');
-    const c = document.getElementById('companies-modal-content');
-    const h3 = c.querySelector('h3');
-    const a = c.querySelector('a');
-    const p = c.querySelector('p');
+    const c = m ? document.getElementById('companies-modal-content') : null;
+    const h3 = c ? c.querySelector('h3') : null;
+    const a = c ? c.querySelector('a') : null;
+    const p = c ? c.querySelector('p') : null;
     return {
       open: !!m && !m.classList.contains('hidden') && getComputedStyle(m).display !== 'none',
       title: h3 ? h3.textContent.trim() : null,
@@ -168,15 +181,28 @@ async function interactChecks(page, geo, tag) {
     check(st.title === EXPECTED[i].title, tag + EXPECTED[i].id + ' pillar opened "' + st.title + '", expected "' + EXPECTED[i].title + '"');
     check(st.href === EXPECTED[i].href, tag + EXPECTED[i].id + ' contact link is "' + st.href + '", expected "' + EXPECTED[i].href + '"');
     check(!!st.body && st.body.length > 10, tag + EXPECTED[i].id + ' card has no description text');
+    const rich = await page.evaluate(() => {
+      const c = document.getElementById('companies-modal-content');
+      const ul = c ? c.querySelector('.company-card ul') : null;
+      const meta = c ? c.querySelector('.company-card [data-i18n^="home.comp_meta_"]') : null;
+      return {
+        meta: meta ? meta.textContent.trim() : null,
+        bullets: ul ? Array.prototype.map.call(ul.querySelectorAll('li'), li => li.textContent.trim()) : []
+      };
+    });
+    check(!!rich.meta && /(19|20)\d\d/.test(rich.meta), tag + EXPECTED[i].id + ' card is missing the year/specialisation strip ("' + rich.meta + '")');
+    check(rich.bullets.length === 3 && rich.bullets.every(t => t.length > 2),
+      tag + EXPECTED[i].id + ' card service bullets are ' + JSON.stringify(rich.bullets));
     await page.click('#companies-modal-close');
-    await new Promise(r => setTimeout(r, 120));
+    await new Promise(r => setTimeout(r, 320));
     const closed = await modalState(page);
     check(!closed.open, tag + 'close button did not dismiss the modal');
   }
 
   // 2. Clicks that miss the artwork (image-map fallback path) must not open a card.
   await page.evaluate(() => {
-    document.getElementById('pillar-touch-overlay').style.pointerEvents = 'none';
+    const overlay = document.getElementById('pillar-touch-overlay');
+    if (overlay) overlay.style.pointerEvents = 'none';
     Array.prototype.forEach.call(document.querySelectorAll('.pillar-btn'), b => { b.style.pointerEvents = 'none'; });
   });
   await page.mouse.click(geo.logo.x + geo.logo.w * 0.12, geo.logo.y + geo.logo.h * 0.6);
@@ -185,27 +211,75 @@ async function interactChecks(page, geo, tag) {
 
   // 3. Image map / logo fallback still resolves the right pillar by x position.
   for (let i = 0; i < EXPECTED.length; i++) {
-    const centroid = ([[680, 810], [810, 1000], [1000, 1190], [1190, 1330]][i][0] + ([[680, 810], [810, 1000], [1000, 1190], [1190, 1330]][i][1])) / 2;
-    const cx = geo.logo.x + (centroid / 2000) * geo.logo.w;
+    const bandPairs = [[79, 101], [111, 135], [170, 194], [204, 227]];
+    const centroid = (bandPairs[i][0] + bandPairs[i][1]) / 2;
+    const cx = geo.logo.x + (centroid / 302) * geo.logo.w;
     await page.mouse.click(cx, geo.logo.y + geo.logo.h * 0.6);
     await new Promise(r => setTimeout(r, 120));
     const st = await modalState(page);
     check(st.open && st.title === EXPECTED[i].title, tag + 'logo click at pillar ' + EXPECTED[i].id + ' opened "' + st.title + '"');
     if (st.open) await page.click('#companies-modal-close');
-    await new Promise(r => setTimeout(r, 100));
+    await new Promise(r => setTimeout(r, 320));
   }
 
   // 4. Backdrop click closes the modal.
   await page.evaluate(() => {
-    document.getElementById('pillar-touch-overlay').style.pointerEvents = '';
+    const overlay = document.getElementById('pillar-touch-overlay');
+    if (overlay) overlay.style.pointerEvents = '';
     Array.prototype.forEach.call(document.querySelectorAll('.pillar-btn'), b => { b.style.pointerEvents = ''; });
   });
   const b0 = geo.btns[3];
   await page.mouse.click(b0.x + b0.w / 2, b0.y + b0.h / 2);
   await new Promise(r => setTimeout(r, 120));
-  await page.mouse.click(5, Math.round(page.viewport().height / 2));
-  await new Promise(r => setTimeout(r, 150));
+  await page.mouse.move(5, Math.round(page.viewport().height / 2));
+  await page.mouse.down();
+  await page.mouse.up();
+  await new Promise(r => setTimeout(r, 320));
   check(!(await modalState(page)).open, tag + 'backdrop click did not dismiss the modal');
+
+  // 5. Escape closes the modal; the panel carries a larger close button and a keyboard hint.
+  const bEsc = geo.btns[2];
+  await page.mouse.click(bEsc.x + bEsc.w / 2, bEsc.y + bEsc.h / 2);
+  await new Promise(r => setTimeout(r, 200));
+  const panel = await page.evaluate(() => {
+    const btn = document.getElementById('companies-modal-close');
+    const hint = document.querySelector('#companies-modal-panel [data-i18n="home.comp_modal_hint"]');
+    const panelEl = document.getElementById('companies-modal-panel');
+    const cs = panelEl ? getComputedStyle(panelEl) : null;
+    const r = btn ? btn.getBoundingClientRect() : null;
+    return {
+      close: r ? { w: Math.round(r.width), h: Math.round(r.height) } : null,
+      hint: hint ? hint.textContent.trim() : null,
+      opacity: cs ? Number(cs.opacity).toFixed(2) : null
+    };
+  });
+  check(!!panel.close && panel.close.w >= 36 && panel.close.h >= 36,
+    tag + 'close button is too small: ' + JSON.stringify(panel.close));
+  check(!!panel.hint, tag + 'modal keyboard hint (ESC) is missing');
+  check(Number(panel.opacity) > 0.9, tag + 'modal panel did not fade in (opacity ' + panel.opacity + ')');
+  await page.keyboard.press('Escape');
+  await new Promise(r => setTimeout(r, 320));
+  check(!(await modalState(page)).open, tag + 'Escape did not dismiss the modal');
+
+  // 6. Hovering a pillar reveals the gold affordance (pointer devices only).
+  const canHover = await page.evaluate(() => window.matchMedia('(hover: hover)').matches);
+  if (canHover) {
+    const bHover = geo.btns[0];
+    await page.mouse.move(bHover.x + bHover.w / 2, bHover.y + bHover.h / 2);
+    await new Promise(r => setTimeout(r, 300));
+    const glow = await page.evaluate(() => {
+      const btn = document.querySelector('.pillar-btn');
+      if (!btn) return null;
+      const cs = getComputedStyle(btn);
+      return { opacity: cs.opacity, bg: cs.backgroundColor, anim: cs.animationName };
+    });
+    check(!!glow && Number(glow.opacity) > 0.5,
+      tag + 'pillar hover does not reveal the hotspot (opacity ' + (glow && glow.opacity) + ')');
+    check(!!glow && (/193, 159, 93/.test(glow.bg) || glow.anim === 'pillarGlow'),
+      tag + 'pillar hover shows no gold glow (' + JSON.stringify(glow) + ')');
+    await page.mouse.move(0, 0);
+    await new Promise(r => setTimeout(r, 220));
+  }
 }
 
 const EN_HINT = 'Click on a pillar to explore our sister companies';
@@ -238,6 +312,23 @@ async function i18nChecks(browser, vp) {
     const st = await modalState(page);
     check(st.open, tag + 'ETRABAL pillar did not open the modal');
     check(st.body !== EN_ETRABAL_BODY && !!st.body, tag + 'ETRABAL card description is not localised ("' + st.body + '")');
+    const sides = await page.evaluate(() => {
+      const b = document.getElementById('companies-modal-close');
+      const p = document.getElementById('companies-modal-panel');
+      if (!b || !p) return null;
+      const br = b.getBoundingClientRect();
+      const pr = p.getBoundingClientRect();
+      return { btn: br.x + br.width / 2, panel: pr.x + pr.width / 2, dir: getComputedStyle(document.documentElement).direction, label: document.getElementById('companies-modal').getAttribute('aria-label') };
+    });
+    check(!!sides, tag + 'close button/panel not measurable');
+    if (sides) {
+      // `-end-3` is a logical inset: it must mirror to the left edge once direction is rtl.
+      const expectRight = sides.dir !== 'rtl';
+      check(expectRight ? sides.btn > sides.panel : sides.btn < sides.panel,
+        tag + 'close button is on the wrong side for ' + sides.dir + ' (btn ' + Math.round(sides.btn) + ' vs panel centre ' + Math.round(sides.panel) + ')');
+      check(!!sides.label && sides.label !== 'Company details',
+        tag + 'modal aria-label is not localised ("' + sides.label + '")');
+    }
     await page.close();
   }
 }
@@ -261,7 +352,7 @@ async function run() {
         await page.screenshot({ path: modalShot });
         shots.push(modalShot);
         await page.click('#companies-modal-close');
-        await new Promise(r => setTimeout(r, 150));
+        await new Promise(r => setTimeout(r, 320));
       }
       // Frame the section under the fixed header for a readable screenshot.
       await page.evaluate(() => {
